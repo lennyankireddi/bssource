@@ -1,0 +1,92 @@
+<div class="program-info" id="programInfo">
+    
+</div>
+<script type="text/javascript">
+    function getParameterByName(name, url) {
+	    if (!url) {
+	      url = window.location.href;
+	    }
+	    name = name.replace(/[\[\]]/g, "\\$&");
+	    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+	        results = regex.exec(url);
+	    if (!results) return null;
+	    if (!results[2]) return '';
+	    return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+
+    function RenderProgramInfo() {
+        var title = "";
+        var programScope = "";
+        var runTime = "";
+        var startDate = "";
+        var endDate = "";
+        var description = "";
+        var programPhoto = "";
+        var monthNames = ["January", "February", "March","April", "May", "June", "July","August", "September", "October","November", "December"];
+
+        var currentTitle = getParameterByName("name");
+        var itemUrl = "/_api/web/lists/getbytitle('Programs')/items?$filter=(Title eq '" + currentTitle + "')";
+        var htmlString = "";
+
+        jQuery.ajax({
+	        url: itemUrl,
+	        method: "GET",
+	        headers: { 
+						"Accept": "application/json; odata=verbose",
+					},
+	        success: function (data) {
+                if (data.d.results.length > 0) {
+                    var program = data.d.results[0];
+                    title = program.Title;
+                    switch (program.Program_x0020_Scope) {
+                        case 3:
+                            programScope = "National";
+                            break;
+                        case 4:
+                            programScope = "Local";
+                            break;
+                        default:
+                            programScope = "National";
+                    }
+                    runTime = program.Run_x0020_Time;
+                    var date = new Date(program.StartDate);
+                    startDate = monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
+                    date = new Date(program.OData__EndDate);
+                    endDate = monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
+                    description = program.DocumentSetDescription;
+                    programPhoto = program.Program_x0020_Photo.Url;
+
+                    htmlString += "<div class='program-img col-sm-3 no-padding'>";
+                    htmlString += "<img class='img-responsive' src='" + programPhoto + "' />";
+                    htmlString += "</div>";
+                    htmlString += "<div class='program-content col-sm-9'>";
+                    htmlString += "<h1>" + title + "</h1>";
+                    htmlString += "<span class='program-audience'><b>" + programScope + "</b></span>"
+                    htmlString += "<span class='program-run-time'>";
+                    if (runTime == "Fixed") {
+                        htmlString += "<b>Run-time:</b> " + startDate + " - " + endDate;
+                    }
+                    else {
+                        htmlString += "<b>Run-time</b> Starts: " + startDate;
+                    }
+                    htmlString += "</span>";
+                    if (description) {
+                        htmlString += "<p>" + description + "</p>";
+                    }
+                    htmlString += "</div>";
+
+                    jQuery("#programInfo").html(htmlString);
+                }
+                else {
+                    htmlString += "No program was found. Please check the program reference in the URL.";
+                    jQuery("#programInfo").html(htmlString);
+                }
+            },
+            error: function (data) {
+
+            }
+        });
+    }
+
+    RenderProgramInfo();
+</script>

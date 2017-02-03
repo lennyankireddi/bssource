@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns="http://schemas.microsoft.com/sharepoint/" Id="c254d7f6-1506-4d1e-be7c-cbb8d0ee873a" Scope="Site" Title="BEAM.Connect Feature1">
+  <ElementManifests>
+    <ElementManifest Location="MyLearning\Elements.xml" />
+    <ElementFile Location="MyLearning\MyLearning.webpart" />
+    <ElementManifest Location="MapClaimsToGroups\Elements.xml" />
+    <ElementFile Location="MapClaimsToGroups\MapClaimsToGroups.webpart" />
+    <ElementManifest Location="ValidateRegistrationData\Elements.xml" />
+    <ElementFile Location="ValidateRegistrationData\ValidateRegistrationData.webpart" />
+    <ElementManifest Location="ManageProfile\Elements.xml" />
+    <ElementFile Location="ManageProfile\ManageProfile.webpart" />
+  </ElementManifests>
+</Feature>

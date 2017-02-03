@@ -1,0 +1,1137 @@
+﻿{
+  "odata.metadata": "https://graph.windows.net/BSIB2CDev.onmicrosoft.com/$metadata#directoryObjects/Microsoft.DirectoryServices.User",
+  "value": [
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "45a236b1-041a-46cb-979e-d2943a2bb5e1",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": null,
+      "companyName": null,
+      "country": null,
+      "creationType": null,
+      "department": null,
+      "dirSyncEnabled": null,
+      "displayName": "49871",
+      "facsimileTelephoneNumber": null,
+      "givenName": "Matt",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": null,
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "49871",
+      "mobile": null,
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+
+      ],
+      "passwordPolicies": "None",
+      "passwordProfile": null,
+      "physicalDeliveryOfficeName": null,
+      "postalCode": null,
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-06-22T19:36:54Z",
+      "sipProxyAddress": null,
+      "state": null,
+      "streetAddress": null,
+      "surname": "Akkeron",
+      "telephoneNumber": null,
+      "usageLocation": null,
+      "userPrincipalName": "49871@BSIB2CDev.onmicrosoft.com",
+      "userType": "Member"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "b1ab57f4-083a-464d-8572-8e4755c73958",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+        {
+          "type": "emailAddress",
+          "value": "maartens@slalom.com"
+        }
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": null,
+      "companyName": null,
+      "country": null,
+      "creationType": "LocalAccount",
+      "department": null,
+      "dirSyncEnabled": null,
+      "displayName": "unknown",
+      "facsimileTelephoneNumber": null,
+      "givenName": null,
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": null,
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "ae7c15bb-4b49-4889-81f4-bb591d47f655",
+      "mobile": null,
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+
+      ],
+      "passwordPolicies": "DisablePasswordExpiration",
+      "passwordProfile": null,
+      "physicalDeliveryOfficeName": null,
+      "postalCode": "95973",
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-07-26T20:34:09Z",
+      "sipProxyAddress": null,
+      "state": "CA",
+      "streetAddress": null,
+      "surname": "Sundman",
+      "telephoneNumber": null,
+      "usageLocation": null,
+      "userPrincipalName": "ae7c15bb-4b49-4889-81f4-bb591d47f655@BSIB2CDev.onmicrosoft.com",
+      "userType": "Member",
+      "extension_a67c327875c34024bd4523a3d66619ba_Birthdate": "08/18/1985",
+      "extension_a67c327875c34024bd4523a3d66619ba_OnOffPremise": "Off",
+      "extension_a67c327875c34024bd4523a3d66619ba_Region": "Americas",
+      "extension_a67c327875c34024bd4523a3d66619ba_telephoneNumber": "925-285-0076"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "9fb6cdde-e50e-40a9-8b74-dcdf7315e41d",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": null,
+      "companyName": null,
+      "country": null,
+      "creationType": null,
+      "department": null,
+      "dirSyncEnabled": null,
+      "displayName": "B2CAdmin",
+      "facsimileTelephoneNumber": null,
+      "givenName": "B2C",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": null,
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "B2CDevAdmin",
+      "mobile": null,
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+        "maartens@slalom.com"
+      ],
+      "passwordPolicies": "None",
+      "passwordProfile": null,
+      "physicalDeliveryOfficeName": null,
+      "postalCode": null,
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-06-28T18:33:04Z",
+      "sipProxyAddress": null,
+      "state": null,
+      "streetAddress": null,
+      "surname": "Admin",
+      "telephoneNumber": null,
+      "usageLocation": null,
+      "userPrincipalName": "B2CDevAdmin@BSIB2CDev.onmicrosoft.com",
+      "userType": "Member"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "c3dd9e55-a1ea-401c-8e93-63347b802acd",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": null,
+      "companyName": null,
+      "country": "UnitedStates",
+      "creationType": null,
+      "department": null,
+      "dirSyncEnabled": null,
+      "displayName": "BridgetAlbert",
+      "facsimileTelephoneNumber": null,
+      "givenName": "Bridget",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": null,
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "Bridget.Albert",
+      "mobile": null,
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+        "BALBERT@SOUTHERNWINE.COM"
+      ],
+      "passwordPolicies": null,
+      "passwordProfile": null,
+      "physicalDeliveryOfficeName": null,
+      "postalCode": null,
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-07-14T21:29:27Z",
+      "sipProxyAddress": null,
+      "state": "Illinois",
+      "streetAddress": null,
+      "surname": "Albert",
+      "telephoneNumber": null,
+      "usageLocation": null,
+      "userPrincipalName": "BALBERT@BSIB2CDev.onmicrosoft.com",
+      "userType": "Member"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "5e19b6a2-cb42-4b70-99df-c75cd0600669",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": "Deerfield",
+      "companyName": null,
+      "country": "UnitedStates",
+      "creationType": null,
+      "department": "Finance",
+      "dirSyncEnabled": null,
+      "displayName": "JolantaMarron",
+      "facsimileTelephoneNumber": null,
+      "givenName": "Jolanta",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": "SeniorITBusinessAnalyst,CommercialSales",
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "Jolanta.Marron_beamsuntory.com#EXT#",
+      "mobile": null,
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+        "Jolanta.Marron@beamsuntory.com"
+      ],
+      "passwordPolicies": "None",
+      "passwordProfile": {
+        "password": null,
+        "forceChangePasswordNextLogin": true,
+        "enforceChangePasswordPolicy": false
+      },
+      "physicalDeliveryOfficeName": "Deerfield-LakeCookRoad",
+      "postalCode": "60015",
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-07-19T16:22:35Z",
+      "sipProxyAddress": null,
+      "state": "IL",
+      "streetAddress": "510LakeCookRoad",
+      "surname": "Marron",
+      "telephoneNumber": null,
+      "usageLocation": "US",
+      "userPrincipalName": "Jolanta.Marron_beamsuntory.com#EXT#@BSIB2CDev.onmicrosoft.com",
+      "userType": "Member"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "8d60b189-cd49-4aea-80cd-7772913943c9",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": "Deerfield",
+      "companyName": null,
+      "country": null,
+      "creationType": null,
+      "department": "Finance",
+      "dirSyncEnabled": null,
+      "displayName": "MaartenSundman",
+      "facsimileTelephoneNumber": null,
+      "givenName": "Maarten",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": "SlalomDeveloper",
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "Maarten.Sundman_beamsuntory.com#EXT#",
+      "mobile": null,
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+        "Maarten.Sundman@beamsuntory.com"
+      ],
+      "passwordPolicies": "None",
+      "passwordProfile": {
+        "password": null,
+        "forceChangePasswordNextLogin": true,
+        "enforceChangePasswordPolicy": false
+      },
+      "physicalDeliveryOfficeName": "Deerfield-LakeCookRoad",
+      "postalCode": "60015",
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-07-14T15:38:24Z",
+      "sipProxyAddress": null,
+      "state": "IL",
+      "streetAddress": "510LakeCookRoad",
+      "surname": "Sundman",
+      "telephoneNumber": null,
+      "usageLocation": "US",
+      "userPrincipalName": "Maarten.Sundman_beamsuntory.com#EXT#@BSIB2CDev.onmicrosoft.com",
+      "userType": "Member"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "0d8d4c83-6fe7-4548-a8da-8e1db8b51b20",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": "SWSLegacyRegion",
+      "companyName": null,
+      "country": "UnitedStates",
+      "creationType": null,
+      "department": "BrandEducation",
+      "dirSyncEnabled": null,
+      "displayName": "NikPatel",
+      "facsimileTelephoneNumber": null,
+      "givenName": "Nik",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": "Internal_User",
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "Nik.Patel",
+      "mobile": "Americas",
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+        "Nik.Patel@BEAMSUNTORY.COM"
+      ],
+      "passwordPolicies": null,
+      "passwordProfile": null,
+      "physicalDeliveryOfficeName": null,
+      "postalCode": null,
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-07-14T19:24:45Z",
+      "sipProxyAddress": null,
+      "state": "Illinois",
+      "streetAddress": "Both",
+      "surname": "Patel",
+      "telephoneNumber": "15738",
+      "usageLocation": null,
+      "userPrincipalName": "Nik.Patel@bsib2cdev.onmicrosoft.com",
+      "userType": "Member"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "b415099e-50e7-46ac-bff8-93a6597f8bea",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": "Deerfield",
+      "companyName": null,
+      "country": null,
+      "creationType": null,
+      "department": "IT",
+      "dirSyncEnabled": null,
+      "displayName": "NormanMayes",
+      "facsimileTelephoneNumber": null,
+      "givenName": "Norman",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": "Contractor",
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "Norman.Mayes_beamsuntory.com#EXT#",
+      "mobile": null,
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+        "Norman.Mayes@beamsuntory.com"
+      ],
+      "passwordPolicies": "None",
+      "passwordProfile": {
+        "password": null,
+        "forceChangePasswordNextLogin": true,
+        "enforceChangePasswordPolicy": false
+      },
+      "physicalDeliveryOfficeName": null,
+      "postalCode": "60015",
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-04-06T20:24:55Z",
+      "sipProxyAddress": null,
+      "state": "IL",
+      "streetAddress": "510LakeCookRoad",
+      "surname": "Mayes",
+      "telephoneNumber": null,
+      "usageLocation": "US",
+      "userPrincipalName": "Norman.Mayes_beamsuntory.com#EXT#@BSIB2CDev.onmicrosoft.com",
+      "userType": "Member"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "23b8d973-f47f-4b05-aed5-1ad3a88708a8",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": null,
+      "companyName": null,
+      "country": null,
+      "creationType": null,
+      "department": null,
+      "dirSyncEnabled": null,
+      "displayName": "NormanMayes-WindowsID",
+      "facsimileTelephoneNumber": null,
+      "givenName": "Norman",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": null,
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "nwmayes_gmail.com#EXT#",
+      "mobile": null,
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+        "nwmayes@gmail.com"
+      ],
+      "passwordPolicies": "None",
+      "passwordProfile": {
+        "password": null,
+        "forceChangePasswordNextLogin": true,
+        "enforceChangePasswordPolicy": false
+      },
+      "physicalDeliveryOfficeName": null,
+      "postalCode": null,
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-07-25T19:19:54Z",
+      "sipProxyAddress": null,
+      "state": null,
+      "streetAddress": null,
+      "surname": "Mayes",
+      "telephoneNumber": null,
+      "usageLocation": null,
+      "userPrincipalName": "nwmayes_gmail.com#EXT#@BSIB2CDev.onmicrosoft.com",
+      "userType": "Member"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "73ea367e-4649-4e39-848d-e8653effe874",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+        {
+          "type": "emailAddress",
+          "value": "raj.bagchi@gmail.com"
+        }
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": null,
+      "companyName": null,
+      "country": "UnitedStates",
+      "creationType": "LocalAccount",
+      "department": null,
+      "dirSyncEnabled": null,
+      "displayName": "RajBagchi-Gmail",
+      "facsimileTelephoneNumber": null,
+      "givenName": "RajBagchi",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": null,
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "raj.bagchi",
+      "mobile": null,
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+        "raj.bagchi@gmail.com"
+      ],
+      "passwordPolicies": "DisablePasswordExpiration",
+      "passwordProfile": null,
+      "physicalDeliveryOfficeName": null,
+      "postalCode": null,
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-07-18T20:25:09Z",
+      "sipProxyAddress": null,
+      "state": "IL",
+      "streetAddress": null,
+      "surname": "Mr",
+      "telephoneNumber": null,
+      "usageLocation": "US",
+      "userPrincipalName": "raj.bagchi@BSIB2CDev.onmicrosoft.com",
+      "userType": "Member",
+      "extension_a67c327875c34024bd4523a3d66619ba_telephoneNumber": "19999999999",
+      "extension_a67c327875c34024bd4523a3d66619ba_Area": "abcd",
+      "extension_a67c327875c34024bd4523a3d66619ba_BeamSuntorySponsor": "rajarshi.bagchi@beamsuntory.com",
+      "extension_a67c327875c34024bd4523a3d66619ba_Birthdate": "01/01/1980",
+      "extension_a67c327875c34024bd4523a3d66619ba_CommercialRegion": "Southern",
+      "extension_a67c327875c34024bd4523a3d66619ba_ConnectToolboxURL": "http://www.google.com",
+      "extension_a67c327875c34024bd4523a3d66619ba_Email": "raj.bagchi@gmail.com",
+      "extension_a67c327875c34024bd4523a3d66619ba_extensionAttribute1": "1234",
+      "extension_a67c327875c34024bd4523a3d66619ba_Employer": "RedLobster",
+      "extension_a67c327875c34024bd4523a3d66619ba_OnOffPremise": "OnPremise",
+      "extension_a67c327875c34024bd4523a3d66619ba_Region": "IL",
+      "extension_a67c327875c34024bd4523a3d66619ba_SuccessFactorsID": "1000",
+      "extension_a67c327875c34024bd4523a3d66619ba_SuccessFactorsRoleID": "1",
+      "extension_a67c327875c34024bd4523a3d66619ba_UserType": "Member"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "6e6d6754-2876-498b-9236-139281d6977b",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": null,
+      "companyName": null,
+      "country": null,
+      "creationType": null,
+      "department": null,
+      "dirSyncEnabled": null,
+      "displayName": "RajarshiBagchi",
+      "facsimileTelephoneNumber": null,
+      "givenName": "Rajarshi",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": null,
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "Rajarshi.Bagchi_beamsuntory.com#EXT#",
+      "mobile": null,
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+        "Rajarshi.Bagchi@beamsuntory.com"
+      ],
+      "passwordPolicies": null,
+      "passwordProfile": null,
+      "physicalDeliveryOfficeName": null,
+      "postalCode": null,
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-04-05T22:11:19Z",
+      "sipProxyAddress": null,
+      "state": null,
+      "streetAddress": null,
+      "surname": "Bagchi",
+      "telephoneNumber": null,
+      "usageLocation": null,
+      "userPrincipalName": "Rajarshi.Bagchi_beamsuntory.com#EXT#@BSIB2CDev.onmicrosoft.com",
+      "userType": "Member"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "7a4bf3a6-32d1-4230-af35-171ec7d6b3ac",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": "Deerfield",
+      "companyName": null,
+      "country": null,
+      "creationType": null,
+      "department": "IT",
+      "dirSyncEnabled": null,
+      "displayName": "SamPorras",
+      "facsimileTelephoneNumber": null,
+      "givenName": "Sam",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": "Contractor",
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "Sam.Porras_beamsuntory.com#EXT#",
+      "mobile": null,
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+        "Sam.Porras@beamsuntory.com"
+      ],
+      "passwordPolicies": "None",
+      "passwordProfile": {
+        "password": null,
+        "forceChangePasswordNextLogin": true,
+        "enforceChangePasswordPolicy": false
+      },
+      "physicalDeliveryOfficeName": null,
+      "postalCode": "60015",
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-04-05T22:13:36Z",
+      "sipProxyAddress": null,
+      "state": "IL",
+      "streetAddress": "510LakeCookRoad",
+      "surname": "Porras",
+      "telephoneNumber": null,
+      "usageLocation": "US",
+      "userPrincipalName": "Sam.Porras_beamsuntory.com#EXT#@BSIB2CDev.onmicrosoft.com",
+      "userType": "Member"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "f022cd03-2bc1-45c9-9a86-d580863fc7b5",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+        {
+          "type": "emailAddress",
+          "value": "samp@Slalom.com"
+        }
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": null,
+      "companyName": null,
+      "country": "UnitedStates",
+      "creationType": "LocalAccount",
+      "department": null,
+      "dirSyncEnabled": null,
+      "displayName": "SamPorras-TEST",
+      "facsimileTelephoneNumber": null,
+      "givenName": "Sam",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": null,
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "samporras",
+      "mobile": null,
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+
+      ],
+      "passwordPolicies": "DisablePasswordExpiration",
+      "passwordProfile": null,
+      "physicalDeliveryOfficeName": null,
+      "postalCode": null,
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-07-18T16:06:34Z",
+      "sipProxyAddress": null,
+      "state": "IL",
+      "streetAddress": null,
+      "surname": "Porras",
+      "telephoneNumber": null,
+      "usageLocation": "US",
+      "userPrincipalName": "samporras@BSIB2CDev.onmicrosoft.com",
+      "userType": "Member",
+      "extension_a67c327875c34024bd4523a3d66619ba_Area": "Houston/SouthTexas",
+      "extension_a67c327875c34024bd4523a3d66619ba_Division": "Mountain",
+      "extension_a67c327875c34024bd4523a3d66619ba_SuccessFactorsRoleID": "Dist_ID",
+      "extension_a67c327875c34024bd4523a3d66619ba_telephoneNumber": "8475334165",
+      "extension_a67c327875c34024bd4523a3d66619ba_BeamSuntorySponsor": "MattMason",
+      "extension_a67c327875c34024bd4523a3d66619ba_Birthdate": "10/23/1980",
+      "extension_a67c327875c34024bd4523a3d66619ba_CommercialRegion": "BSI",
+      "extension_a67c327875c34024bd4523a3d66619ba_ConnectToolboxURL": "aa|bbb|ccc",
+      "extension_a67c327875c34024bd4523a3d66619ba_Email": "samp@slalom.com",
+      "extension_a67c327875c34024bd4523a3d66619ba_extensionAttribute1": "XXXXX",
+      "extension_a67c327875c34024bd4523a3d66619ba_Employer": "Slalom",
+      "extension_a67c327875c34024bd4523a3d66619ba_OnOffPremise": "OnPremise",
+      "extension_a67c327875c34024bd4523a3d66619ba_Region": "Americas",
+      "extension_a67c327875c34024bd4523a3d66619ba_SuccessFactorsID": "12345",
+      "extension_a67c327875c34024bd4523a3d66619ba_UserType": "Distributor"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "6357d532-b3db-472f-b517-977338120acd",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": "BSICorporate",
+      "companyName": null,
+      "country": "UnitedStates",
+      "creationType": null,
+      "department": "SC&Ops",
+      "dirSyncEnabled": null,
+      "displayName": "ShannonHatfield",
+      "facsimileTelephoneNumber": null,
+      "givenName": "Shannon",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": "Internal_User",
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "SHANNON.HATFIELD",
+      "mobile": "Americas",
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+        "SHANNON.HATFIELD@BEAMSUNTORY.COM"
+      ],
+      "passwordPolicies": null,
+      "passwordProfile": null,
+      "physicalDeliveryOfficeName": null,
+      "postalCode": null,
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-07-14T00:48:32Z",
+      "sipProxyAddress": null,
+      "state": "Kentucky",
+      "streetAddress": null,
+      "surname": "Hatfield",
+      "telephoneNumber": "13639",
+      "usageLocation": null,
+      "userPrincipalName": "SHANNON.HATFIELD@bsib2cdev.onmicrosoft.com",
+      "userType": "Member"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "e19f4856-d9c2-49ef-98fa-32a00cd28949",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": "BSICorporate",
+      "companyName": null,
+      "country": "UnitedStates",
+      "creationType": null,
+      "department": "Corporate",
+      "dirSyncEnabled": null,
+      "displayName": "StaceyReynolds",
+      "facsimileTelephoneNumber": null,
+      "givenName": "Stacey",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": "Internal_User",
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "STACEY.REYNOLDS",
+      "mobile": "Americas",
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+        "STACEY.REYNOLDS@BEAMSUNTORY.COM"
+      ],
+      "passwordPolicies": null,
+      "passwordProfile": null,
+      "physicalDeliveryOfficeName": null,
+      "postalCode": null,
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-07-14T00:48:21Z",
+      "sipProxyAddress": null,
+      "state": "Illinois",
+      "streetAddress": null,
+      "surname": "Reynolds",
+      "telephoneNumber": "47582",
+      "usageLocation": null,
+      "userPrincipalName": "STACEY.REYNOLDS@bsib2cdev.onmicrosoft.com",
+      "userType": "Member"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "9d8bd67e-0e74-4bd1-91a3-1e5606d68378",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": "SWSLegacyRegion",
+      "companyName": null,
+      "country": "UnitedStates",
+      "creationType": null,
+      "department": "BrandEducation",
+      "dirSyncEnabled": null,
+      "displayName": "StephanieGibson",
+      "facsimileTelephoneNumber": null,
+      "givenName": "Stephanie",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": "Internal_User",
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "STEPHANIE.GIBSON",
+      "mobile": "Americas",
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+        "STEPHANIE.GIBSON@BEAMSUNTORY.COM"
+      ],
+      "passwordPolicies": null,
+      "passwordProfile": null,
+      "physicalDeliveryOfficeName": null,
+      "postalCode": null,
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-07-14T00:48:06Z",
+      "sipProxyAddress": null,
+      "state": "Illinois",
+      "streetAddress": "Off",
+      "surname": "Gibson",
+      "telephoneNumber": "39061",
+      "usageLocation": null,
+      "userPrincipalName": "STEPHANIE.GIBSON@bsib2cdev.onmicrosoft.com",
+      "userType": "Member"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "0beecb39-3979-43f5-9c50-903da22d4405",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": null,
+      "companyName": null,
+      "country": null,
+      "creationType": null,
+      "department": null,
+      "dirSyncEnabled": null,
+      "displayName": "Vasanth",
+      "facsimileTelephoneNumber": null,
+      "givenName": "Vasanth",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": null,
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "Vasanthaprabu_live.in#EXT#",
+      "mobile": null,
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+        "Vasanthaprabu@live.in"
+      ],
+      "passwordPolicies": "None",
+      "passwordProfile": {
+        "password": null,
+        "forceChangePasswordNextLogin": true,
+        "enforceChangePasswordPolicy": false
+      },
+      "physicalDeliveryOfficeName": null,
+      "postalCode": null,
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-07-07T16:48:44Z",
+      "sipProxyAddress": null,
+      "state": null,
+      "streetAddress": null,
+      "surname": "Prabu",
+      "telephoneNumber": null,
+      "usageLocation": null,
+      "userPrincipalName": "Vasanthaprabu_live.in#EXT#@BSIB2CDev.onmicrosoft.com",
+      "userType": "Member"
+    },
+    {
+      "odata.type": "Microsoft.DirectoryServices.User",
+      "objectType": "User",
+      "objectId": "a9ac035d-285c-437c-bb36-645d70c20def",
+      "deletionTimestamp": null,
+      "accountEnabled": true,
+      "signInNames": [
+
+      ],
+      "assignedLicenses": [
+
+      ],
+      "assignedPlans": [
+
+      ],
+      "city": null,
+      "companyName": null,
+      "country": null,
+      "creationType": null,
+      "department": null,
+      "dirSyncEnabled": null,
+      "displayName": "Vasanthprabu",
+      "facsimileTelephoneNumber": null,
+      "givenName": "Vasanth",
+      "immutableId": null,
+      "isCompromised": null,
+      "jobTitle": null,
+      "lastDirSyncTime": null,
+      "mail": null,
+      "mailNickname": "xvprabu_BeamSuntory.com#EXT#",
+      "mobile": null,
+      "onPremisesSecurityIdentifier": null,
+      "otherMails": [
+        "xvprabu@BeamSuntory.com"
+      ],
+      "passwordPolicies": "None",
+      "passwordProfile": {
+        "password": null,
+        "forceChangePasswordNextLogin": true,
+        "enforceChangePasswordPolicy": false
+      },
+      "physicalDeliveryOfficeName": null,
+      "postalCode": null,
+      "preferredLanguage": null,
+      "provisionedPlans": [
+
+      ],
+      "provisioningErrors": [
+
+      ],
+      "proxyAddresses": [
+
+      ],
+      "refreshTokensValidFromDateTime": "2016-06-27T16:07:04Z",
+      "sipProxyAddress": null,
+      "state": null,
+      "streetAddress": null,
+      "surname": "prabu",
+      "telephoneNumber": null,
+      "usageLocation": "US",
+      "userPrincipalName": "xvprabu_BeamSuntory.com#EXT#@BSIB2CDev.onmicrosoft.com",
+      "userType": "Member"
+    }
+  ]
+}

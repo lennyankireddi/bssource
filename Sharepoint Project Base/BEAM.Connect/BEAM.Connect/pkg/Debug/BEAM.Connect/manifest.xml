@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Solution xmlns="http://schemas.microsoft.com/sharepoint/" SolutionId="6eb6a649-1549-41a9-8594-c2a69921a9bb" SharePointProductVersion="15.0">
+  <Assemblies>
+    <Assembly Location="Combinatorics.dll" DeploymentTarget="GlobalAssemblyCache" />
+    <Assembly Location="Newtonsoft.Json.dll" DeploymentTarget="GlobalAssemblyCache" />
+    <Assembly Location="Microsoft.IdentityModel.Clients.ActiveDirectory.dll" DeploymentTarget="GlobalAssemblyCache" />
+    <Assembly Location="GraphApi.dll" DeploymentTarget="GlobalAssemblyCache" />
+    <Assembly Location="BEAM.Connect.dll" DeploymentTarget="GlobalAssemblyCache">
+      <SafeControls>
+        <SafeControl Assembly="BEAM.Connect, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f2ba3df70af251f1" Namespace="BEAM.Connect.MyLearning" TypeName="*" />
+        <SafeControl Assembly="BEAM.Connect, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f2ba3df70af251f1" Namespace="BEAM.Connect.MapClaimsToGroups" TypeName="*" />
+        <SafeControl Assembly="BEAM.Connect, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f2ba3df70af251f1" Namespace="BEAM.Connect.ValidateRegistrationData" TypeName="*" />
+        <SafeControl Assembly="BEAM.Connect, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f2ba3df70af251f1" Namespace="BEAM.Connect.ManageProfile" TypeName="*" />
+      </SafeControls>
+    </Assembly>
+  </Assemblies>
+  <TemplateFiles>
+    <TemplateFile Location="CONTROLTEMPLATES\BEAM.Connect\ManageProfile\ManageProfileUserControl.ascx" />
+  </TemplateFiles>
+  <FeatureManifests>
+    <FeatureManifest Location="BEAM.Connect_Feature1\Feature.xml" />
+  </FeatureManifests>
+</Solution>

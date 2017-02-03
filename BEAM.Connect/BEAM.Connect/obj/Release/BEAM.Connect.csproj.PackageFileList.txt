@@ -1,0 +1,1 @@
+bin\Release\BEAM.Connect.wsp

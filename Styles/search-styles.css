@@ -1,0 +1,85 @@
+﻿h2, h3, .ms-h2, .ms-h3, .ms-headerFont{
+	font-family: "Oswald";
+}
+.ms-srch-result, .ms-srch-result h3 {
+	font-family:"Quattrocento","Arial","Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif
+}
+#s4-titlerow{
+	display:inline-block;
+	width:100%;
+	height:105px;
+}
+
+
+
+
+
+/*Search Styles*/
+.search-column{
+	float:left;
+}
+.search-body{
+	margin-top:20px;
+}
+.left-column{
+	margin-right:5%;
+	background-color:#F2F2F2;
+	padding:5px 20px;
+	    
+}
+.left-column-header{
+	font-family: "Oswald";
+	color:#4A4A4A;
+	padding:2px 0 15px 0;
+}
+.left-column i{
+	float: left;
+    cursor: pointer;
+    color: #cc0a0a;
+    font-size: 1.5em;
+    position: relative;
+	padding:6px 4px 4px 0;
+} 
+.ms-core-listMenu-selected > div{
+	color:#CC0A0A !important;
+}
+.ms-ref-refinername > div{
+	font-family: "Oswald";
+	color:#4A4A4A;
+}
+.ms-srchnav-link-selected:link, .ms-srchnav-link-selected:visited, .ms-srchnav-link:hover, .ms-srchnav-link-selected:hover{
+	color:#CC0A0A;
+	border-bottom:2px solid #CC0A0A;
+	padding-bottom:9px;
+
+}
+.ms-srchnav{
+	border-bottom:1px solid #D2D2D2;
+	padding-bottom:10px;
+}
+.ms-srch-sbLarge{
+	border-radius:4px;
+}
+.main-content{
+	width:70%;
+}
+#sideNavBox{
+	display:none !important;
+}
+#sideNavBox {
+display:none !important;
+}
+#contentRow{
+	margin-top:0px !important;
+	padding-top:0px;
+}
+#contentBox{
+	margin-right:0px;	
+}
+#s4-content {
+margin-left:0px !important;
+}
+
+div#contentBox.centered-content>#DeltaPlaceHolderMain {
+width:100% !important;
+}

@@ -1,0 +1,47 @@
+﻿body {font-family:"Quattrocento";font-weight:300;color:#333;text-align: center;}
+form {margin:2em}
+.form {margin-top:1.5em;}
+input[type=text], select, input[type=tel], input[type=date], input[type=email], input[type=password] {width:calc(100% - 1.5em);padding:0.75em 0.5em;border:1px solid #ccc;}
+.RightForm {max-width:300px;margin:2em auto 0 1em;}
+.LeftForm {max-width:300px;margin:2em auto 0 1em;}
+div.SignInContent {width:calc(60vw + 3em); min-width:calc(600px + 3em);margin:2em auto;}
+div.LeftArea {width:30vw;min-width:300px;margin:0 auto;}
+div.RightArea {float:right;width:30vw;min-width:300px;}
+div.Divider {height:10vh;min-height:350px;text-align:center;margin-bottom:4em;}
+div.DividerLine {width:350vh;height:1px;background: #dedede;margin-left: auto;margin-right: auto;}
+#IdentityProvidersList {margin-top:1.65em;}
+.circleText {padding:0.75em 1em;border:1px solid #dedede;border-radius:50%;cursor:default}
+.circleText span {position:relative;left:-0.55em;color:#dedede;}
+button.IdentityProvider {width: 100%;padding:0.75em 1em;text-transform:uppercase;text-align: center;cursor: pointer;margin-bottom:1.5em;		}
+img.IdentityProviderImage {vertical-align: middle;}
+label {color: red;}
+.footer {font-size: 0.95em;color: #888888;	}
+.footer A {color: #888888;text-decoration: underline;}
+.link_divider {margin-left: 5px;margin-right: 5px;}
+.bottomHeader {background-color:#e4e4e4;text-align:left;}
+.bottomHeader h3 {padding:0.75em 1em;}
+.pageBanner {text-align:center;}
+h1, h3 {letter-spacing:1.25px;font-weight:300;font-family:"Oswald";cursor:default;}
+h3 a {color:#333;text-decoration:none;}
+#EmailAddressSubmitButton {display:block;margin-top:1em;padding:0.75em 1em;text-align:center;width:100%;cursor:pointer;}
+.siteLogo {background-image:url('../connectLogo.gif');height:2em;width:350px;display:block;background-size:contain;background-repeat:no-repeat;padding:0.5em 1em;margin:1em}
+.label {width:33%;min-width:120px;display:inline-block;vertical-align:top;margin-top:0.75em;}
+.field {width:66%;display:inline-block;vertical-align:top;}
+.form select, .form input {width:90%;border-radius:0.2em;border:1px solid #ccc;}
+.row {padding:0.5em;vertical-align:top;text-align:left;max-width:600px;margin:0 auto;}
+.calendarContainer {float:right;position:absolute;display:none;margin-left:-258px;margin-top:3em;background-color:#fff;}
+.toggleCalendar {cursor:pointer;}
+.successMsg.display {position:absolute;top:9em;width:50vw;left:25vw;box-shadow:0px 0px 5px 3px #ccc;padding:2em 2em 1em 2em;z-index:100;background-color:#fff;}
+.successMsg .btn {background-color:#ddd;}
+.successMsg h1 {margin-top:0;}
+.successMsg p {padding:1em 0 0.5em 0;font-size:120%}
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+    .jumbotron {
+        margin-top: 20px;
+    }
+
+    .body-content {
+        padding: 0;
+    }
+}

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="6eb6a649-1549-41a9-8594-c2a69921a9bb" solutionId="6eb6a649-1549-41a9-8594-c2a69921a9bb" resetWebServer="false" sharePointProductVersion="15.0" name="BEAM.Connect" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <assemblies>
+    <projectOutputAssembly location="Combinatorics.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\Combinatorics\Combinatorics.csproj" />
+    <customAssembly location="Newtonsoft.Json.dll" deploymentTarget="GlobalAssemblyCache" sourcePath="bin\Debug\Newtonsoft.Json.dll" />
+    <customAssembly location="Microsoft.IdentityModel.Clients.ActiveDirectory.dll" deploymentTarget="GlobalAssemblyCache" sourcePath="..\..\..\..\..\Desktop\Microsoft.IdentityModel.Clients.ActiveDirectory.dll" />
+    <customAssembly location="GraphApi.dll" deploymentTarget="GlobalAssemblyCache" sourcePath="D:\install\Prod\Registration\bin\GraphApi.dll" />
+  </assemblies>
+  <features>
+    <featureReference itemId="d2a57a2b-ccca-467c-b385-862e181eca40" />
+  </features>
+</package>

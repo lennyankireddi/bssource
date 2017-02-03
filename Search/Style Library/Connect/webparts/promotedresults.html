@@ -1,0 +1,143 @@
+<div class="promoted-results-placeholder">
+</div>
+<style type="text/css">
+	.promoted-results-container {
+		margin-top: 10px;
+		background-color: rgb(242, 242, 242);
+		padding: 20px;
+		box-shadow: 0 0 10px #888;
+	}
+	.search-section-header {
+		color: rgb(150, 150, 150);
+		font-family: Oswald;
+		font-size: 19px;
+		font-weight: 300px;
+	}
+	.search-item-picture {
+		width: 150px;
+	}
+	.search-picture-container {
+		display: inline-block;
+	}
+	.ms-srch-item-body {
+		display: inline-block;
+		margin-left: 5px;
+		vertical-align: top;
+		width: 330px;	
+	}
+	.search-item-separator {
+		color: rgb(150, 150, 150);
+	}
+</style>
+<script language="javascript">
+	function GetListItems(url, listname, query, complete, failure) {
+		console.log("Getting list items");
+	    $.ajax({
+	        url: url + "/_api/web/lists/getbytitle('" + listname + "')/items" + query,
+	        method: "GET",
+	        headers: { 
+						"Accept": "application/json; odata=verbose",
+					},
+	        success: function (data) {
+				console.log("Success");
+	            complete(data); // Returns JSON collection of the results
+	        },
+	        error: function (data) {
+				console.log("Failure");
+	            failure(data);
+	        }
+	    });
+	}
+
+	function GetResultHtml(result) {
+		var htmlString;
+		htmlString = "<li>";
+		htmlString += "<div class='ms-srch-item'>";
+		if (result.Picture != null) {
+			htmlString += "<div class='search-picture-container'>";
+			htmlString += "<img class='search-item-picture' src=\"" + result.Picture.Url + "\" alt='" + result.Picture.Description + "' />";
+			htmlString += "</div>"
+		}
+		htmlString += "<div class='ms-srch-item-body'>";
+		htmlString += "<div class='ms-srch-item-title'>";
+		htmlString += "<a class='ms-srch-item-link' href='" + result.Link.Url + "' title='" + result.Title + "'>";
+		htmlString += result.Title;
+		htmlString += "</a>";
+		htmlString += "</div>";
+		if (result.Description != null) {
+			htmlString += "<div class='ms-srch-item-summary'>";
+			htmlString += result.Description;
+			htmlString += "</div>";
+		}
+		htmlString += "</div>";
+		htmlString += "</div>";
+		htmlString += "</li>";
+		return htmlString;
+	}
+
+	function getParameterByName(name, url) {
+	    if (!url) {
+	      url = window.location.href;
+	    }
+	    name = name.replace(/[\[\]]/g, "\\$&");
+	    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+	        results = regex.exec(url);
+	    if (!results) return null;
+	    if (!results[2]) return '';
+	    return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+
+	function getSearchTerm() {
+		return decodeURIComponent(window.location.href.substr(window.location.href.lastIndexOf("#k=") + 3));
+	}
+
+	var processResults = function (data) {
+		console.log("Getting search term");
+		var param = getParameterByName("k");
+		if (param) {
+			console.log(param);
+			var eligible = false;
+			var showPromotedResults = false;
+
+			var htmlString = "<div class='promoted-results-container'>";
+			htmlString += "<div class='search-section-header'>Promoted Results</div>"
+			htmlString += "<ul style='list-style-type: none; padding: 0'>";
+
+			for (i = 0; i < data.d.results.length; i++) {
+				eligible = false;
+				// Check if result contains chosen keywords
+				keywords = data.d.results[i].Keywords.split(",");
+				for (j = 0; j < keywords.length; j++) {
+					console.log(param + " : " + keywords[j]);
+					if (param.toLowerCase() == keywords[j].trim().toLowerCase()) {
+						eligible = true;
+						break;
+					}
+				}
+				if (eligible) {
+					if (showPromotedResults) {
+						htmlString += "<hr class='search-item-separator' />";
+					}
+					htmlString += GetResultHtml(data.d.results[i]);
+					showPromotedResults = true;
+				}
+			}
+
+			htmlString += "</ul>";
+			htmlString += "</div>";
+			if (showPromotedResults) {
+				jQuery(".promoted-results-placeholder").html(htmlString);
+			}
+		}
+	};
+
+	var showErrorMessage = function (data) {
+		console.log("Failed to retrieve information from the Promoted Results list.");
+	};
+
+	console.log("Getting promoted results");
+	var siteUrl = "/search";
+	var listName = "Promoted Results";
+	var query = "";
+	GetListItems(siteUrl, listName, query, processResults, showErrorMessage);
+</script>

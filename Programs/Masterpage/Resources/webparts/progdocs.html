@@ -1,0 +1,223 @@
+<div id="programDocs">
+</div>
+<script type="text/javascript">
+    function getParameterByName(name, url) {
+	    if (!url) {
+	      url = window.location.href;
+	    }
+	    name = name.replace(/[\[\]]/g, "\\$&");
+	    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+	        results = regex.exec(url);
+	    if (!results) return null;
+	    if (!results[2]) return '';
+	    return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+
+    function GetDocIcon(extension)
+    {
+        switch(extension)
+        {
+            case "aspx":
+                return "/_layouts/15/images/icgen.gif";
+                break;
+            case "pptx":
+                return "/_layouts/15/images/icpptx.png";
+                break;
+            case "ppt":
+                return "/_layouts/15/images/icpptx.png";
+                break;
+            case "doc":
+                return "/_layouts/15/images/icdocx.png";
+                break;
+            case "docx":
+                return "/_layouts/15/images/icdocx.png";
+                break;
+            case "xls":
+                return "/_layouts/15/images/icxlsx.png";
+                break;
+            case "xlsx":
+                return "/_layouts/15/images/icxlsx.png";
+                break;
+            case "pdf":
+                return "/_layouts/15/images/icpdf.png";
+                break;
+            case "jpg":
+                return "/_layouts/15/images/icjpg.gif";
+                break;
+            case "png":
+                return "/_layouts/15/images/icjpg.gif";
+                break;
+            default:
+                return "/_layouts/15/images/icgen.gif";
+        }
+    }
+
+    function GetFileType (ext) {
+        switch (ext) {
+            case "ASPX":
+                return "Page";
+                break;
+            case "PPTX":
+                return "PowerPoint";
+                break;
+            case "PPT":
+                return "PowerPoint";
+                break;
+            case "DOCX":
+                return "Document";
+                break;
+            case "DOC":
+                return "Document";
+                break;
+            case "XLSX":
+                return "Spreadsheet";
+                break;
+            case "XLSX":
+                return "Spreadsheet";
+                break;
+            case "PDF":
+                return "PDF";
+                break;
+            case "JPG":
+                return "Image";
+                break;
+            case "PNG":
+                return "Image";
+                break;
+            case "MP4":
+                return "Video";
+                break;
+            case "MOV":
+                return "Video";
+                break;
+            default:
+                return "File";
+                break;
+        }
+    }
+
+    function IsOfficeDocument(extension) {
+        switch(extension.toUpperCase()) {
+            case "PPT":
+                return true;
+                break;
+            case "PPTX":
+                return true;
+            case "DOC":
+                return true;
+                break;
+            case "DOCX":
+                return true;
+            case "XLS":
+                return true;
+                break;
+            case "XLSX":
+                return true;
+            default:
+                return false;
+        }
+    }
+    
+    function RenderFeaturedDocs () {
+        var programName = getParameterByName("name");
+        var url = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/getfolderbyserverrelativeurl('Programs/" + programName + "')/files";
+        query = "";
+        jQuery.ajax({
+	        url: url + query,
+	        method: "GET",
+	        headers: { 
+						"Accept": "application/json; odata=verbose",
+					},
+	        success: function (data) {
+                var htmlString = "";
+	            var docsAdded = 0;
+                var result;
+                var filename = "";
+                var filetype = "";
+                var extension = "";
+                var docUrl = "";
+                var icon = "";
+                var docData = "";
+                var arrayList = [];
+                var keys = [];
+                var index;
+                var i, j;
+                var docsFound = data.d.results.length;
+                
+                for (i = 0; i < docsFound; i++) {
+                    filename = data.d.results[i].Name;
+                    extension = filename.substr(filename.lastIndexOf('.') + 1);
+                    if (IsOfficeDocument(extension)) {
+                        docUrl = _spPageContextInfo.webAbsoluteUrl + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + data.d.results[i].ServerRelativeUrl;
+                    }
+                    else {
+                        docUrl = data.d.results[i].ServerRelativeUrl;
+                    }
+                    docData = data.d.results[i].Title + "|" + docUrl + "|" + GetDocIcon(extension.toLowerCase());
+                    filetype = GetFileType(extension.toUpperCase());
+
+                    // Check if file type was already found
+                    if (keys.indexOf(filetype) == -1) {
+                        // If not, add it to array of keys
+                        index = keys.push(filetype);
+                        // Check if an array exists at that index
+                        if (arrayList[index - 1]) {
+                            // Array exists (unlikely). Add data to it
+                            arrayList[index - 1].push(docData);
+                        }
+                        else {
+                            // Array doesn't exist (more likely for new file type). Add new array at that position
+                            arrayList[index - 1] = new Array();
+                            // Then add the data
+                            arrayList[index - 1].push(docData);
+                        }
+                    }
+                    else {
+                        // If key was found before, find its position
+                        index = keys.indexOf(filetype);
+                        // Look for array in the same position
+                        if (arrayList[index]) {
+                            // If it exists (more likely), add data
+                            arrayList[index].push(docData);
+                        }
+                        else {
+                            // If it doesn't exist (unlikely), add new array
+                            arrayList[index] = new Array()
+                            // Then add data
+                            arrayList[index].push(docData);
+                        }
+                    }
+                }
+
+                // Data array is ready; now sort
+                for (i = 0; i < arrayList.length; i++) {
+                    arrayList[i].sort();
+                }
+
+                var docInfo;
+                for (i = 0; i < keys.length; i++) {
+                    htmlString += "<div class='program-docs'>";
+                    htmlString += "<h3>" + keys[i] + "</h3>"
+                    htmlString += "<ul class='list-unstyled'>";
+                    for (j = 0; j < arrayList[i].length; j++) {
+                        docInfo = arrayList[i][j].split('|');
+                        htmlString += "<li>";
+                        htmlString += "<span class='docIcon'><img src='" + docInfo[2] + "'/></span>&nbsp;";
+                        htmlString += "<span class='docUrl'><a href='" + docInfo[1] + "'>" + docInfo[0] + "</a></span>";
+                        htmlString += "</li>";
+                    }
+                    htmlString += "</ul>";
+                    htmlString += "</div>";
+                }
+                jQuery("#programDocs").html(htmlString);
+	        },
+	        error: function (data) {
+                var htmlString = "";
+	            htmlString += "No program files found.";
+                jQuery("#programDocs").html(htmlString);
+	        }
+	    });
+    }
+
+    RenderFeaturedDocs();
+</script>

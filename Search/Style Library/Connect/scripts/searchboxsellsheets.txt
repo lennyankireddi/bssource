@@ -1,0 +1,16 @@
+<script language="javascript">
+jQuery(document).ready(function(){
+	jQuery('input.ms-srch-sbLarge-fullWidth').unbind('keypress').unbind('keydown').unbind('keyup').removeAttr('onkeypress').removeAttr('onkeydown');
+	jQuery(document).on("keyup", "input.ms-srch-sbLarge-fullWidth", function(e) {
+		if (e.which == 13) {
+			if (jQuery(this).val().length > 0) {
+				window.location = "/search/Pages/sellsheetresults.aspx?k=filename:" + jQuery(this).val();
+			}
+			else {
+				window.location = "/search/Pages/sellsheetresults.aspx"
+			}
+		}
+	});
+	jQuery('.ms-srch-sb-searchLink').hide();
+});
+</script>

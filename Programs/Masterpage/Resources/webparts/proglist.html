@@ -1,0 +1,82 @@
+<h2>Active Programs</h2>
+<div id="programList">
+    
+</div>
+<script type="text/javascript">
+    function getParameterByName(name, url) {
+	    if (!url) {
+	      url = window.location.href;
+	    }
+	    name = name.replace(/[\[\]]/g, "\\$&");
+	    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+	        results = regex.exec(url);
+	    if (!results) return null;
+	    if (!results[2]) return '';
+	    return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+
+    function RenderProgramList() {
+        var title = "";
+        var programScope = "";
+        var order = 0;
+        var programUrl = "";
+        var itemCount = 0;
+        var currentGroup = "";
+        var currentTitle = getParameterByName("name");
+        var activeClass = "";
+
+        var searchUrl = "/_api/search/query?querytext=%27ContentType:Program%20IsContainer:true%27&selectproperties=%27Title,ProgramScope,Order1OWSNMBR%27&sortlist=%27ProgramScope:ascending,Order1OWSNMBR:ascending%27";
+        jQuery.ajax({
+            url: searchUrl,
+            method: "GET",
+            headers: {
+                Accept: "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var htmlString = "";
+
+                jQuery.each(data.d.query.PrimaryQueryResult.RelevantResults.Table.Rows.results, function(data, row) {
+                    activeClass = "";
+                    jQuery.each(row.Cells.results, function(x, y) {
+                        if (y.Key == "Title") {
+                            title = y.Value;
+                        }
+                        if (y.Key == "ProgramScope") {
+                            programScope = y.Value;
+                        }
+                        if (y.Key == "Order1OWSNMBR") {
+                            order = parseInt(y.Value);
+                        }
+                    });
+                    programUrl = "/Pages/Program.aspx?name=" + title;
+                    if (title.toLowerCase() == currentTitle.toLowerCase()) {
+                        activeClass = " class='sidebar-active'";
+                    }
+
+                    if (itemCount == 0) {
+                        currentGroup = programScope;
+                        htmlString += "<h3>" + programScope + "</h3>";
+                        htmlString += "<ul class='sidebar-list list-unstyled'>";
+                        htmlString += "<li" + activeClass + "><a href='" + programUrl + "'>" + title + "</a></li>";
+                    }
+                    else {
+                        if (programScope != currentGroup) {
+                            currentGroup = programScope;
+                            htmlString += "</ul>";
+                            htmlString += "<h3>" + programScope + "</h3>";
+                            htmlString += "<ul class='sidebar-list list-unstyled'>";
+                        }
+                        htmlString += "<li" + activeClass + "><a href='" + programUrl + "'>" + title + "</a></li>";
+                    }
+
+                    itemCount++;
+               });
+               jQuery("#programList").html(htmlString);
+            },
+            error: function(data) {
+            }
+        });
+    };
+
+    RenderProgramList();
+</script>

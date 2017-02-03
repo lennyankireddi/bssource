@@ -1,0 +1,816 @@
+﻿@media print {
+    #s4-ribbonrow, .ms-dialogHidden, .s4-notdlg {
+    display: none!important;
+}
+.article, .welcome {
+    color: #000;
+}
+#contentRow {
+    background-image: none!important;
+    , margin-top: 0;
+}
+.article-content, .container, .gv-home-LeftColumn {
+    margin: 0 16px;
+    max-width: 100%}
+.article-content, .gv-home-LeftColumn, div.centered-content#contentBox>#DeltaPlaceHolderMain {
+    width: 100%;
+    display: block;
+}
+.tab>.cbs-Content {
+    display: block;
+}
+.Tabs .tab {
+    float: none;
+    background-color: transparent;
+    color: #000;
+}
+.Tabs .cbs-Title {
+    font-weight: 700;
+    color: #000;
+    font-size: 1.4em;
+    border-bottom: 1px solid #e3e3e3;
+    padding: 8px;
+}
+.article-relatedContent, .gv-home-RightColumn {
+    display: none;
+}
+li div.cbs-AccordionContent {
+    display: block;
+    max-height: none;
+}
+div.cbs-AccordionTitle h2>a {
+    display: none;
+}
+}@media screen and (max-width:640px) and (orientation:landscape) {
+    #appsTable .ms-vl-apptile, .ms-vl-apptile-tenant {
+    width: 220px;
+}
+}
+@media only screen and (max-width:766px) {
+    .ms-dialog #s4-ribbonrow {
+    display: block;
+}
+.manageprofile .field {display:inline;}
+.manageprofile select {width:95%;}
+#DeltaTopNavigation ul.static li.static>a {padding:0;}
+.programTitle {padding:0.5em 0;}
+.footerVerbiage a {margin-bottom:0.7em;display:block;}
+.myFollowedSites .icon-remove {display:inline-block}
+.TileItem, .TileItem > a{width:92vw;height:48.728vw;}
+.TileItem:nth-child(4n+4), .TileItem:nth-child(4) {margin-right:0;}
+.TileItem .type span {font-size:5.79vw;}
+.TileItem .details {margin-top:29vw;padding:0.5vw 0.75em 1.8vw 0.75em;}
+.TileItem .category {font-size:4vw;margin-left:-2.5vw;position:relative;top:1vw;padding:1vw 10.5vw 1vw 11vw;margin-top:-9.2vw;}
+#fullscreenmodebox {display:none;}
+.ms-promotedActionButton-text {display:none;}
+.view .connectHeader .pageImage {z-index:0;}
+div.connectPage {margin-top:-2.3em;}
+.connectHeader h1 {z-index:1;}
+div#contentRow {min-height:auto !important;}
+div.Innovation li.folderName span {font-size:1em;}
+div.connectBrand .one-half {width:100%}
+div.connectBrand .repack, div.connectBrand .playbook {background-size:cover !important;width:89vw !important;border-left:none !important;float:none !important;display:block !important; float:left !important; }
+div.connectBrand .repack.active, div.connectBrand .playbook.active{
+	height:100%;
+	display:inline-block !important;
+}
+.active .docView{
+	height:100% !important;
+	float:left;
+}
+.view .connectHeader div.pageImage .ms-rtestate-field {margin-top:0;}
+.view .connectHeader div.pageImage img {
+/*min-width:100vw;max-width:110vw;min-height:8.5em;*/
+    position: absolute;
+    left: 50%;
+    min-height: 10em;
+    width: auto;
+    margin-left:-600px;
+
+}
+	.spotlightImage img{
+	width:45%;
+}
+
+.view .connectHeader div.pageImage {top:-4.9em;}
+div.Innovation ul.docs {width:calc(100% - 3.2em);margin-left:1em;margin-right:1em;z-index:5;}
+dv.Innocation li.doc {width:42%;vertical-align:top;min-height:4.5em;margin-bottom:1em;}
+div.Innovation ul.folder:nth-child(2n+1) {margin-right:0;}
+div.Innovation  ul.folder {min-width:calc(41vw - 0.9em);margin-right:1vw;}
+div.Innovation .doc {margin-bottom:2vw;display:block;}
+#BrandGrid  > div.Innovation, ul.library {width:89vw;max-width:89vw;overflow:hidden;}
+.userMenu .ms-core-menu-root {display:inline-block;max-width:50vw;overflow:hidden;text-overflow:ellipsis;}
+.userMenu .ms-viewselector-arrow {display:none !important;}
+.gv-home-survey {margin-left:-15px;}
+.gv-home-survey > div {max-width:91%;font-size:0.8em;margin:0px 15px;}
+#DeltaTopNavigation ul.static li.static>a .menu-item-text {font-size:2em}
+div#contentBox.centered-content>#DeltaPlaceHolderMain {
+	width:100% !important;
+	background-color:#fff;
+}
+.ms-dialog #contentRow {
+    padding-top: 0;
+}
+#s4-workspace {
+    overflow-x: hidden;
+}
+.connectHome .one-third {width:100%;}
+.ms-tableCell.ms-verticalAlignTop.responsiveWrap {position:static;width: 100%;max-width: 100%;}
+.welcomeRight {margin-top:0;}
+#titleAreaRow div.ms-mpSearchBox {margin-top: -3.7em;}
+#titleAreaRow .ms-mpSearchBox>#searchInputBox {width:calc(100vw - 1.8em);}
+.people-search {
+    display: none;
+}
+#DeltaTopNavigation ul.static li.static>a {
+    margin: 1px 0 0!important;
+}
+div#sideNavBox, div.ForceLeft#sideNavBox {
+    float: none!important;
+    width: 100%;
+    margin-top: 8px;
+    padding-left: 20px;
+    margin-left: 0;
+    padding-top: 5px;
+    min-height: 50px;
+}
+.gv-home-CenterColumn {
+    width: 94%}
+div#contentBox {
+    margin: 0 16px!important;
+    margin-left: 16px!important;
+    width: 100%!important;
+}
+div.container#contentRow>#contentBox {
+    margin-left: 16px!important;
+}
+#sideNavBox .icon-reorder {
+    display: inline;
+}
+#DeltaPlaceHolderLeftNavBar {
+    position: absolute;
+    z-index: 10;
+    display: none;
+    background: #F28533;
+    overflow-y: scroll;
+    width: 100%;
+    margin: -10px 0 0 -20px;
+    padding: 10px 20px;
+}
+#appsTable tr.ms-itmhover>td:nth-child(1n+2) {
+    display: none;
+}
+#contentRow {
+    padding-top: 73px;
+    background-image: none;
+    margin-top: 0;
+}
+#appsTable tr.ms-v1-sectionHeaderRow>td.ms-alignright {
+    display: none;
+}
+#contentBox {
+    min-width: 320px!important;
+    margin-left: 0!important;
+}
+#appsTable a.ms-calloutLink.ms-v1-alignactionsmiddle {
+    display: block;
+}
+.container, .gv-home {
+    width: 100%!important;
+}
+.ms-srch-sb>.ms-srch-sb-navLink, .ms-srch-sb>.ms-srch-sb-searchLink {
+    margin-top: 6px;
+    top: 0;
+}
+.one-half, .two-third, .two-thirds {width:100% !important; }
+.one-half.toolkit {margin-left:0;position:relative;z-index:200;}
+div.Innovation .library {padding-bottom:1em;}
+.spotlight {min-height:14em;}
+.program .lbl {display:none;}
+.repack {height:16em !important; }
+.playbook {
+    height: 15em;
+     height:auto !important;
+     padding-bottom:2em;
+}
+.toolkit li {clear:both;width:calc(100% - 3em);}
+.seasonal .callToAction {padding:0.33em 0.25em 0.25em 1em;}
+.seasonal i {margin-left:0.15em;}
+.ms-PlaceHolderTitleBreadcrumb {margin-left:1em;}
+.connectHeader h1 {padding:20px 90px 20px 0.6em}
+.myLearning .course, .course.viewMore {width:calc(100% - 1.5em);}
+#DeltaTopNavigation ul.root > li.static:nth-child(3) {display:none;}
+.playbook .callToAction {min-width:34%;}
+.playbook .callToAction,.repack .callToAction{
+	font-size:2em;
+	text-align: left;
+    padding-left: 0.5em;
+}
+.repack .callToAction {padding:0.25em 0.5em 0.25em 0.5em;}
+.programs .ms-WPBorder {max-height:23em;}
+.program .item {overflow:hidden;width:100%;height:4em;}
+.program .item h2 {max-height:3.6em;min-height:3.6em;margin-bottom:0.9em; overflow:hidden;}
+.program .item > a > div.programLogo {float:left;margin-top:0.33em;margin-right:0.33em;}
+.program .item h2, .program .item div {margin:0;font-size:1.4em;white-space:pre-line;}
+.program .item .programIcon {font-size:1em;padding:1.5em 0.2em 1.5em 0.2em;}
+.spotlightParagraph {min-height:6em;max-height:14em;overflow:hidden; display:none;}
+#DeltaPlaceHolderSearchArea {margin-bottom:0;position:relative;top:4.5em;margin-right:0.8em;}
+.banner .cbs-largePictureContainer, .banner .cbs-largePictureImageContainer, .banner div.cbs-Slideshow {height:18em;max-height:18em;}
+.banner .cbs-largePictureImg {min-height:100%;min-width:100%;
+position:absolute;
+left:-50%;
+right:-50%;
+max-height:18em;
+max-width:none;
+width:inherit;
+}
+.banner .cbs-largePictureDataOverlay {right:0;width:100%;bottom:0;height:37%;}
+.banner .cbs-largePictureDataContainer {right:0;bottom:0;width:100%;height:38%;}
+a.cbs-largePictureDataContainer h2 {max-width:calc(100% - 5em); width:calc(100% - 5em);min-width:calc(100% - 5em) !important;font-size:1.8em;}
+.banner .cbs-SlideshowPagingBar, .cbs-SlideshowPagingBarOverlay {display:none;}
+a.cbs-largePictureDataContainer i {padding:0.42em 0.33em 0.83em 0.33em;right:0.45em;}
+#siteIcon {margin-left:1em;}
+.ms-srch-sb {
+    display: block;
+}
+.ms-srch-sb>input.ms-textSmall {
+    width: auto!important;
+}
+.ms-srch-sb-borderFocused {
+    border-radius: 5px;
+}
+#SearchBox {
+    top: -0.8em;
+    width: 100%;
+    padding-right: 20px;
+    position: relative;
+}
+.ms-breadcrumb-top #DeltaTopNavigation {
+	float:right;
+    margin: 0!important;
+}
+#DeltaTopNavigation ul.dynamic {
+    display: none;
+}
+#DeltaTopNavigation li.dynamic-children.static:hover, #DeltaTopNavigation ul.static li.selected.static > a, #DeltaTopNavigation ul.static li.static > a:hover {border-bottom:3px solid #cc0a0a;}
+#DeltaTopNavigation ul.root.ms-core-listMenu-root.static {
+    margin-top: 13px;
+}
+#DeltaTopNavigation ul.static li.static {
+    border-left: none;
+}
+#DeltaTopNavigation>.ms-core-listMenu-horizontalBox {
+    margin-top: -11px;
+    font-size: 10px;
+}
+.programHeader {max-width:55vw;width:50vw;}
+#DeltaTopNavigation ul.root>li>ul.static {
+    position: relative;
+    top: -52px;
+    margin-left: 95px;
+}
+div.ms-breadcrumb-top {
+    white-space: normal;
+}
+.programTitle {width:calc(100% - 3.5em);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#siteIcon img.ms-siteicon-img {margin-top:9px;}
+#siteIcon {
+    padding: 0px;margin-right:0;
+}
+#DeltaSiteLogo {height:56px;width:142px;margin-top:13px;max-width:30vw;}
+.ms-PlaceHolderTitleBreadcrumb span span:nth-child(2), .ms-PlaceHolderTitleBreadcrumb span span:nth-child(3) {display:none;}
+#s4-titlerow {
+    padding-top: 0;
+}
+#ms-designer-ribbon #suiteBar, .o365cs-nav-header16 .o365cs-nav-notificationTrayContainer, .o365cs-nav-leftAlign.o365cs-topnavBGColor {
+    display: none !important;
+}
+div#s4-ribbonrow {height:auto !important;}
+#s4-titlerow .ms-verticalAlignTop.ms-tableCell.ms-breadcrumb-box, #s4-titlerow>div.ms-table.ms-core-tableNoSpace, #titleAreaRow .container>div, #titleAreaRow>div, .ms-breadcrumb-top #DeltaTopNavigation {
+    display: block!important;
+}
+#footer .events-gallery, .copyrights div.one-sixth, .gv-home-PersonalInfo, .gv-home-RightColumn, .toggle-sidebar {
+    display: none;
+}
+#footer .quicklinks {
+    padding-top: 12px;
+}
+.gv-home-LeftColumn {
+    width: 100%}
+.gv-home-LeftColumn .gv-home-events, .gv-home-LeftColumn .gv-home-news {
+    display: block;
+}
+.copyrights div.one-sixth:first-child {
+    margin: 0 auto;
+}
+.gv-home-banner .cbs-largePictureImg {
+    width: 100%!important;
+}
+#footer .favoriteplaces h6, #footer .favoriteplaces>p, #footer .quicklinks>p, .gv-home-banner .image-preview {
+    display: none;
+}
+#footer .one-third, .gv-home-survey .message {
+    display: block;
+    width: auto;
+    margin: 0 10px;
+}
+.gv-home-survey div.button {
+    margin-top: -45px;
+}
+.gv-home-LeftColumn .gv-home-events, .gv-home-LeftColumn .gv-home-news {
+    width: auto;
+    margin: 0 10px;
+}
+.gv-home-LeftColumn {
+	padding-top:19px;
+}
+.gv-home h2.ms-webpart-titleText span[id^=WebPartCaption], .gv-home h2.ms-webpart-titleText span[id^=WebPartCaption]>a, .gv-home-PersonalInfo h2.ms-webpart-titleText span[id^=WebPartCaption], .gv-home-PersonalInfo h2.ms-webpart-titleText span[id^=WebPartCaption]>a {
+    right: 68px;
+}
+.gv-home-banner .cbs-largePictureDataOverlay {
+    height: 130px;
+}
+#sideNavBox a.ms-siteicon-a:visited, #sideNavBox a.ms-siteicon-a {color:#fff;}
+.gv-home-banner h2.cbs-largePictureLine1.ms-noWrap {
+    height: 75px;
+    white-space: normal;
+}
+div#contentBox.centered-content>#sideNavBox span.menu-item-text {
+	color:#fff !important;
+}
+div#contentBox.centered-content>#sideNavBox {
+	background-color:#969696;position:relative;left:-16px;padding-right:16px;
+}
+.connectContent {margin-left:1em;}
+#sideNavBox .explore > h1 {font-size:1.3em;}
+#sideNavBox .ms-core-listMenu-item:hover, #sideNavBox .ms-core-listMenu-selected, #sideNavBox .ms-core-listMenu-selected:link, #sideNavBox .ms-core-listMenu-selected:visited, #sideNavBox .ms-core-listMenu-verticalBox .ms-core-listMenu-heading.ms-core-listMenu-item:hover, #sideNavBox li.selected > .ms-core-listMenu-item span.menu-item-text {background-color:#0072c8;}
+#sideNavBox .ms-siteicon-a:visited {color:#fff;}
+div#contentBox.centered-content>#sideNavBox .icon-reorder {
+	float:left;display:block;font-size:2.2em;
+}
+div#contentBox.centered-content>#sideNavBox .explore > h1 {
+	color:#fff;
+}
+.gv-home-RightColumn {
+	display:none !important;
+}
+}
+@media screen and (max-width:500px) {
+	div.Innovation  ul.folder{
+		min-width:84vw !important;
+	}
+	.docView li{
+		max-width: calc(50% - 2em) !important;
+	}
+}
+
+@media screen and (min-width:767px) and (max-width:1024px) {
+    div.centered-content#contentBox>#sideNavBox {
+    float: left;
+    display: block;
+    margin-top: 27px;
+}
+.myFollowedSites .icon-remove {display:inline-block}
+.ms-PlaceHolderTitleBreadcrumb {margin-left:1.5em;}
+#siteIcon #DeltaSiteLogo {height:30px}
+.connectContent {margin-left:1.5em;}
+.connectContent.connectBrand {margin-right:1.5em;}
+#footer, .copyrights, .gv-home-survey {
+	float:left; width:100%;
+}
+div.centered-content#contentBox>#DeltaPlaceHolderMain {
+	background-color:#fff;
+}
+div.centered-content#contentBox>#DeltaPlaceHolderMain, div.centered-content#contentBox>.gv-home-PersonalInfo {
+    float: right;
+}
+.ms-srch-sb > .ms-srch-sb-navLink, .ms-srch-sb > .ms-srch-sb-searchLink {
+	top:5px;
+}
+.ms-dialog #s4-workspace {
+    overflow-x: scroll;
+}
+div.Innovation ul.folder {min-width:30%;min-width:46%;margin-right:1%;}
+div.Innovation .library {padding-bottom:1em;max-width:calc(100% - 3em);}
+#BrandGrid > ul.library .docs {position:absolute;width:calc(50% - 6.8em);max-width:calc(50% - 6.8em);z-index:100;}
+#BrandGrid > ul:nth-child(4), #BrandGrid > ul:nth-child(6), #BrandGrid > ul:nth-child(8),#BrandGrid > ul:nth-child(10){
+	clear:left;
+}
+#BrandGrid > ul:nth-child(5), #BrandGrid > ul:nth-child(8), #BrandGrid > ul:nth-child(11){
+	clear:none;
+}
+.spannedData .library:nth-child(2n+3), .noSpannedData .library:nth-child(2n+3) {margin-right:0;}
+.spannedData ul.library:nth-child(3n+4), .noSpannedData ul.library:nth-child(3n+3) {margin-right:2em;}
+.view .connectHeader div.pageImage .ms-rtestate-field {margin-top:0;}
+ul.library {width:calc(50% - 2.5em);}
+.playbook .callToAction, .repack .callToAction{
+	font-size:2.5em;
+}
+.copyrights div.one-sixth {
+    display: none;
+}
+.ms-srch-sb>.ms-srch-sb-navLink, .ms-srch-sb>.ms-srch-sb-searchLink {
+    top: 5px;
+}
+.timeZones .blueIcon.icon-time {
+    font-size: 3.45em;
+}
+.timeZones .time {
+    margin-top: 12px;
+}
+#s4-workspace {
+    overflow-x: hidden;
+}
+#DeltaPlaceHolderMain .container, #footer .container {
+    margin: 0;
+}
+#DeltaTopNavigation>.ms-core-listMenu-horizontalBox {
+    margin-left: 0px;
+}
+.toolkit.one-half {margin-left:0;}
+.spotlightImage img {width:50%;min-height:14em;}
+.spotlight {min-height:14em;}
+.spotlightParagraph {min-height:8em;max-height:14em;overflow:hidden; display:none;}
+.spotlightDetails h2{font-size:1.8em; line-height:1.8em;}
+#searchInputBox {margin-top:-9px;}
+.banner .cbs-largePictureDataOverlay {/*bottom:16em;right:25.5%;position:relative;float:right;*/width:60%;}
+a.cbs-largePictureDataContainer i {padding:0.82em 0.33em;position:absolute;display:block;;width:0.3em;top:-0.1em;}
+.banner .cbs-largePictureDataContainer {/*bottom:16em;float:right;right:-12%;position:relative;*/width:60%;}
+.banner .cbs-largePictureDataContainer h2 {width:50%;}
+.banner .cbs-largePictureImg {max-width:none;width:auto;min-width:100%;min-height:40em;display:none}
+.banner .cbs-pictureImgLink {display:block;width:100vw;height:100%;background-size:cover;background-position:center center;}
+.program .item {overflow:hidden; width:calc(33% - 1.15em);}
+
+.program .row {display:none;}
+.program .item h2 {max-height:0.7em;overflow:hidden;margin-top:0;max-height:2.7em}
+.programHeader {top:-4.6em;font-size:1.2em;border-bottom:none;margin-right:2em;}
+.connectHome .two-third, .connectHome .one-third, .connectHome .one-half {width:100%;}
+.myFollowedSites li {width:calc(50% - 1.5em); float:left;}
+.view .connectHeader .pageImage {z-index:0;}
+.connectHeader h1 {z-index:1;padding-left:1em;}
+.myFollowedSites .viewMore {display:block;width:5em;clear:both;}
+.gv-home-banner a.cbs-pictureImgLink>img {
+    float: left;
+}
+.gv-home-events {
+    margin-left: 16px;
+}
+.gv-home-LeftColumn .gv-home-events, .gv-home-LeftColumn .gv-home-news {
+    vertical-align: top;
+}
+.EventsUrl {
+    left: -140px;
+}
+.NewsUrl {
+    left: -136px;
+}
+.gv-home-survey .inline.message {
+    width: 75%}
+.gv-home-survey .button.inline {
+    margin-right: 30px;
+}
+#contentBox {
+    min-width: 518px!important;
+    margin-left: 220px!important;
+	margin-right:0px;
+}
+.TileItem, .TimeItem > a {width:29.5vw;}
+.TileItem .category {padding:0.7vw 4.3vw 0.7vw 2.7vw;}
+.TileItem:nth-child(6n+6), .TileItem:nth-child(6) {margin-right:0;}
+.ms-dialog #contentBox {
+    margin-left: 0!important;
+}
+#appsTable a.ms-calloutLink.ms-v1-alignactionsmiddle {
+    display: block;
+}
+.container, .gv-home {
+    width: 100%!important;
+}
+.ms-breadcrumb-top #DeltaTopNavigation {
+    float:right;
+    margin: 0!important;
+}
+#s4-titlerow .ms-verticalAlignTop.ms-tableCell.ms-breadcrumb-box, #s4-titlerow>div.ms-table.ms-core-tableNoSpace, #titleAreaRow .container>div, #titleAreaRow>div, .ms-breadcrumb-top #DeltaTopNavigation {
+    display: block!important;
+}
+.userMenu {margin-left:0.5em;}
+.banner .cbs-largePictureDataContainer, .banner .cbs-largePictureDataOverlay {right:2.3em;}
+div#siteIcon {margin-left:0em;}
+.gv-home-LeftColumn {
+    display: inline-block;
+    width: 84%;
+    margin: 5px 0;
+    overflow: hidden;
+    max-width: 84%}
+.gv-home-RightColumn {
+    display: inline-block;
+    width: 12%;
+    overflow: hidden;
+    margin-left: 1.6%;
+    margin-top: 26px;
+}
+.gv-home-PersonalInfo .mydata {
+    width: 45%;
+    margin-right: 35px;
+}
+#sideNavBox {
+    padding-left: 20px;
+}
+.ms-dialog #sideNavBox {
+    padding-left: 0;
+}
+.gv-home-personalZones.container {
+    max-width: 96%!important;
+    overflow: hidden;
+    margin: 0 auto;
+}
+.copyrights div.one-sixth:first-child, .timeZones .one-fourth {
+    display: block;
+}
+.copyrights div.one-sixth:first-child {
+    margin: 0 auto;
+}
+.timeZones .blueIcon {
+    margin-left: 4px;
+}
+.timeZones .one-fourth {
+    width: 50px!important;
+}
+.gv-home-RightColumn .sidebar-content>div, .gv-home-RightColumn>div.ms-webpart-chrome {
+    display: none;
+}
+.gv-home-RightColumn .sidebar-content>div:first-child {
+    display: block;
+}
+.support-info [class^=icon-], .toggle-sidebar {
+    display: none;
+}
+.ms-breadcrumb-top .responsiveWrap {background-color:#ededed;height:4em;width:100% !important;margin-top:1em;padding-top:2.3em;clear:both;max-width:100% !important;top:-1em !important;float:none;}
+.ms-breadcrumb-top  .ms-breadcrumb-box {display:none !important;}
+.container.connectHome {top:-4em;position:relative;}
+#SearchBox {
+}
+.gv-home>div {
+    margin-top: 25px;
+}
+.award-carousel>div.one-half {
+    display: block;
+    width: 100%}
+.gv-home-LeftColumn .gv-home-news .cbs-List {
+    overflow: hidden;
+}
+.mydata {
+    float: left;
+}
+.awardees.one-half {
+    margin-top: 12px;
+}
+.thanks.one-sixth>span {
+    font-size: .7em!important;
+}
+div.sendecard div.eCard-description {
+    margin: 12px 0;
+}
+div.ms-srch-sb>input.ms-textSmall, div.ms-srch-sb {height:2em !important;}
+.gv-home-PersonalInfo .populardata, .gv-home-PersonalInfo .user-call-to-action {width: 40%}
+div.banner .cbs-largePictureContainer, div.banner .cbs-largePictureImageContainer {width:auto !important;max-width:calc(100vw - 1em);padding-right:0px;}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    #titleAreaRow .container {
+    height: 80px;
+    overflow: hidden;
+}
+#titleAreaRow div.ms-mpSearchBox {width:300px;margin-top: 2.5em;}
+#DeltaPlaceHolderSearchArea > #searchInputBox {top:0;}
+.container.connectHome {top:1.7em}
+.gearMenu {display:none;}
+.cbs-Accordion {
+	max-width:83% !important;
+}
+#DeltaPlaceHolderSearchArea > #searchInputBox {
+	position:relative;top:-50px;
+}
+.gv-home-RightColumn {
+	width:19%;
+}
+/*.active#languageSelect li {margin-left:0.5em;border-right:1px solid #ededed;padding-right:0.5em;display:inline-block;}
+.active#languageSelect {padding:0.6em 0.5em 0.1em 0.5em;margin:0.1em -0.5em -0.2em;position:static}*/
+.welcomeRight {display:inline-block;position:relative;top:-1.5em;}
+.active#languageSelect li:last-child {border-right:none;}
+div.connectBrand .one-half {width:49.8%;}
+div#contentBox.centered-content>#DeltaPlaceHolderMain {
+	width:100% !important;
+}
+.gv-home-LeftColumn {
+	width:77.8%;
+}
+.ms-srch-sb>.ms-srch-sb-navLink, .ms-srch-sb>.ms-srch-sb-searchLink {
+    top: 4px !important;
+}
+#ctl00_ctl61, #ctl00_ctl61_csr {
+    position: relative;
+    top: -50px;
+    padding-right: 40px;
+}
+#SearchBox {
+    position: relative;
+    top: 0;
+    padding-right: 0;
+}
+#titleAreaRow > .ms-breadcrumb-box {
+	height:52px !important;
+}
+}
+@-moz-document url-prefix() {
+    #ctl00_ctl61, #ctl00_ctl61_csr {
+    position: relative;
+    top: -50px;
+    padding-right: 40px;
+}
+#SearchBox {
+    position: relative;
+    top: 0;
+    padding-right: 0;
+}
+}}
+@media screen and (-webkit-min-device-pixel-ratio:0)
+{
+	.gv-home-RightColumn span[title*=Welcome] h2.ms-webpart-titleText {min-width:280px;}
+	/* > a {float:right;position:relative;}*/
+}
+@media screen and (min-width:1025px) and (max-width:1405px) {
+	.library {width:calc(32% - 1em); width:32.33333%; margin-right:1.5%;}
+
+	div.Innovation .folder {min-width:calc(31% - 1em);padding:1.5em 0.5em;}
+	.folder {padding:1.5em 0.5em;}
+	.library .folder{
+	padding:0.75em;
+	}
+	#Innovation .folder {padding:1.5em 0.5em;}
+	.connectBrand .one-half {width:49.9%;}
+	
+	div.Innovation .folder{
+		min-width: calc(15% - 1em);
+	}
+	div.Innovation li.folderName span{
+		font-size:0.9em;
+		bottom:2em;
+}
+}
+@media screen and (min-width:1025px) {
+    #contentRow {
+    /*background: url("/sites/Beam/_catalogs/masterpage/Resources/shadow-top.png") padding-box center top no-repeat;*/
+    margin-top: -17px;
+    padding-top: 10px;
+    min-height: 1024px!important;
+}
+.container.connectHome {margin-top:-6.5em;}
+#DeltaTopNavigation, .container {
+    margin: 0 auto;
+    min-width: 1173px;
+    /*max-width: 80%*/}
+.mydata .myfavorites {
+    /*min-width: 608px;*/
+}
+#titleAreaRow .ms-breadcrumb-box {
+    height: 1px;
+}
+#s4-titlerow {
+    height: 120px;
+}
+.ms-mpSearchBox.ms-floatRight#DeltaPlaceHolderSearchArea {
+    top: -33px;
+    padding-right: 50px;
+}
+.ms-srch-sb>input.ms-textSmall {
+    width: 300px;
+}
+#DeltaTopNavigation ul.dynamic li.dynamic>a {
+    width: 220px;
+}
+.FourColumns {
+    column-gap: 40px;
+    -webkit-column-gap: 40px;
+    -moz-column-gap: 40px;
+    column-count:4;
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    min-width: 760px!important;
+}
+.TwoColumns {
+    column-gap: 40px;
+    -webkit-column-gap: 40px;
+    -moz-column-gap: 40px;
+    column-count: 2;
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    min-width: 440px!important;
+}
+.ThreeColumns {
+    column-gap: 40px;
+    -webkit-column-gap: 40px;
+    -moz-column-gap: 40px;
+    column-count: 3;
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    min-width: 660px!important;
+}
+#contentBox {
+    margin-left: 240px;
+}
+.ms-dialog #contentBox {
+    margin-left: 0;
+}
+.gv-home-LeftColumn .gv-home-banner {
+    height: 375px;
+}
+.gv-home-LeftColumn .gv-home-events, .gv-home-LeftColumn .gv-home-news {
+    min-height: 375px;
+}
+#sideNavBox {
+    padding-bottom: 60px;
+    padding-left: 20px;
+}
+.gv-home .gv-home-RightColumn .ms-promlink-headerNav {
+    bottom: -155px;
+}
+a.cbs-largePictureDataContainer h2  {max-height:3.2em; min-height:3.2em}
+.connectContent.connectBrand {margin-right:3.5em;}
+.TasksUrl {
+    left: -125px;
+    float: right;
+    padding-top: 30px;
+    top: -35px;
+}
+.EventsUrl {
+    left: -140px;
+}
+.NewsUrl {
+    left: -137px;
+}
+.gv-home-PersonalInfo .populardata .cbs-Item {
+    padding: 5px 100px 5px 10px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+.blueBox > .icon { margin:3% 0% 3% 2% !important;}
+    .awardees.one-half .one-third {
+    width: 31.2%}
+    .cbs-AccordionContent {
+	max-width:95% !important;
+}
+.banner .cbs-largePictureImg {width:auto;min-width:100%;max-width:none;max-height:none;min-height:100%;display:none;}
+.banner .cbs-pictureImgLink {display:block;height:100%;/*width:100vw;*/overflow:hidden;background-size:cover;background-position:center center;}
+.banner .cbs-largePictureDataContainer, .banner .cbs-largePictureDataOverlay {right:5em;    width: 43.86%;}
+.welcomeRight {float:left;min-width:225px;}
+div.connectPage {margin-top:-7.3em;}
+.view .connectHeader .pageImage .ms-rtestate-field {margin-top:0;}
+.connectHome .banner, .connectHome > .row {top:0;position:static;}
+#titleAreaRow div.ms-mpSearchBox {width:300px;}
+.timeZones .one-fourth {
+    width: 19%}
+.profileComplete .PercentComplete {
+    padding: 14px 40px 10px 9px;
+}
+div#contentBox.centered-content>#DeltaPlaceHolderMain {
+	/*width:auto !important;*/
+	padding-top:6px;
+}
+#DeltaTopNavigation ul.root li.dynamic-children ul.dynamic { margin-top:1px !important;}
+div#contentBox.centered-content.publishingPage > div#DeltaPlaceHolderMain {display:block;width:100%;}
+.FourColumns {
+min-width:880px !important;
+}
+#contentRow {
+	margin-top:11px !important;
+}
+div#contentBox.centered-content>#DeltaPlaceHolderMain .gv-home-LeftColumn {
+	/*width:auto !important;*/
+}
+div#contentBox.centered-content>#sideNavBox {
+	float:left !important;
+}
+.awardee-rotator .one-sixth {
+    width: 12.9%!important;
+}
+}
+@-moz-document url-prefix() {
+.timeZones .time {min-width: 50px;}
+.FourColumns {min-width:900px !important;overflow:hidden;}
+.blueBox > .icon { margin:3% 0% 3% 2% !important;}
+.gv-home .ms-webpart-titleText > a:hover {text-decoration:none !important;}
+}
+}
+/* IE 10+ fixes */
+@media all and (-ms-high-contrast:none), (-ms-high-contrast:active){
+	#DeltaSiteLogo {position:relative;z-index:10;top:-25px;padding-bottom:14px;}
+	#SearchBox {position:relative;bottom:-39px;}
+}
+@media screen and (-ms-high-contrast:none) and (max-width:1024px) and (min-width:767px),(-ms-high-contrast:active) and (max-width:1024px) and (min-width:767px) {
+	.connectHome .banner {top:1em;}
+	.connectHome .row {position:static;}
+	#searchInputBox {margin-top:0;position:relative;top:-1.7em;}
+	div.ms-srch-sb > input.ms-textSmall, div.ms-srch-sb {height:2.5em !important;}
+	#SearchBox {bottom:-33px;}
+}
+@media screen and (-ms-high-contrast:none) and (max-width:766px) ,(-ms-high-contrast:active) and (max-width:766px) {
+	#SearchBox {top:-1.6em;}
+}

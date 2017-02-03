@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="0450572a-2a22-4162-969b-06375e5eec23" 
+        solutionId="0450572a-2a22-4162-969b-06375e5eec23" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="Beam.Connect.Maintenance"
+        sharePointProductVersion="15.0">
+</package>

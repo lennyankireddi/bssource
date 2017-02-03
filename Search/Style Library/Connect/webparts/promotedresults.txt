@@ -1,0 +1,27 @@
+<div class="promoted-results-container">
+</div>
+<script language="javascript">
+	function GetListItems(url, listname, query, complete, failure) {
+	    $.ajax({
+	        url: url + "/_api/web/lists/getbytitle('" + listname + "')/items" + query,
+	        method: "GET",
+	        headers: { "Accept": "application/json; odata=verbose" },
+	        success: function (data) {
+	            complete(data); // Returns JSON collection of the results
+	        },
+	        error: function (data) {
+	            failure(data);
+	        }
+	    });
+	}
+
+	var processResults = function (data) {
+
+	};
+
+	var showErrorMessage = function (data) {
+
+	};
+	
+	jQuery(".promoted-results-container").html("<h1>Promoted Results</h1>")
+</script>

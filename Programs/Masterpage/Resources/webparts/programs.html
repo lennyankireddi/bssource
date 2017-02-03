@@ -1,0 +1,372 @@
+<div class="program-column" id="programColumn">
+    <div class="ms-webpart-chrome-title">
+        <span class="js-webpart-titleCell">
+            <h2 class="ms-webpart-titleText">
+                Programs
+            </h2>
+        </span>
+    </div>
+    <div class="wrapper">
+        <div class="program-filter" id="programFilter">
+        </div>
+        <div class="program-count">
+            <h3><span id="activeNumber"></span> Active Programs</h3>
+        </div>
+        <a class="program-arrow" href="#" id="controlL">
+            <i class="program-arrow icon-caret-left">
+            </i>
+        </a>
+        <div id="programWrapper" class="program-wrapper">
+        </div>
+        
+        <a class="program-arrow" href="#" id="controlR">
+            <i class="program-arrow icon-caret-right">
+            </i>
+        </a>
+    </div>
+</div>
+
+<script>//<![CDATA[
+                $(document).ready(function(){
+
+                    
+
+                });
+            //]]>
+            </script>
+<script>
+    function SetupFlipCards() {
+        //Add flip functionality
+        jQuery(".program-card").flip({
+                trigger: 'manual'
+        });
+        
+        //Add flip functionality for multiple cards
+        jQuery( ".toggle-card" ).click(function() {
+            var toggleparent =  jQuery(this).closest('.program-card');
+            jQuery(toggleparent).flip('toggle');
+        });
+    }
+
+    function AddHandlers() {
+        if (!jQuery._data(document.getElementById('controlR'), "events")) {
+            jQuery('#controlR').click(function() {
+                jQuery('.programs').animate(
+                    {
+                        marginLeft: "-=260px"
+                    },
+                    "fast"
+                );
+            });
+        }
+    
+        if (!jQuery._data(document.getElementById('controlL'), "events")) {
+            jQuery('#controlL').click(function() {
+                jQuery('.programs').animate(
+                    {
+                        marginLeft: "+=260px"
+                    },
+                    "fast"
+                );
+            });
+        }
+
+        var programWidth = jQuery(".program-card-container").innerWidth();
+
+        var numberofcards = parseInt(jQuery('#activeNumber').text());
+
+        if(numberofcards > 2){
+            numberofcards -= 2 ;
+        }
+
+
+        jQuery('#controlL').hide();
+        if (parseInt(jQuery('#activeNumber').text()) > 2) {
+            jQuery('#controlR').show();
+        }
+
+        jQuery(".program-arrow").click(function () {
+            var marginLeftValue = parseInt(jQuery('.programs').css('margin-left'));
+            var currentID = jQuery(this).attr('id');
+            var wpWidth = parseInt(jQuery('.wrapper').css('width'));
+            var extraCard;
+            if (wpWidth > 600) {
+                extraCard = 260;
+            }
+            else {
+                extraCard = 0;
+            }
+    
+            if (currentID == "controlL") {
+                jQuery('#controlR').show();
+                if (marginLeftValue >= -270) {
+                    jQuery('#controlL').hide();
+                } else {
+                    jQuery('#controlL').show();
+                }
+            } else {
+                jQuery('#controlL').show();
+                if ((numberofcards * 260) + marginLeftValue - extraCard <= 0) {
+                    jQuery('#controlR').hide();
+                }
+                else {
+                    jQuery('#controlR').show();
+                }
+            }
+        });
+
+        jQuery(".dropdown-button").on("click", function(e) {
+            jQuery(".dropdown-program-content").toggleClass("open");
+            e.stopPropagation()
+        });
+
+        jQuery(document).on("click", function(event)
+        {
+            jQuery(".dropdown-program-content").removeClass("open");
+        });
+
+        // Add handler to scope drop down selections
+        jQuery(".dropdown-program-link").click(function(e) {
+            activeScope = jQuery(this).text();
+            RenderProgramWebPart("programWrapper");
+        });
+    }
+
+    function GetProgramDocsHtml(programName, container, link) {
+        var htmlString = "";
+        
+
+        var url = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/getfolderbyserverrelativeurl('Programs/" + programName + "')/files?$expand=ListItemAllFields";
+        query = "";
+        jQuery.ajax({
+	        url: url + query,
+	        method: "GET",
+	        headers: { 
+						"Accept": "application/json; odata=verbose",
+					},
+	        success: function (data) {
+                var htmlString = "";
+	            var docsAdded = 0;
+                var result;
+                var docUrl = "";
+                var docsFound = data.d.results.length;
+                for (i = 0; i < docsFound; i++) {
+                    if (docsAdded == 2) {
+                        break;
+                    }
+                    else {
+                        if (data.d.results[i].ListItemAllFields.Featured == true) {
+                            var docName = data.d.results[i].Name;
+                            var extension = docName.substr(docName.lastIndexOf('.') + 1);
+                            var imgURL = GetDocIcon(extension);
+
+                            htmlString += "<a class='program-card-doc' href='" + data.d.results[i].ServerRelativeUrl + "'>";
+                            htmlString += "<img src='" + imgURL + "'>";
+                            htmlString += "<span>" + data.d.results[i].Name + "</span>";
+                            htmlString += "</a>";
+                            docsAdded++;
+                        }
+                    }
+                }
+                htmlString += "</div>";
+                htmlString += "<a class='program-all-docs' href='" + link + "'>See all documents</a>";
+                jQuery("#" + container).html(htmlString);
+	        },
+	        error: function (data) {
+                var htmlString = "";
+	            htmlString += "No featured documents found.";
+                htmlString += "<a class='program-all-docs' href='" + link + "'>See all documents</a>";
+                jQuery("#" + container).html(htmlString);
+	        }
+	    });
+    }
+
+    function RenderScopeDropdown(scopeArray, container) {
+        var i;
+        scopeArray.sort();
+        var scopeHtml = "";
+        scopeHtml += "<div class='dropdown-program'>";
+        scopeHtml += "<a class='dropdown-button' href='javascript:{}'><span>" + activeScope + "</span><i class='icon-caret-down'></i></a>";
+        scopeHtml += "<div class='dropdown-program-content'>";
+        scopeHtml += "<a value='All'' class='dropdown-program-link";
+        if (activeScope == "All") {
+            scopeHtml += " active-filter";
+        }
+        scopeHtml += "' href='javascript:{}'>All</a>";
+        for (i = 0; i < scopeArray.length; i++) {
+            scopeHtml += "<a value='" + scopeArray[i] + "' class='dropdown-program-link";
+            if (activeScope == scopeArray[i]) {
+                scopeHtml += " active-filter";
+            }
+            scopeHtml += "' href='javascript:{}'>" + scopeArray[i] + "</a>";
+        }
+        scopeHtml += "</div>";
+        scopeHtml += "</div>";
+        jQuery("#" + container).html(scopeHtml);
+    }
+
+    function AddCardBackgrounds(photoList) {
+        var i;
+        var keyVal;
+        var elementId = "";
+        var photoUrl = "";
+        for (i = 0; i < photoList.length; i++) {
+            keyVal = photoList[i].split('|');
+            elementId = keyVal[0];
+            photoUrl = keyVal[1];
+            jQuery("#" + elementId).css('background-image', 'url(' + photoUrl + ')');
+        }
+    }
+
+    function RenderProgramWebPart(container) {
+        var programLink = "";
+        var htmlString = "";
+        var docHtml = "";
+        var title = "";
+        var description = "";
+        var scope = "";
+        var runTime = "";
+        var photoImage = "";
+        var photoUrl = "";
+        var logoImage = "";
+        var programNumber = 0;
+        var docContainerId = "";
+        var scopeArray = [];
+        var programsAdded = 0;
+        var htmlString = "";
+        var programPhotoArray = [];
+
+        htmlString += "<div class='row programs'>";
+        htmlString += "<div class='program-card-container'>";
+
+        console.log(allResults.length);
+        jQuery.each(allResults, function(e, n) {
+            programNumber++;
+            title = "";
+            description = "";
+            programLink = "";
+            scope = "";
+            runTime = "";
+            photoImage = "";
+            photoUrl = "";
+            logoImage = "";
+            jQuery.each(n.Cells.results, function(x, y) {
+                if (y.Key == "Title") {
+                    title = y.Value;
+                }
+                if (y.Key == "Description") {
+                    description = y.Value;
+                }
+                if (y.Key == "URL") {
+                    programLink = y.Value;
+                }
+                if (y.Key == "ProgramScope") {
+                    scope = y.Value;
+                }
+                if (y.Key == "RunTime") {
+                    runTime = y.Value;
+                }
+                if (y.Key == "ProgramPhotoOWSURLH") {
+                    photoImage = y.Value.split(',')[1].trim();
+                }
+                if (y.Key == "ProgramLogo0OWSURLH") {
+                    logoImage = y.Value.split(',')[1].trim();
+                }
+            });
+
+            // Add scope to array
+            if (scope) {
+                if (scopeArray.indexOf(scope) == -1) {
+                    scopeArray.push(scope);
+                }
+            }
+
+            console.log("Scope: " + scope + "; Active Scope: " + activeScope);
+
+            if (scope == activeScope || activeScope == "All") {
+                htmlString += "<div class='program program-1'>";
+                htmlString += "<div class='program-card' id='card'>";
+
+                // Set up the front side of the card
+                cardCoverFrontId = "progCardCoverFront" + programNumber;
+                htmlString += "<div class='front card-cover' id='" + cardCoverFrontId + "'>";
+                htmlString += "<div class='program-photo'>";
+                htmlString += "<a class='toggle-card' id='toggle-btn'></a>";
+                programLink = "/Pages/Program.aspx?name=" + title;
+                htmlString += "<a class='program-card-link' href='" + programLink + "'>";
+                htmlString += "<div class='program-card-title'>";
+                htmlString += "<img src='" + logoImage + "'>";
+                htmlString += "</div>";
+                htmlString += "</a>";
+                htmlString += "</div>";
+                htmlString += "</div>";
+                
+                // Set up the back side of the card
+                cardCoverBackId = "progCardCoverBack" + programNumber;
+                htmlString += "<div class='back card-cover' id='" + cardCoverBackId + "'>";
+                htmlString += "<a class='toggle-card' id='toggle-btn'></a>";
+                if (description) {
+                    htmlString += "<p class='program-card-description'>" + description + "</p>";
+                }
+                docContainerId = "progDocContainer" + programNumber;
+                htmlString += "<div class='program-card-docs' id='" + docContainerId + "'>";
+                htmlString += "</div>";
+                htmlString += "</div>";
+                htmlString += "</div>";
+                htmlString += "<h3>" + title + "</h3>";
+                htmlString += "</div>";
+
+                programPhotoArray.push(cardCoverFrontId + "|" + photoImage);
+                programPhotoArray.push(cardCoverBackId + "|" + photoImage);
+                //jQuery(".program-photo").css('background-image', 'url(' + photoImage + ')');
+
+                // Find and add the featured documents
+                GetProgramDocsHtml(title, docContainerId, programLink);
+                programsAdded++;
+            }
+        });
+
+        htmlString += "</div>";
+        htmlString += "</div>";
+        
+        // Set number of active programs
+        jQuery("#activeNumber").html(programsAdded);
+        jQuery("#" + container).html(htmlString);
+
+        // Refresh other web part elements
+        RenderScopeDropdown(scopeArray, "programFilter");
+        SetupFlipCards();
+        AddCardBackgrounds(programPhotoArray);
+        AddHandlers();
+    }
+
+    function ProgramSearch(programScope) {
+        var siteUrl =  _spPageContextInfo.siteAbsoluteUrl;
+        var searchUrl = "/_api/search/query?querytext='ContentType:Program IsContainer:true'&selectproperties='Title,Description,ProgramScope,RunTime,ProgramPhotoOWSURLH,ProgramLogo0OWSURLH'";
+        
+        jQuery.ajax({
+            url: searchUrl,
+            method: "GET",
+            headers: {
+                Accept: "application/json;odata=verbose"
+            },
+            success: function(e) {
+                allResults = e.d.query.PrimaryQueryResult.RelevantResults.Table.Rows.results;
+                if (allResults.length == 0) {
+                    jQuery("#programColumn").hide();
+                }
+                else {
+                    RenderProgramWebPart("programWrapper");
+                }
+            },
+            error: function(e) {
+                jQuery("#programWrapper").html("Error getting program results: " + e.message);
+            }
+        });
+    }
+
+    var activeScope = "All";
+    var allResults;
+    ProgramSearch(activeScope);
+    
+</script>

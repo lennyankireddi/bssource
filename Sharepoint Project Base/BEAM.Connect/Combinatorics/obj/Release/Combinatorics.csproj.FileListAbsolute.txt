@@ -1,0 +1,5 @@
+C:\Users\spext_setup\Documents\Visual Studio 2015\Projects\BEAM.Connect\Combinatorics\bin\Release\Combinatorics.dll
+C:\Users\spext_setup\Documents\Visual Studio 2015\Projects\BEAM.Connect\Combinatorics\bin\Release\Combinatorics.pdb
+C:\Users\spext_setup\Documents\Visual Studio 2015\Projects\BEAM.Connect\Combinatorics\obj\Release\Combinatorics.dll
+C:\Users\spext_setup\Documents\Visual Studio 2015\Projects\BEAM.Connect\Combinatorics\obj\Release\Combinatorics.pdb
+C:\Users\spext_setup\Documents\Visual Studio 2015\Projects\BEAM.Connect\Combinatorics\obj\Release\Combinatorics.csprojResolveAssemblyReference.cache

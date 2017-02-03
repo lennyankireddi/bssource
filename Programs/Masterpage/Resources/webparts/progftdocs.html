@@ -1,0 +1,116 @@
+<div class="program-docs program-featured">
+    <h3 id="featuredDocHeader">Featured Files</h3>
+    <div id="featuredDocs">
+    </div>
+</div>
+<script type="text/javascript">
+    function getParameterByName(name, url) {
+	    if (!url) {
+	      url = window.location.href;
+	    }
+	    name = name.replace(/[\[\]]/g, "\\$&");
+	    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+	        results = regex.exec(url);
+	    if (!results) return null;
+	    if (!results[2]) return '';
+	    return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+
+    function GetDocIcon(extension)
+    {
+        switch(extension)
+        {
+            case "aspx":
+                return "/_layouts/15/images/icgen.gif";
+                break;
+            case "pptx":
+                return "/_layouts/15/images/icpptx.png";
+                break;
+            case "ppt":
+                return "/_layouts/15/images/icpptx.png";
+                break;
+            case "doc":
+                return "/_layouts/15/images/icdocx.png";
+                break;
+            case "docx":
+                return "/_layouts/15/images/icdocx.png";
+                break;
+            case "xls":
+                return "/_layouts/15/images/icxlsx.png";
+                break;
+            case "xlsx":
+                return "/_layouts/15/images/icxlsx.png";
+                break;
+            case "pdf":
+                return "/_layouts/15/images/icpdf.png";
+                break;
+            case "jpg":
+                return "/_layouts/15/images/icjpg.gif";
+                break;
+            case "png":
+                return "/_layouts/15/images/icjpg.gif";
+                break;
+            default:
+                return "/_layouts/15/images/icgen.gif";
+        }
+    }
+    
+    function RenderFeaturedDocs () {
+        var programName = getParameterByName("name");
+        var url = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/getfolderbyserverrelativeurl('Programs/" + programName + "')/files?$expand=ListItemAllFields";
+        query = "";
+        jQuery.ajax({
+	        url: url + query,
+	        method: "GET",
+	        headers: { 
+						"Accept": "application/json; odata=verbose",
+					},
+	        success: function (data) {
+                var htmlString = "";
+	            var docsAdded = 0;
+                var result;
+                var filename = "";
+                var extension = "";
+                var icon = "";
+                var docUrl = "";
+                var docsFound = data.d.results.length;
+                for (i = 0; i < docsFound; i++) {
+                    if (docsAdded == 2) {
+                        break;
+                    }
+                    else {
+                        if (data.d.results[i].ListItemAllFields.Featured == true) {
+                            if (docsAdded == 0) {
+                                htmlString += "<ul class='list-unstyled'>";
+                            }
+                            filename = data.d.results[i].Name;
+                            extension = filename.substr(filename.lastIndexOf('.') + 1);
+                            icon = GetDocIcon(extension);
+
+                            htmlString += "<li>";
+                            htmlString += "<span class='docIcon'><img src='" + icon + "'/></span>&nbsp;";
+                            htmlString += "<span class='docUrl'><a href='" + data.d.results[i].ServerRelativeUrl + "'>" + data.d.results[i].Title + "</a></span>";
+                            htmlString += "<span class='label label-featured'>FEATURED</span>";
+                            htmlString += "</li>";
+                            docsAdded++;
+                        }
+                    }
+                }
+                if (docsAdded > 0) {
+                    htmlString += "</ul>";
+                }
+                else {
+                    jQuery("#featuredDocHeader").html("No files are featured")
+                }
+                jQuery("#featuredDocs").html(htmlString);
+	        },
+	        error: function (data) {
+                var htmlString = "";
+	            htmlString += "No featured files found.";
+                jQuery("#featuredDocs").html(htmlString);
+	        }
+	    });
+    }
+
+    RenderFeaturedDocs();
+</script>
