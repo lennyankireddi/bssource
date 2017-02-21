@@ -1,3 +1,4 @@
+<script src="/_catalogs/masterpage/resources/programstrings.js" type="text/javascript"></script>
 <div class="program-info" id="programInfo">
     
 </div>
@@ -15,6 +16,7 @@
 	}
 
     function RenderProgramInfo() {
+        var siteLang = GetSiteLang();
         var title = "";
         var programScope = "";
         var runTime = "";
@@ -24,8 +26,8 @@
         var programPhoto = "";
         var monthNames = ["January", "February", "March","April", "May", "June", "July","August", "September", "October","November", "December"];
 
-        var currentTitle = getParameterByName("name");
-        var itemUrl = "/_api/web/lists/getbytitle('Programs')/items?$filter=(Title eq '" + currentTitle + "')";
+        var programId = getParameterByName("progid");
+        var itemUrl = "/_api/web/lists/getbytitle('Programs')/items?$filter=ProgramID eq '" + programId + "'";
         var htmlString = "";
 
         jQuery.ajax({
@@ -38,11 +40,11 @@
                 if (data.d.results.length > 0) {
                     var program = data.d.results[0];
                     title = program.Title;
-                    switch (program.Program_x0020_Scope) {
-                        case 3:
+                    switch (program.Program_x0020_Scope.Label) {
+                        case 2453:
                             programScope = "National";
                             break;
-                        case 4:
+                        case 2454:
                             programScope = "Local";
                             break;
                         default:
@@ -53,7 +55,7 @@
                     startDate = monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
                     date = new Date(program.OData__EndDate);
                     endDate = monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
-                    description = program.DocumentSetDescription;
+                    description = program.BeamConnectDescription;
                     programPhoto = program.Program_x0020_Photo.Url;
 
                     htmlString += "<div class='program-img col-sm-3 no-padding'>";
@@ -61,10 +63,13 @@
                     htmlString += "</div>";
                     htmlString += "<div class='program-content col-sm-9'>";
                     htmlString += "<h1>" + title + "</h1>";
+                    if (userIsAdmin) {
+                        htmlString += "<div class='edit-link'><a class='program-edit' href='/Pages/Program-Admin.aspx?progid=" + programId + "'>" + GetProgramString("Edit", siteLang) + "</a></div>";
+                    }
                     htmlString += "<span class='program-audience'><b>" + programScope + "</b></span>"
                     htmlString += "<span class='program-run-time'>";
                     if (runTime == "Fixed") {
-                        htmlString += "<b>Run-time:</b> " + startDate + " - " + endDate;
+                        htmlString += "<b>" + GetProgramString("Run Time", siteLang) + "</b> " + startDate + " - " + endDate;
                     }
                     else {
                         htmlString += "<b>Run-time</b> Starts: " + startDate;
@@ -88,5 +93,33 @@
         });
     }
 
+    function CheckUserPermissions() {
+        SP.SOD.executeFunc('SP.Runtime.js', 'SP.ClientContext',
+            function() {
+            SP.SOD.executeFunc('SP.js', 'SP.ClientContext',
+                function() {
+                    var siteUrl = _spPageContextInfo.webAbsoluteUrl;
+                    var clientContext = new SP.ClientContext(siteUrl);
+                    web = clientContext.get_web();
+                    clientContext.load(web, 'Title', 'EffectiveBasePermissions');
+                    clientContext.executeQueryAsync(onSuccess, onError);
+                });
+            });
+    }
+
+    function onSuccess(){
+        var permissions = SP.PermissionKind.manageWeb;
+        if(web.get_effectiveBasePermissions().has(permissions)){
+            userIsAdmin = true;
+        }
+        RenderProgramInfo();
+    }
+    function onError(sender, args) {
+        console.log(args.get_message() + '\n' + args.get_stackTrace());
+        PRenderProgramInfo();
+    }
+
+    var userIsAdmin = false;
+    CheckUserPermissions();
     RenderProgramInfo();
 </script>

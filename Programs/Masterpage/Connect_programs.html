@@ -2,7 +2,7 @@
 
 This HTML file has been associated with a SharePoint Page Layout (.aspx file) carrying the same name.  While the files remain associated, you will not be allowed to edit the .aspx file, and any rename, move, or deletion operations will be reciprocated.
 
-To build the page layout directly from this HTML file, simply fill in the contents of content placeholders.  Use the Snippet Generator at http://azjbbfpspdw1.cloudapp.net/_layouts/15/ComponentHome.aspx?Url=http%3A%2F%2Fazjbbfpspdw1%2Ecloudapp%2Enet%2F%5Fcatalogs%2Fmasterpage%2FConnect%5Fprograms%2Easpx to create and customize additional content placeholders and other useful SharePoint entities, then copy and paste them as HTML snippets into your HTML code.   All updates to this file within content placeholders will automatically sync to the associated page layout.
+To build the page layout directly from this HTML file, simply fill in the contents of content placeholders.  Use the Snippet Generator at https://connectadmin.beamsuntory.com/_layouts/15/ComponentHome.aspx?Url=https%3A%2F%2Fconnectadmin%2Ebeamsuntory%2Ecom%2F%5Fcatalogs%2Fmasterpage%2FConnect%5Fprograms%2Easpx to create and customize additional content placeholders and other useful SharePoint entities, then copy and paste them as HTML snippets into your HTML code.   All updates to this file within content placeholders will automatically sync to the associated page layout.
 
 -->
 <!-- _lcid="1033" _version="16.0.2524" _dal="1" -->
@@ -23,7 +23,10 @@ To build the page layout directly from this HTML file, simply fill in the conten
         <!--ME:</asp:ContentPlaceHolder>-->
         <link href="https://connect2dev.beamsuntory.com/_layouts/15/1033/styles/corev15.css" type="text/css" rel="stylesheet" />
         <link href="https://connect2dev.beamsuntory.com/_layouts/15/1033/styles/searchv15.css" type="text/css" rel="stylesheet" />
+        <script src="/_layouts/15/sp.js" type="text/javascript">//<![CDATA[//]]>
+        </script>
         <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.1.min.js" type="text/javascript">//<![CDATA[
+        
         //]]>
         </script>
         <link rel="stylesheet" type="text/css" href="/_catalogs/masterpage/Resources/globalview.min.css" />
@@ -31,62 +34,109 @@ To build the page layout directly from this HTML file, simply fill in the conten
         <link href="/_catalogs/masterpage/Resources/fonts/font-awesome.min.css" type="text/css" rel="stylesheet" />
         <link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/redmond/jquery-ui.css" type="text/css" rel="stylesheet" />
         <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.22/jquery-ui.js" type="text/javascript">//<![CDATA[
+        
         //]]>
         </script>
         <!--MS:<asp:ContentPlaceHolder id="PlaceHolderAdditionalPageHead" runat="server">-->
+            <link href="/_catalogs/masterpage/Resources/fonts/font-awesome/css/font-awesome.min.css" ms-design-css-conversion="no" type="text/css" rel="stylesheet" />
             <link href="/_catalogs/masterpage/Resources/bootstrap-beam.min.css" ms-design-css-conversion="no" type="text/css" rel="stylesheet" />
             <link href="/_catalogs/masterpage/Resources/beam.css" ms-design-css-conversion="no" type="text/css" rel="stylesheet" />
             <!-- Bootstrap Core JavaScript -->
+            <script src="https://code.jquery.com/jquery-1.12.4.js">//<![CDATA[
+            
+            //]]>
+            </script>
             <script src="/_catalogs/masterpage/Resources/bootstrap.min.js">//<![CDATA[
+            
             //]]>
             </script>
             <!-- Custom  JavaScript -->
-            <script src="https://code.jquery.com/jquery-1.12.4.js">//<![CDATA[
-            //]]>
-            </script>
+
             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js">//<![CDATA[
+            
             //]]>
             </script>
             <script>//<![CDATA[
 
-                jQuery( function() {
-                    jQuery( "#sortable" ).sortable();
-                    jQuery( "#sortable" ).disableSelection();
-                } );
-
+                
 
 
                 $( function() {
                     jQuery( "#datepicker-start" ).datepicker();
                     jQuery( "#datepicker-end" ).datepicker();
+                    
 
                     $( "#anim" ).on( "change", function() {
                     $( "#datepicker-start" ).datepicker( "option", "showAnim", $( this ).val() );
                     $( "#datepicker-end" ).datepicker( "option", "showAnim", $( this ).val() );
                     });
                 } );
+            
             //]]>
             </script>
             <script>//<![CDATA[
                 $(document).ready(function(){
 
                     //Character counter for the textarea
-                    var text_max = 99;
-                    $('#textarea_feedback').html(0 + ' /99');
+                    var text_max = 150;
+                    $('#textarea_feedback').html(0 + ' /150');
 
                     $('.textarea-teaser-box').keyup(function() {
                         var text_length = $('.textarea-teaser-box').val().length;
                         var text_remaining = 0 + text_length;
 
-                        $('#textarea_feedback').html(text_remaining + ' /99');
+                        $('#textarea_feedback').html(text_remaining + ' /150');
                     });
 
                     //Add row selection to table
-                    jQuery('.document-table .icon-pushpin').on('click', function () {
+                    jQuery('.document-table .fa-thumb-tack').on('click', function () {
                     jQuery(this).toggleClass('document-featured');
                     });
 
-                });
+ 
+                   jQuery(".dropdown-button").on("click", function(e) {
+                        jQuery(this).next().toggleClass("open");
+                        e.stopPropagation()
+                    });
+
+                    jQuery(document).on("click", function(event)
+                    {
+                        jQuery(".dropdown-program-content").removeClass("open");
+                    });
+
+                    // Add handler to scope drop down selections
+                    jQuery(".dropdown-program-link").click(function(e) {
+                        activeLanguage = jQuery(this).text();
+                        jQuery(activeLanguage).appendTo(".dropdown-button span");
+                    });  
+
+                    jQuery('.btn-save').click(function(){
+                        jQuery('.page-status').show();
+                    });
+
+
+
+
+                    //Add Radio button Open and Fixed Disabled 
+                     $('.radio-inline').click(function() {
+                       if($('input#radio-open').is(':checked')) { 
+                            $('#datepicker-end').prop('disabled', true);
+                            $('#datepicker-end').closest('.input-calendar').addClass('input-disabled');
+                        }else{
+                            $('#datepicker-end').removeProp('disabled');
+                            $('.input-calendar').removeClass('input-disabled');
+
+                        }
+                    });
+
+                    
+             });
+
+
+                
+
+               
+
             //]]>
             </script>
             <!--CS: Start Edit Mode Panel Snippet-->
@@ -99,25 +149,31 @@ To build the page layout directly from this HTML file, simply fill in the conten
             <!--CE: End Edit Mode Panel Snippet-->
         <!--ME:</asp:ContentPlaceHolder>-->
         <script src="/_catalogs/masterpage/Resources/GA.js" type="text/javascript">//<![CDATA[
+        
         //]]>
         </script>
         <script type="text/javascript">//<![CDATA[
         var g_pageLoadAnimationParams = { elementSlideIn : "sideNavBox", elementSlideInPhase2 : "contentBox" };
+        
         //]]>
         </script>
         <script src="/_catalogs/masterpage/Resources/MobileFavIcons/addtohomescreen.js" type="text/javascript">//<![CDATA[
+        
         //]]>
         </script>
         <link rel="stylesheet" type="text/css" href="/_catalogs/masterpage/Resources/MobileFavIcons/addtohomescreen.css" />
         <script type="text/javascript">//<![CDATA[
              addToHomescreen();
+        
         //]]>
+        </script>
+        <script src="/_catalogs/masterpage/Resources/programstrings.js" type="text/javascript">//<![CDATA[//]]>
         </script>
         <!--[if gte mso 9]><xml>
 <mso:CustomDocumentProperties>
 <mso:ContentPlaceHolderHashPlaceHolderPageTitleInTitleArea msdt:dt="string">1</mso:ContentPlaceHolderHashPlaceHolderPageTitleInTitleArea>
 <mso:ContentPlaceHolderHashPlaceHolderMain msdt:dt="string">1</mso:ContentPlaceHolderHashPlaceHolderMain>
-<mso:HtmlDesignStatusAndPreview msdt:dt="string">http://azjbbfpspdw1.cloudapp.net/_catalogs/masterpage/Connect_programs.html, Conversion successful.</mso:HtmlDesignStatusAndPreview>
+<mso:HtmlDesignStatusAndPreview msdt:dt="string">https://connectadmin.beamsuntory.com/_catalogs/masterpage/Connect_programs.html, Warnings and Errors.</mso:HtmlDesignStatusAndPreview>
 <mso:ContentTypeId msdt:dt="string">0x01010007FF3E057FA8AB4AA42FCB67B453FFC100E214EEE741181F4E9F7ACC43278EE8110003D357F861E29844953D5CAA1D4D8A3B</mso:ContentTypeId>
 <mso:MasterHash msdt:dt="string">53693874</mso:MasterHash>
 <mso:ContentPlaceHolderHashPlaceHolderPageTitle msdt:dt="string">1</mso:ContentPlaceHolderHashPlaceHolderPageTitle>
@@ -135,12 +191,27 @@ To build the page layout directly from this HTML file, simply fill in the conten
 <mso:PublishingAssociatedVariations msdt:dt="string"></mso:PublishingAssociatedVariations>
 <mso:PublishingHidden msdt:dt="string">0</mso:PublishingHidden>
 <mso:ProgramLogo msdt:dt="string"></mso:ProgramLogo>
-<mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
+
+<mso:ContentPlaceHolderHashPlaceHolderFormDigest msdt:dt="string">1833940137</mso:ContentPlaceHolderHashPlaceHolderFormDigest>
+<mso:ContentPlaceHolderHashPlaceHolderLeftActions msdt:dt="string">1162160849</mso:ContentPlaceHolderHashPlaceHolderLeftActions>
+<mso:ContentPlaceHolderHashPlaceHolderCalendarNavigator msdt:dt="string">-1689116638</mso:ContentPlaceHolderHashPlaceHolderCalendarNavigator>
+<mso:ContentPlaceHolderHashPlaceHolderQuickLaunchTop msdt:dt="string">-336572028</mso:ContentPlaceHolderHashPlaceHolderQuickLaunchTop>
+<mso:ContentPlaceHolderHashPlaceHolderQuickLaunchBottom msdt:dt="string">-1122852079</mso:ContentPlaceHolderHashPlaceHolderQuickLaunchBottom>
+<mso:ContentPlaceHolderHashPlaceHolderLeftNavBar msdt:dt="string">-1921721389</mso:ContentPlaceHolderHashPlaceHolderLeftNavBar>
+<mso:ContentPlaceHolderHashPlaceHolderSearchArea msdt:dt="string">2096363029</mso:ContentPlaceHolderHashPlaceHolderSearchArea>
+<mso:ContentPlaceHolderHashPlaceHolderTopNavBar msdt:dt="string">2010927460</mso:ContentPlaceHolderHashPlaceHolderTopNavBar>
+<mso:ContentPlaceHolderHashPlaceHolderSiteName msdt:dt="string">316612200</mso:ContentPlaceHolderHashPlaceHolderSiteName>
+<mso:ContentPlaceHolderHashPlaceHolderLeftNavBarDataSource msdt:dt="string">-221322779</mso:ContentPlaceHolderHashPlaceHolderLeftNavBarDataSource>
+<mso:ContentPlaceHolderHashPlaceHolderPageDescription msdt:dt="string">1337919370</mso:ContentPlaceHolderHashPlaceHolderPageDescription>
+<mso:ContentPlaceHolderHashPlaceHolderLeftNavBarTop msdt:dt="string">-44974201</mso:ContentPlaceHolderHashPlaceHolderLeftNavBarTop>
 </mso:CustomDocumentProperties>
 </xml><![endif]-->
+        <title>Connect Programs 
+        </title>
     </head>
     <body>
         <script type="text/javascript">//<![CDATA[ var submitHook = function () { return false; }; theForm._spOldSubmit = theForm.submit; theForm.submit = function () { if (!submitHook()) { this._spOldSubmit(); } }; 
+        
         //]]>
         </script>
         <!--MS:<asp:ContentPlaceHolder id="PlaceHolderTopNavBar" runat="server">-->
@@ -356,6 +427,7 @@ It looks like your browser does not have JavaScript enabled. Please turn on Java
                                         div.centered-content#contentBox > #DeltaPlaceHolderMain {
                                         width:auto !important;
                                         }
+                                    
                                     //]]>
                                     </style>
                                 </div>
@@ -396,6 +468,7 @@ It looks like your browser does not have JavaScript enabled. Please turn on Java
                                         div.centered-content#contentBox > #DeltaPlaceHolderMain {
                                         width:auto !important;
                                         }
+                                    
                                     //]]>
                                     </style>
                                 </div>
@@ -449,7 +522,6 @@ It looks like your browser does not have JavaScript enabled. Please turn on Java
                                     </div>
                                     <!--CE: End Web Part Zone Snippet-->
                                 </div>
-                                
                             </div>
                         </div>
                         <!--End Row-->
@@ -469,6 +541,7 @@ It looks like your browser does not have JavaScript enabled. Please turn on Java
                     div#contentBox.centered-content>#DeltaPlaceHolderMain {
                     width:100% !important;
                     }
+                
                 //]]>
                 </style>
             </div>
@@ -477,6 +550,7 @@ It looks like your browser does not have JavaScript enabled. Please turn on Java
             <!--SPM:<SharePoint:FormDigest runat="server"/>-->
         <!--ME:</asp:ContentPlaceHolder>-->
         <script src="/_catalogs/masterpage/Resources/globalview.min.js" type="text/javascript">//<![CDATA[
+        
         //]]>
         </script>
         <script type="text/javascript">//<![CDATA[   
@@ -508,6 +582,7 @@ It looks like your browser does not have JavaScript enabled. Please turn on Java
                 },
                 error:function(e) {}
             });      
+        
         //]]>
         </script>
     </body>

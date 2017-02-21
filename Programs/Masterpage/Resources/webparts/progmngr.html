@@ -1,0 +1,192 @@
+    
+<h2>Active</h2>
+<div id="activePrograms"></div>
+
+<h2>Inactive</h2>
+<ul class="sidebar-list list-unstyled" id="inactivePrograms">
+</ul>
+
+<h2>Unpublished</h2>
+<ul class="sidebar-list list-unstyled" id="unpublishedPrograms">
+</ul>
+
+<script>
+    function getParameterByName(name, url) {
+	    if (!url) {
+	      url = window.location.href;
+	    }
+	    name = name.replace(/[\[\]]/g, "\\$&");
+	    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+	        results = regex.exec(url);
+	    if (!results) return null;
+	    if (!results[2]) return '';
+	    return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+
+    function ConfirmActive(runTime, startDate, endDate) {
+        var active = false;
+        var today = new Date();
+        var start = new Date(startDate);
+        var end = new Date(endDate);
+        if (runTime == "Fixed") {
+            if (today >= start && today < end) {
+                active = true;
+            }
+        }
+        else if (runTime == "Open") {
+            if (today >= start) {
+                active = true;
+            }
+        }
+        return active;
+    }
+
+    function LoadPrograms() {
+        var publishedUri = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/lists/getbytitle('Programs')/items?$select=ProgramID";
+        var pathFilter = _spPageContextInfo.siteAbsoluteUrl + "/Lists/Programs%2520Saved";
+        var savedUri = _spPageContextInfo.siteAbsoluteUrl + "/_api/search/query?querytext=%27ContentType:Connect Program Path:" + pathFilter + "%27&selectproperties=%27ProgramIDOWSTEXT,Title,ProgramScope,Order1OWSNMBR,RunTime,StartDateOWSDATE,EndDateOWSDATE%27&RowLimit=500&sortlist=%27ProgramScope:ascending,Order1OWSNMBR:ascending%27&TrimDuplicates=false";
+
+        jQuery.ajax({
+            url: publishedUri,
+            method: "GET",
+            headers: {
+                "Accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                for(i = 0; i < data.d.results.length; i++) {
+                    publishedIds.push(data.d.results[i].ProgramID);
+                }
+                jQuery.ajax({
+                    url: savedUri,
+                    method: "GET",
+                    headers: {
+                        "Accept": "application/json;odata=verbose"
+                    },
+                    success: function(progs) {
+                        var htmlString = "";
+                        var inactiveHtml = "";
+                        var unpublishedHtml = "";
+                        var programId = "";
+                        var title = "";
+                        var language = "";
+                        var programScope = "";
+                        var order = 0;
+                        var runTime = "";
+                        var startDate = "";
+                        var endDate = "";
+                        var programUrl;
+                        var currentGroup;
+                        var itemCount = 0;
+                        var scopes = [];
+
+                        jQuery.each(progs.d.query.PrimaryQueryResult.RelevantResults.Table.Rows.results, function(prog, row) {
+                            activeClass = "";
+                            programUrl = "/Pages/Program-Admin.aspx?progid=";
+                            jQuery.each(row.Cells.results, function(x, y) {
+                                if (y.Key == "ProgramIDOWSTEXT") {
+                                    programId = y.Value;
+                                }
+                                if (y.Key == "Title") {
+                                    title = y.Value;
+                                }
+                                if (y.Key == "ProgramScope") {
+                                    programScope = y.Value;
+                                }
+                                if (y.Key == "Order1OWSNMBR") {
+                                    order = parseInt(y.Value);
+                                }
+                                if (y.Key == "RunTime") {
+                                    runTime = y.Value;
+                                }
+                                if (y.Key == "StartDateOWSDATE") {
+                                    startDate = y.Value;
+                                }
+                                if (y.Key == "EndDateOWSDATE") {
+                                    endDate = y.Value;
+                                }
+                            });
+
+                            programUrl += programId.toString();
+
+                            if (publishedIds.indexOf(programId) == -1) {
+                                if (programId == currentId) {
+                                    unpublishedHtml += '<li class="sidebar-active"><a href="' + programUrl + '">' + title + '</a></li>';
+                                }
+                                else {
+                                    unpublishedHtml += '<li><a href="' + programUrl + '">' + title + '</a></li>';
+                                }
+                            }
+                            else {
+                                if (ConfirmActive(runTime, startDate, endDate)) {
+                                    if (itemCount == 0) {
+                                        currentGroup = programScope;
+                                        scopes.push(programScope);
+                                        htmlString += "<h3>" + programScope + "</h3>";
+                                        htmlString += "<ul class='sidebar-list list-unstyled' id='sortable" + programScope + "'>";
+                                        if (programId == currentId) {
+                                            htmlString += "<li class='ui-state-default'><a class='sidebar-active' href='javascript:{}'><i class='fa fa-reorder' aria-hidden='true'></i>&nbsp;" + title + "</a></li>";
+                                        }
+                                        else {
+                                            htmlString += "<li class='ui-state-default'><a href='" + programUrl + "'><i class='fa fa-reorder' aria-hidden='true'></i>&nbsp;" + title + "</a></li>";
+                                        }
+                                    }
+                                    else {
+                                        if (programScope != currentGroup) {
+                                            currentGroup = programScope;
+                                            scopes.push(programScope);
+                                            htmlString += "</ul>";
+                                            htmlString += "<h3>" + programScope + "</h3>";
+                                            htmlString += "<ul class='sidebar-list list-unstyled' id='sortable" + programScope + "'>";
+                                        }
+                                        if (programId == currentId) {
+                                            htmlString += "<li class='ui-state-default'><a class='sidebar-active' href='javascript:{}'><i class='fa fa-reorder' aria-hidden='true'></i>&nbsp;" + title + "</a></li>";
+                                        }
+                                        else {
+                                            htmlString += "<li class='ui-state-default'><a href='" + programUrl + "'><i class='fa fa-reorder' aria-hidden='true'></i>&nbsp;" + title + "</a></li>";
+                                        }
+                                    }
+                                    itemCount++;
+                                }
+                                else {
+                                    if (programId == currentId) {
+                                        inactiveHtml += '<li class="sidebar-active"><a href="' + programUrl + '">' + title + '</a></li>';
+                                    }
+                                    else {
+                                        inactiveHtml += '<li><a href="' + programUrl + '">' + title + '</a></li>';
+                                    }
+                                }
+                            }
+                        });
+
+                        jQuery("#activePrograms").html(htmlString);
+                        jQuery("#inactivePrograms").html(inactiveHtml);
+                        jQuery("#unpublishedPrograms").html(unpublishedHtml);
+
+                        // Call sortable functions
+                        for (index = 0; index < scopes.length; index++) {
+                            jQuery("#sortable" + scopes[index]).sortable({
+                                change: function(event, ui) {
+                                    console.log("Item " + jQuery(ui.item) + " moved from - " + ui.originalPosition.top + " to - " + ui.position.top);
+                                }
+                            });
+                            jQuery("#sortable" + scopes[index]).disableSelection();
+                        }
+
+                    },
+                    error: function(err) {
+                        console.log(JSON.stringify(err));
+                    }
+                });
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    var publishedIds = [];
+    var currentId = getParameterByName("progid");
+    jQuery(document).ready(function() {
+        LoadPrograms();
+    });
+</script>

@@ -1,0 +1,571 @@
+<link rel="stylesheet" type="text/css" href="/_catalogs/masterpage/resources/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="/_catalogs/masterpage/resources/jquery.dataTables.min.js"></script>
+<h3>Content</h3>
+<div class="document-table">
+    <table class="table docs-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Featured</th>
+            </tr>
+        </thead>
+        <tbody id="docsContainer">
+            
+        </tbody>
+    </table>
+</div>
+
+<div style="clear: both"></div>
+
+<a class="add-remove-docs" href="javascript:{}" type="button" onclick="jQuery('.docs-all').toggle(100);" style="display: block; margin-top: 15px;">
+    <h3 class="addNew-doc-link">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-plus fa-stack-2x"></i>
+          <i class="fa fa-minus fa-stack-1x"></i>
+        </span>
+    Add/Remove Documents</h3>
+</a>
+<div class="document-table docs-all" style="display: none; margin-top: 10px;">
+    <table class="table docs-table-all">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Add/Remove</th>
+            </tr>
+        </thead>
+        <tbody id="allDocsContainer">
+            
+        </tbody>
+    </table>
+</div>
+
+<!-- Document Library link -->
+<a class="manage-docs" href="" type="button" data-toggle="modal" data-target="#document-modal" style="display: block; margin-top: 15px;">
+    <h3 class="addNew-doc-link"><i aria-hidden="true" class="fa fa-gear" >           
+    </i> Manage Documents</h2>
+</a>
+
+<!-- Document Modal -->
+<div class="modal fade" id="document-modal" tabindex="-1" role="dialog" aria-labelledby="document-modal">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content  modal-simple ">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+        <h3 class="modal-title"><i aria-hidden="true" class="fa fa-gear" >           
+                    </i>  Manage Program Documents</h3>
+      </div>
+      <div class="modal-body">
+            <iframe src="/Program%20Documents/Forms/AllItems.aspx"></iframe>
+
+      </div>
+      <div class="modal-footer">
+        <div class="btn-container">
+          <button type="button" id="btnCloseDocModal" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function getParameterByName(name, url) {
+	    if (!url) {
+	      url = window.location.href;
+	    }
+	    name = name.replace(/[\[\]]/g, "\\$&");
+	    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+	        results = regex.exec(url);
+	    if (!results) return null;
+	    if (!results[2]) return '';
+	    return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+
+    function GetDocIcon(extension)
+    {
+        switch(extension)
+        {
+            case "aspx":
+                return "/_layouts/15/images/icgen.gif";
+                break;
+            case "pptx":
+                return "/_layouts/15/images/icpptx.png";
+                break;
+            case "ppt":
+                return "/_layouts/15/images/icpptx.png";
+                break;
+            case "doc":
+                return "/_layouts/15/images/icdocx.png";
+                break;
+            case "docx":
+                return "/_layouts/15/images/icdocx.png";
+                break;
+            case "xls":
+                return "/_layouts/15/images/icxlsx.png";
+                break;
+            case "xlsx":
+                return "/_layouts/15/images/icxlsx.png";
+                break;
+            case "pdf":
+                return "/_layouts/15/images/icpdf.png";
+                break;
+            case "jpg":
+                return "/_layouts/15/images/icjpg.gif";
+                break;
+            case "png":
+                return "/_layouts/15/images/icjpg.gif";
+                break;
+            default:
+                return "/_layouts/15/images/icgen.gif";
+        }
+    }
+
+    function GetFileType (ext) {
+        switch (ext) {
+            case "ASPX":
+                return "Page";
+                break;
+            case "PPTX":
+                return "PowerPoint";
+                break;
+            case "PPT":
+                return "PowerPoint";
+                break;
+            case "DOCX":
+                return "Document";
+                break;
+            case "DOC":
+                return "Document";
+                break;
+            case "XLSX":
+                return "Spreadsheet";
+                break;
+            case "XLSX":
+                return "Spreadsheet";
+                break;
+            case "PDF":
+                return "PDF";
+                break;
+            case "JPG":
+                return "Image";
+                break;
+            case "PNG":
+                return "Image";
+                break;
+            case "MP4":
+                return "Video";
+                break;
+            case "MOV":
+                return "Video";
+                break;
+            default:
+                return "File";
+                break;
+        }
+    }
+
+    function IsOfficeDocument(extension) {
+        switch(extension.toUpperCase()) {
+            case "PPT":
+                return true;
+                break;
+            case "PPTX":
+                return true;
+            case "DOC":
+                return true;
+                break;
+            case "DOCX":
+                return true;
+            case "XLS":
+                return true;
+                break;
+            case "XLSX":
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    function IsVideoFile(extension) {
+        switch (extension.toUpperCase()) {
+            case "MP4":
+                return true;
+            case "MOV":
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    function ToggleFeatured(tack) {
+        jQuery(tack).removeClass("fa-thumb-tack").addClass("fa-spinner").addClass("fa-spin").addClass("fa-fw");
+        var url = jQuery(tack).attr("value");
+        jQuery.ajax({
+            url: url,
+            method: "GET",
+            headers: {
+                "Accept": "application/json;odata=verbose"
+            },
+            success: function(result) {
+                var match = result.d.__metadata.etag;
+                var featured = result.d.Featured;
+                var data = { "__metadata": { "type": "SP.Data.Program_x0020_DocumentsItem" }, "Featured": false }
+                if (!featured) {
+                    data.Featured = true;
+                }
+                jQuery.ajax({
+                    url: url,
+                    method: "POST",
+                    data: JSON.stringify(data),
+                    headers: {
+                        "Accept": "application/json;odata=verbose",
+                        "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                        "content-type": "application/json;odata=verbose",
+                        "X-HTTP-Method": "MERGE",
+                        "If-Match": "*"
+                    },
+                    success: function(data) {
+                        jQuery(tack).removeClass("fa-spinner").removeClass("fa-spin").removeClass("fa-fw").addClass("fa-thumb-tack");
+                        if (!featured) {
+                            if (!jQuery(tack).hasClass("icon-featured")) {
+                                jQuery(tack).addClass("icon-featured");
+                            }
+                        }
+                        else {
+                            if (jQuery(tack).hasClass("icon-featured")) {
+                                jQuery(tack).removeClass("icon-featured");
+                            }
+                        }
+                    },
+                    error: function(err) {
+                        jQuery(tack).removeClass("fa-spinner").removeClass("fa-spin").removeClass("fa-fw").addClass("fa-thumb-tack");
+                        console.log(JSON.stringify(err));
+                    }
+                });
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function ToggleDocumentAssociation(icon, action) {
+        if (action == "ADD") {
+            jQuery(icon).removeClass("fa-plus").addClass("fa-spinner").addClass("fa-spin").addClass("fa-fw");
+        }
+        if (action == "REMOVE") {
+            jQuery(icon).removeClass("fa-remove").addClass("fa-spinner").addClass("fa-spin").addClass("fa-fw");
+        }
+        var url = jQuery(icon).attr("value");
+        jQuery.ajax({
+            url: url,
+            method: "GET",
+            headers: {
+                "Accept": "application/json;odata=verbose"
+            },
+            success: function(result) {
+                var match = result.d.__metadata.etag;
+                var programs = result.d.Programs;
+                var programNames = result.d.Program_x0020_Names;
+                var programList;
+                var programNameList;
+                if (action == "ADD") {
+                    if (!programs) {
+                        programs = pa_programId;
+                    }
+                    else {
+                        if (programs.indexOf(pa_programId) == -1) {
+                            programs += "," + pa_programId;
+                        }
+                    }
+
+                    if (!programNames) {
+                        programNames = pa_programName;
+                    }
+                    else {
+                        if (programNames.indexOf(pa_programName) == -1) {
+                            programNames += "," + pa_programName;
+                        }
+                    }
+                }
+                if (action == "REMOVE") {
+                    if (programs) {
+                        programList = programs.split(",");
+                    }
+                    programs = "";
+                    if (programList) {
+                        if (programList.length > 1) {
+                            for (i = 0; i < programList.length; i++) {
+                                if (programList[i] != pa_programId) {
+                                    if (programs == "") {
+                                        programs += programList[i];
+                                    }
+                                    else {
+                                        programs += "," + programList[i];
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (programNames) {
+                        programNameList = programNames.split(",");
+                    }
+                    programNames = "";
+                    if (programNameList) {
+                        if (programNameList.length > 1) {
+                            for (i = 0; i < programNameList.length; i++) {
+                                if (programNameList[i] == pa_programName) {
+                                    if (programNames == "") {
+                                        programNames += programNameList[i];
+                                    }
+                                    else {
+                                        programNames += "," + programNameList[i];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                var data = { "__metadata": { "type": "SP.Data.Program_x0020_DocumentsItem" }, "Programs": programs, "Program_x0020_Names": programNames }
+                jQuery.ajax({
+                    url: url,
+                    method: "POST",
+                    data: JSON.stringify(data),
+                    headers: {
+                        "Accept": "application/json;odata=verbose",
+                        "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                        "content-type": "application/json;odata=verbose",
+                        "X-HTTP-Method": "MERGE",
+                        "If-Match": match
+                    },
+                    success: function(data) {
+                        jQuery(icon).removeClass("fa-spinner").removeClass("fa-spin").removeClass("fa-fw");
+                        if (action == "ADD") {
+                            if (jQuery(icon).hasClass("fa-plus")) {
+                                jQuery(icon).removeClass("fa-plus");
+                            }
+                            if (!jQuery(icon).hasClass("fa-remove")) {
+                                jQuery(icon).addClass("fa-remove");
+                            }
+                        }
+                        if (action == "REMOVE") {
+                            if (jQuery(icon).hasClass("fa-remove")) {
+                                jQuery(icon).removeClass("fa-remove");
+                            }
+                            if (!jQuery(icon).hasClass("fa-plus")) {
+                                jQuery(icon).addClass("fa-plus");
+                            }
+                        }
+                        RefreshProgramDocuments();
+                    },
+                    error: function(err) {
+                        console.log(JSON.stringify(err));
+                    }
+                });
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function RefreshProgramDocuments() {
+        var url = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/lists/getbytitle('Program Documents')/items?$select=File,Featured&$expand=File&$filter=substringof('" + pa_programId + "', Programs)&$top=500";
+        jQuery.ajax({
+            url: url,
+            method: "GET",
+            headers: { 
+                        "Accept": "application/json; odata=verbose",
+                    },
+            success: function (data) {
+                var html = "";
+                var allDocs = "";
+                var docName = "";
+                var extension = "";
+                var docUrl = "";
+                var itemUri = "";
+                var result;
+                for (i = 0; i < data.d.results.length; i++) {
+                    result = data.d.results[i];
+                    docName = result.File.Name;
+                    extension = docName.substr(docName.lastIndexOf('.') + 1);
+                    itemUri = result.__metadata.uri;
+
+                    if (IsOfficeDocument(extension)) {
+                        docUrl = _spPageContextInfo.webAbsoluteUrl + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + result.File.ServerRelativeUrl;
+                    }
+                    else if (IsVideoFile(extension)) {
+                        docUrl = _spPageContextInfo.siteAbsoluteUrl + "/Pages/VideoPlayer.aspx?videopath=" + result.File.ServerRelativeUrl;
+                    }
+                    else {
+                        docUrl = result.File.ServerRelativeUrl;
+                    }
+
+                    // Add to the HTML for program bound documents
+                    html +=
+                        '<tr>' +
+                            '<td><img src="' + GetDocIcon(extension) + '"></td>' +
+                            '<td><a href="' + docUrl + '">' + docName + '</a></td>';
+                    if (result.Featured) {
+                        html +=
+                            '<td><i class="fa fa-thumb-tack icon-featured" aria-hidden="true" value="' + itemUri + '"></i></td>';
+                    }
+                    else {
+                        html +=
+                            '<td><i class="fa fa-thumb-tack" aria-hidden="true" value="' + itemUri + '"></i></td>';
+                    }
+                    html +=
+                        '</tr>';
+                }
+                jQuery("#docsContainer").html(html);
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function LoadProgramDocuments(initTables) {
+        var url = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/lists/getbytitle('Program Documents')/items?$select=File,Featured,Programs&$expand=File&$top=500";
+        jQuery.ajax({
+            url: url,
+            method: "GET",
+            headers: { 
+                        "Accept": "application/json; odata=verbose",
+                    },
+            success: function (data) {
+                var html = "";
+                var allDocs = "";
+                var docName = "";
+                var extension = "";
+                var docUrl = "";
+                var itemUri = "";
+                var result;
+                console.log(data.d.results.length);
+                for (i = 0; i < data.d.results.length; i++) {
+                    result = data.d.results[i];
+                    docName = result.File.Name;
+                    extension = docName.substr(docName.lastIndexOf('.') + 1);
+                    itemUri = result.__metadata.uri;
+
+                    if (IsOfficeDocument(extension)) {
+                        docUrl = _spPageContextInfo.webAbsoluteUrl + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + result.File.ServerRelativeUrl;
+                    }
+                    else if (IsVideoFile(extension)) {
+                        docUrl = _spPageContextInfo.siteAbsoluteUrl + "/Pages/VideoPlayer.aspx?videopath=" + result.File.ServerRelativeUrl;
+                    }
+                    else {
+                        docUrl = result.File.ServerRelativeUrl;
+                    }
+
+                    // Add item to all document listing
+                    if (initTables) {
+                        allDocs +=
+                            '<tr>' +
+                                '<td><img src="' + GetDocIcon(extension) + '"></td>' +
+                                '<td><a href="' + docUrl + '">' + docName + '</a></td>' +
+                                '<td><i class="fa fa-plus toggle-docs" aria-hidden="true" value="' + itemUri + '" style="cursor: pointer;"></i></td>' + 
+                            '</tr>';
+                    }
+                    else {
+
+                    }
+
+                    // Add to the HTML for program bound documents
+                    if (result.Programs) {
+                        if (result.Programs.indexOf(pa_programId) != -1) {
+                            html +=
+                                '<tr>' +
+                                    '<td><img src="' + GetDocIcon(extension) + '"></td>' +
+                                    '<td><a href="' + docUrl + '">' + docName + '</a></td>';
+                            if (result.Featured) {
+                                html +=
+                                    '<td><i class="fa fa-thumb-tack icon-featured" aria-hidden="true" value="' + itemUri + '"></i></td>';
+                            }
+                            else {
+                                html +=
+                                    '<td><i class="fa fa-thumb-tack" aria-hidden="true" value="' + itemUri + '"></i></td>';
+                            }
+                            html +=
+                                '</tr>';
+
+                        }
+                    }
+                }
+                jQuery("#docsContainer").html(html);
+
+                if (initTables) {
+                    // Turn table into sortable datatable
+                    jQuery(".docs-table").DataTable({
+                        "paging": false,
+                        "searching": false,
+                        "info": false,
+                        "ordering": true,
+                        "order": [[1, "asc"]],
+                        "columnDefs": [
+                            { "orderable": false, "targets": 0 },
+                            { "orderable": false, "targets": 2 },
+                        ]
+                    });
+                }
+
+                // Add tack handler
+                jQuery(document).on("click", ".fa-thumb-tack", function() {
+                    ToggleFeatured(jQuery(this));
+                });
+
+                // Add all document content to container
+                jQuery("#allDocsContainer").html(allDocs);
+
+                if (initTables) {
+                    // Load all documents container
+                    jQuery(".docs-table-all").DataTable({
+                        "paging": true,
+                        "searching": true,
+                        "info": false,
+                        "ordering": true,
+                        "order": [[1, "asc"]],
+                        "columnDefs": [
+                            { "orderable": false, "targets": 0 },
+                            { "orderable": false, "targets": 2 },
+                        ]
+                    });
+                }
+                
+                // Add handler to add document to program
+                jQuery(document).on("click", ".toggle-docs", function() {
+                    if (jQuery(this).hasClass("fa-plus")) {
+                        ToggleDocumentAssociation(jQuery(this), "ADD");
+                    }
+                    if (jQuery(this).hasClass("fa-remove")) {
+                        ToggleDocumentAssociation(jQuery(this), "REMOVE");
+                    }
+                });
+
+                jQuery('#document-modal').on('hidden.bs.modal', function (e) {
+                    var data = jQuery(".docs-table-all").DataTable().data();
+                    console.log("Rows in table: " + data.length);
+                    for (i = 0; i < 10; i++) {
+                        console.log(data[i]);
+                    }
+                    //LoadProgramDocuments(false);
+                })
+                
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    var programId = getParameterByName("progid");
+    if (programId) {
+        jQuery("#progIdHolder").text(programId);
+    }
+    else {
+        jQuery("#progIdHolder").hide();
+    }
+    LoadProgramDocuments(true);
+</script>

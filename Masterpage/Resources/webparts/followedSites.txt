@@ -1,0 +1,50 @@
+<script>
+jQuery(document).ready(function()
+{
+LoadFollowedSites(jQuery('.myFollowedSites'));
+});
+
+function LoadFollowedSites(element)
+{
+	jQuery.ajax({
+		url:"/_api/web/lists/GetByTitle('Favorites')/items?$select=ID,URL,Order,Author/Id&$expand=Author&$filter=(Author/Id eq " + _spPageContextInfo.userId + ")&$orderby=Order asc",
+		type:"GET",
+		headers:{Accept:"application/json;odata=verbose"},
+		success:function(d)
+		{
+			var departmentSites = "";
+			var projectSites = "";
+			var communitySites = "";
+			var functionalSites = "";
+			var generalSites = "";
+			var counter = 0;
+			jQuery.each(d.d.results, function(i,n)
+			{
+				var html =
+					'<li title="' + n.URL.Description + '">' + 
+						'<a href="' + n.URL.Url + '" id="' + n.ID + '">' +
+							'<span class="siteName">' + 
+								n.URL.Description + 
+							'</span>' +
+						'</a>' +
+						'<i class="icon-remove fa fa-times"></i>' +
+					'</li>';
+				generalSites += html;
+				counter++;
+			});
+			if(generalSites != "")
+				jQuery(element).append('<div class="sites"><ul>' + generalSites + '</ul></div>');
+			//jQuery(element).append('<div class="viewMore"><a href="#">Customize</a></div>');
+			jQuery('.myFollowedSites .icon-remove').click(function(){
+				var p = jQuery(this).parent().find('a');
+				removeFavorite(jQuery(p).attr('id'), jQuery(p).parent());
+				jQuery(this).parent().toggle();
+			});
+		},error:function(d) {
+			console.log(JSON.stringify(d));
+		}
+	});
+}
+</script>
+<div class="myFollowedSites"></div>
+<div class="followSuggestions"></div>

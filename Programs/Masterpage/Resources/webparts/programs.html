@@ -1,16 +1,16 @@
+<script src="/_catalogs/masterpage/resources/programstrings.js" type="text/javascript"></script>
+<script src="/_catalogs/masterpage/resources/flip.min.js" type="text/javascript"></script>
 <div class="program-column" id="programColumn">
     <div class="ms-webpart-chrome-title">
         <span class="js-webpart-titleCell">
-            <h2 class="ms-webpart-titleText">
-                Programs
-            </h2>
+            <h2 class="ms-webpart-titleText"></h2>
         </span>
     </div>
     <div class="wrapper">
         <div class="program-filter" id="programFilter">
         </div>
         <div class="program-count">
-            <h3><span id="activeNumber"></span> Active Programs</h3>
+            <h3><span id="activeNumber"></span> <span id="activePrograms"></span></h3>
         </div>
         <a class="program-arrow" href="#" id="controlL">
             <i class="program-arrow icon-caret-left">
@@ -23,17 +23,10 @@
             <i class="program-arrow icon-caret-right">
             </i>
         </a>
+        <div id="addNewLink"></div>
     </div>
 </div>
 
-<script>//<![CDATA[
-                $(document).ready(function(){
-
-                    
-
-                });
-            //]]>
-            </script>
 <script>
     function SetupFlipCards() {
         //Add flip functionality
@@ -106,7 +99,7 @@
                 }
             } else {
                 jQuery('#controlL').show();
-                if ((numberofcards * 260) + marginLeftValue - extraCard <= 0) {
+                if ((numberofcards * 260) + marginLeftValue < wpWidth) {
                     jQuery('#controlR').hide();
                 }
                 else {
@@ -132,11 +125,33 @@
         });
     }
 
-    function GetProgramDocsHtml(programName, container, link) {
-        var htmlString = "";
-        
+    function IsOfficeDocument(extension) {
+        switch(extension.toUpperCase()) {
+            case "PPT":
+                return true;
+                break;
+            case "PPTX":
+                return true;
+            case "DOC":
+                return true;
+                break;
+            case "DOCX":
+                return true;
+            case "XLS":
+                return true;
+                break;
+            case "XLSX":
+                return true;
+            default:
+                return false;
+        }
+    }
 
-        var url = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/getfolderbyserverrelativeurl('Programs/" + programName + "')/files?$expand=ListItemAllFields";
+    function GetProgramDocsHtml(programId, container, link) {
+        var htmlString = "";
+        var siteLang = GetSiteLang();
+
+        var url = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/lists/getbytitle('Program Documents')/items?$select=File,Featured,Programs&$filter=Featured ne 'false'&$expand=File";
         query = "";
         jQuery.ajax({
 	        url: url + query,
@@ -149,33 +164,41 @@
 	            var docsAdded = 0;
                 var result;
                 var docUrl = "";
+                var owaUrl = _spPageContextInfo.siteAbsoluteUrl + "/_layouts/15/WopiFrame.aspx?sourcedoc=";
                 var docsFound = data.d.results.length;
                 for (i = 0; i < docsFound; i++) {
+                    result = data.d.results[i];
                     if (docsAdded == 2) {
                         break;
                     }
                     else {
-                        if (data.d.results[i].ListItemAllFields.Featured == true) {
-                            var docName = data.d.results[i].Name;
+                        if (result.Programs.indexOf(programId) != -1) {
+                            var docName = result.File.Name;
                             var extension = docName.substr(docName.lastIndexOf('.') + 1);
                             var imgURL = GetDocIcon(extension);
 
-                            htmlString += "<a class='program-card-doc' href='" + data.d.results[i].ServerRelativeUrl + "'>";
+                            if (IsOfficeDocument(extension)) {
+                                docUrl = owaUrl + result.File.ServerRelativeUrl;
+                            }
+                            else {
+                                docUrl = result.File.ServerRelativeUrl;
+                            }
+                            htmlString += "<a class='program-card-doc' href='" + docUrl + "'>";
                             htmlString += "<img src='" + imgURL + "'>";
-                            htmlString += "<span>" + data.d.results[i].Name + "</span>";
+                            htmlString += "<span>" + result.File.Name + "</span>";
                             htmlString += "</a>";
                             docsAdded++;
                         }
                     }
                 }
                 htmlString += "</div>";
-                htmlString += "<a class='program-all-docs' href='" + link + "'>See all documents</a>";
+                htmlString += "<a class='program-all-docs' href='" + link + "'>" + GetProgramString("See all documents", siteLang) + "</a>";
                 jQuery("#" + container).html(htmlString);
 	        },
 	        error: function (data) {
                 var htmlString = "";
 	            htmlString += "No featured documents found.";
-                htmlString += "<a class='program-all-docs' href='" + link + "'>See all documents</a>";
+                htmlString += "<a class='program-all-docs' href='" + link + "'>" + GetProgramString("See all documents", siteLang) + "</a>";
                 jQuery("#" + container).html(htmlString);
 	        }
 	    });
@@ -219,6 +242,7 @@
     }
 
     function RenderProgramWebPart(container) {
+        var siteLang = GetSiteLang();
         var programLink = "";
         var htmlString = "";
         var docHtml = "";
@@ -239,23 +263,32 @@
         htmlString += "<div class='row programs'>";
         htmlString += "<div class='program-card-container'>";
 
-        console.log(allResults.length);
         jQuery.each(allResults, function(e, n) {
             programNumber++;
+            programId = "";
             title = "";
             description = "";
+            language = "";
             programLink = "";
             scope = "";
             runTime = "";
+            startDate = "";
+            endDate = "";
             photoImage = "";
             photoUrl = "";
             logoImage = "";
             jQuery.each(n.Cells.results, function(x, y) {
+                if (y.Key == "ProgramIDOWSTEXT") {
+                    programId = y.Value;
+                }
                 if (y.Key == "Title") {
                     title = y.Value;
                 }
-                if (y.Key == "Description") {
+                if (y.Key == "BeamConnectDescription") {
                     description = y.Value;
+                }
+                if (y.Key == "LanguageOWSCHCS") {
+                    language = y.Value;
                 }
                 if (y.Key == "URL") {
                     programLink = y.Value;
@@ -266,10 +299,16 @@
                 if (y.Key == "RunTime") {
                     runTime = y.Value;
                 }
+                if (y.Key == "StartDateOWSDATE") {
+                    startDate = y.Value;
+                }
+                if (y.Key == "EndDateOWSDATE") {
+                    endDate = y.Value;
+                }
                 if (y.Key == "ProgramPhotoOWSURLH") {
                     photoImage = y.Value.split(',')[1].trim();
                 }
-                if (y.Key == "ProgramLogo0OWSURLH") {
+                if (y.Key == "ProgramLogoOWSURLH") {
                     logoImage = y.Value.split(',')[1].trim();
                 }
             });
@@ -281,48 +320,59 @@
                 }
             }
 
-            console.log("Scope: " + scope + "; Active Scope: " + activeScope);
-
+            // Check if item matches selected scope
             if (scope == activeScope || activeScope == "All") {
-                htmlString += "<div class='program program-1'>";
-                htmlString += "<div class='program-card' id='card'>";
+                // Check if the item is active based on dates
+                if (ConfirmActive(runTime, startDate, endDate)) {
+                    //Check if the item is either English or the site language
+                    if (GetSiteLanguage() == language || language == "English") {
+                        htmlString += "<div class='program program-1'>";
+                        htmlString += "<div class='program-card' id='card'>";
 
-                // Set up the front side of the card
-                cardCoverFrontId = "progCardCoverFront" + programNumber;
-                htmlString += "<div class='front card-cover' id='" + cardCoverFrontId + "'>";
-                htmlString += "<div class='program-photo'>";
-                htmlString += "<a class='toggle-card' id='toggle-btn'></a>";
-                programLink = "/Pages/Program.aspx?name=" + title;
-                htmlString += "<a class='program-card-link' href='" + programLink + "'>";
-                htmlString += "<div class='program-card-title'>";
-                htmlString += "<img src='" + logoImage + "'>";
-                htmlString += "</div>";
-                htmlString += "</a>";
-                htmlString += "</div>";
-                htmlString += "</div>";
-                
-                // Set up the back side of the card
-                cardCoverBackId = "progCardCoverBack" + programNumber;
-                htmlString += "<div class='back card-cover' id='" + cardCoverBackId + "'>";
-                htmlString += "<a class='toggle-card' id='toggle-btn'></a>";
-                if (description) {
-                    htmlString += "<p class='program-card-description'>" + description + "</p>";
+                        // Set up the front side of the card
+                        cardCoverFrontId = "progCardCoverFront" + programNumber;
+                        htmlString += "<div class='front card-cover' id='" + cardCoverFrontId + "'>";
+                        htmlString += "<div class='program-photo'>";
+                        htmlString += "<a class='toggle-card' id='toggle-btn'></a>";
+                        programLink = "/" + siteLang + "/" + GetProgramString("Pages", siteLang) + "/Program.aspx?progid=" + programId;
+                        htmlString += "<a class='program-card-link' href='" + programLink + "'>";
+                        htmlString += "<div class='program-card-title'>";
+                        htmlString += "<img src='" + logoImage + "'>";
+                        htmlString += "</div>";
+                        htmlString += "</a>";
+                        htmlString += "</div>";
+                        if (userIsAdmin) {
+                            htmlString += "<a class='program-edit-link' href=\"/Pages/Program-Admin.aspx?progid=" + programId + "\">" + GetProgramString("Edit", siteLang);
+                            htmlString += "</a>";
+                        }
+                        htmlString += "</div>";
+                        
+                        // Set up the back side of the card
+                        cardCoverBackId = "progCardCoverBack" + programNumber;
+                        htmlString += "<div class='back card-cover' id='" + cardCoverBackId + "'>";
+                        htmlString += "<div class='program-photo'>";
+                        htmlString += "<a class='toggle-card' id='toggle-btn'></a>";
+                        if (description) {
+                            htmlString += "<p class='program-card-description'>" + description + "</p>";
+                        }
+                        docContainerId = "progDocContainer" + programNumber;
+                        htmlString += "<div class='program-card-docs' id='" + docContainerId + "'>";
+                        htmlString += "</div>";
+                        htmlString += "</div>";
+                        htmlString += "</div>";
+                        htmlString += "</div>";
+                        htmlString += "<h3>" + title + "</h3>";
+                        htmlString += "</div>";
+
+                        programPhotoArray.push(cardCoverFrontId + "|" + photoImage);
+                        programPhotoArray.push(cardCoverBackId + "|" + photoImage);
+                        //jQuery(".program-photo").css('background-image', 'url(' + photoImage + ')');
+
+                        // Find and add the featured documents
+                        GetProgramDocsHtml(programId, docContainerId, programLink);
+                        programsAdded++;
+                    }
                 }
-                docContainerId = "progDocContainer" + programNumber;
-                htmlString += "<div class='program-card-docs' id='" + docContainerId + "'>";
-                htmlString += "</div>";
-                htmlString += "</div>";
-                htmlString += "</div>";
-                htmlString += "<h3>" + title + "</h3>";
-                htmlString += "</div>";
-
-                programPhotoArray.push(cardCoverFrontId + "|" + photoImage);
-                programPhotoArray.push(cardCoverBackId + "|" + photoImage);
-                //jQuery(".program-photo").css('background-image', 'url(' + photoImage + ')');
-
-                // Find and add the featured documents
-                GetProgramDocsHtml(title, docContainerId, programLink);
-                programsAdded++;
             }
         });
 
@@ -333,6 +383,32 @@
         jQuery("#activeNumber").html(programsAdded);
         jQuery("#" + container).html(htmlString);
 
+        // Set width of outer container
+        var widthCards = jQuery('.program-card-container').innerWidth();
+        jQuery('.programs').width(widthCards);
+
+        // Re-evaluate right arrow
+        var marginLeftValue = parseInt(jQuery('.programs').css('margin-left'));
+        var wpWidth = parseInt(jQuery('.wrapper').css('width'));
+        var extraCard;
+        if (wpWidth > 600) {
+            extraCard = 540;
+        }
+        else {
+            extraCard = 0;
+        }
+        if ((programsAdded * 260) + marginLeftValue - extraCard <= 0) {
+            jQuery('#controlR').hide();
+        }
+        else {
+            jQuery('#controlR').show();
+        }
+
+        if(userIsAdmin) {
+            var newProgramLink = '<a class="program-add-new" href="/Pages/Program-Admin.aspx"><h3> <i class="icon-plus-sign"></i> <span id="addNewProgram">' + GetProgramString("Add New Program", siteLang) + '</span></h3></a>';
+            jQuery("#addNewLink").html(newProgramLink);
+        }
+
         // Refresh other web part elements
         RenderScopeDropdown(scopeArray, "programFilter");
         SetupFlipCards();
@@ -341,8 +417,8 @@
     }
 
     function ProgramSearch(programScope) {
-        var siteUrl =  _spPageContextInfo.siteAbsoluteUrl;
-        var searchUrl = "/_api/search/query?querytext='ContentType:Program IsContainer:true'&selectproperties='Title,Description,ProgramScope,RunTime,ProgramPhotoOWSURLH,ProgramLogo0OWSURLH'";
+        var pathFilter = _spPageContextInfo.siteAbsoluteUrl + "/Lists/Programs";
+        var searchUrl = _spPageContextInfo.siteAbsoluteUrl + "/_api/search/query?querytext='ContentType:Connect Program AND Path:" + pathFilter + "'&selectproperties='ProgramIDOWSTEXT,Title,BeamConnectDescription,LanguageOWSCHCS,ProgramScope,RunTime,StartDateOWSDATE,EndDateOWSDATE,ProgramPhotoOWSURLH,ProgramLogoOWSURLH'&RowLimit=500&sortlist='Order1OWSNMBR:ascending'&TrimDuplicates=false";
         
         jQuery.ajax({
             url: searchUrl,
@@ -360,13 +436,46 @@
                 }
             },
             error: function(e) {
-                jQuery("#programWrapper").html("Error getting program results: " + e.message);
+                jQuery("#programWrapper").html("Error getting program results: " + JSON.stringify(e));
             }
         });
     }
 
+    function TranslateDOMStrings() {
+        var siteLang = GetSiteLang();
+        jQuery(".ms-webpart-titleText").text(GetProgramString("Programs", siteLang));
+        jQuery("#activePrograms").text(GetProgramString("Active Programs", siteLang));    }
+
+    function CheckUserPermissions() {
+        SP.SOD.executeFunc('SP.Runtime.js', 'SP.ClientContext',
+            function() {
+            SP.SOD.executeFunc('SP.js', 'SP.ClientContext',
+                function() {
+                    var siteUrl = _spPageContextInfo.webAbsoluteUrl;
+                    var clientContext = new SP.ClientContext(siteUrl);
+                    web = clientContext.get_web();
+                    clientContext.load(web, 'Title', 'EffectiveBasePermissions');
+                    clientContext.executeQueryAsync(onSuccess, onError);
+                });
+            });
+    }
+
+    function onSuccess(){
+        var permissions = SP.PermissionKind.manageWeb;
+        if(web.get_effectiveBasePermissions().has(permissions)){
+            userIsAdmin = true;
+        }
+        ProgramSearch(activeScope);
+    }
+    function onError(sender, args) {
+        console.log(args.get_message() + '\n' + args.get_stackTrace());
+        ProgramSearch(activeScope);
+    }
+    
+    var web;
     var activeScope = "All";
     var allResults;
-    ProgramSearch(activeScope);
-    
+    var userIsAdmin = false;
+    TranslateDOMStrings();
+    CheckUserPermissions();
 </script>

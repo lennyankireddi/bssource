@@ -119,8 +119,8 @@
     }
     
     function RenderFeaturedDocs () {
-        var programName = getParameterByName("name");
-        var url = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/getfolderbyserverrelativeurl('Programs/" + programName + "')/files";
+        var programId = getParameterByName("progid");
+        var url = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/lists/getbytitle('Program Documents')/items?$select=File,Featured,Programs&$filter=substringof('" + programId + "', Programs)&$expand=File";
         query = "";
         jQuery.ajax({
 	        url: url + query,
@@ -145,15 +145,16 @@
                 var docsFound = data.d.results.length;
                 
                 for (i = 0; i < docsFound; i++) {
-                    filename = data.d.results[i].Name;
+                    result = data.d.results[i];
+                    filename = result.File.Name;
                     extension = filename.substr(filename.lastIndexOf('.') + 1);
                     if (IsOfficeDocument(extension)) {
-                        docUrl = _spPageContextInfo.webAbsoluteUrl + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + data.d.results[i].ServerRelativeUrl;
+                        docUrl = _spPageContextInfo.siteAbsoluteUrl + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + result.File.ServerRelativeUrl;
                     }
                     else {
-                        docUrl = data.d.results[i].ServerRelativeUrl;
+                        docUrl = result.File.ServerRelativeUrl;
                     }
-                    docData = data.d.results[i].Title + "|" + docUrl + "|" + GetDocIcon(extension.toLowerCase());
+                    docData = result.File.Name + "|" + docUrl + "|" + GetDocIcon(extension.toLowerCase()) + "|" + result.Featured;
                     filetype = GetFileType(extension.toUpperCase());
 
                     // Check if file type was already found
@@ -196,15 +197,21 @@
 
                 var docInfo;
                 for (i = 0; i < keys.length; i++) {
-                    htmlString += "<div class='program-docs'>";
-                    htmlString += "<h3>" + keys[i] + "</h3>"
-                    htmlString += "<ul class='list-unstyled'>";
+                    var headerAdded = false;
                     for (j = 0; j < arrayList[i].length; j++) {
                         docInfo = arrayList[i][j].split('|');
-                        htmlString += "<li>";
-                        htmlString += "<span class='docIcon'><img src='" + docInfo[2] + "'/></span>&nbsp;";
-                        htmlString += "<span class='docUrl'><a href='" + docInfo[1] + "'>" + docInfo[0] + "</a></span>";
-                        htmlString += "</li>";
+                        if (docInfo[3] === "false") {
+                            if (!headerAdded) {
+                                htmlString += "<div class='program-docs'>";
+                                htmlString += "<h3>" + keys[i] + "</h3>"
+                                htmlString += "<ul class='list-unstyled'>";
+                                headerAdded = true;
+                            }
+                            htmlString += "<li>";
+                            htmlString += "<span class='docIcon'><img src='" + docInfo[2] + "'/></span>&nbsp;";
+                            htmlString += "<span class='docUrl'><a href='" + docInfo[1] + "'>" + docInfo[0] + "</a></span>";
+                            htmlString += "</li>";
+                        }
                     }
                     htmlString += "</ul>";
                     htmlString += "</div>";

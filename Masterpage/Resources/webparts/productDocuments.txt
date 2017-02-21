@@ -1,0 +1,559 @@
+<script>
+	var allTerms = [];
+	var needTranslation = false;
+	jQuery(document).ready(function()
+	{
+		LoadTaxonomyJSOM();
+		if(needTranslation == false)
+		{
+			GetSpotlightConfiguration();
+			GetBrandDocs();
+		}
+		else
+		{
+			QueueLoadBrandContent();
+		}
+	});
+
+	function QueueLoadBrandContent()
+	{
+		if(allTerms.length != 0)
+		{
+			GetSpotlightConfiguration();
+			GetBrandDocs();
+		}
+		else
+		{
+			window.setTimeout(function() {
+				QueueLoadBrandContent();
+			}, 250);
+		}
+	}	
+
+	function LoadTaxonomyJSOM()
+	{
+		if(_spPageContextInfo.currentLanguage != 1033)
+		{
+			needTranslation = true;
+			var sbase = _spPageContextInfo.webServerRelativeUrl + "/_layouts/15/";
+			jQuery.getScript(sbase + "SP.Runtime.js", function(){
+				jQuery.getScript(sbase + "SP.js", function() {
+					jQuery.getScript(sbase + "SP.Taxonomy.js", loadtermset);
+				});
+			});
+		}
+	}
+	
+	function loadtermset()
+	{
+		var termSetName = "Brand Locations";
+		var locale = _spPageContextInfo.currentLanguage; //loads term set using current language
+
+		var clientContext  = SP.ClientContext.get_current();
+		var taxonomySession = SP.Taxonomy.TaxonomySession.getTaxonomySession(clientContext);
+		var sets = taxonomySession.getTermSetsByName(termSetName, locale);
+		var tset = sets.getByName('Brand Locations')
+		var terms = tset.getAllTerms();
+		var clientContext = SP.ClientContext.get_current();
+		
+		clientContext.load(taxonomySession);
+		clientContext.load(sets);
+		clientContext.load(tset);
+		clientContext.load(terms);
+
+		clientContext.executeQueryAsync(function onSuccess(sender, args) {
+		
+			var enumerator = terms.getEnumerator();
+
+			while (enumerator.moveNext()) {
+				var spTerm = enumerator.get_current();
+				if(!spTerm.$5_0.$H_0.IsDeprecated)
+				{
+					var translation = "";
+					try
+					{
+						var trans = JSON.parse(spTerm.$5_0.$H_0.LocalCustomProperties._Sys_Trns_LabelMap); //gets a dictionary of translated labels of the term
+						for(n = 0; n < trans.STM.length;n++)
+						{
+							if(trans.STM[n].Key.T == _spPageContextInfo.currentLanguage)
+							{
+								translation = trans.IL[n].Value;
+								break;
+							}
+						}
+					}
+					catch(e) {
+						translation = spTerm.get_name();
+					}
+					var item = {
+						Name: translation,
+						Id: spTerm.get_id()._m_guidString$p$0,
+						Translation: spTerm.get_name(),
+						PathOfTerm: spTerm.$5_0.$H_0.PathOfTerm
+					};
+					//console.log(item.Translation + " " + item.PathOfTerm);
+					allTerms.push(item);
+					//console.log(allTerms);
+				}
+			}
+		}, function onFailure(sender, args) {
+			console.log('Error loading translated term set: ' + args.get_message());
+		});
+	}
+	
+	function GetTermByPath(name)
+	{
+		//console.log("Looking for: " + name);
+		var translatedterm = "";
+		if (allTerms != null & allTerms.length != 0)
+		{
+			for (i = 0; i < allTerms.length; i++)
+			{
+				
+				if (allTerms[i].PathOfTerm == name)
+				{
+					//console.log("Found: " + allTerms[i].PathOfTerm + " - " + allTerms[i].Translation);
+					return allTerms[i].Translation
+				}
+			}
+		}
+		return translatedterm;
+	}
+
+	function GetTermbyGUID (termGuid)
+	{
+		var translatedterm = "";
+		if (allTerms != null & allTerms.length != 0)
+		{
+			for (i = 0; i < allTerms.length; i++)
+			{
+				if (allTerms[i].Id == termGuid)
+				{
+					return allTerms[i].Translation
+				}
+			}
+		}
+		return translatedterm;
+	}
+	
+	function GetSpotlightConfiguration()
+	{
+		var currentWebURL = _spPageContextInfo.webAbsoluteUrl.replace("/es/","/Connect/").replace("/fr/","/Connect/").replace("/de/","/Connect/").replace("/pl/","/Connect/").replace("/pt/","/Connect/");
+		currentWebURL = currentWebURL.replace("/ja/","/Connect/").replace("/zhcn/","/Connect/").replace("/zhhk/","/Connect/").replace("/ru/","/Connect/");
+		jQuery.ajax({
+			url: currentWebURL + "/_api/web/lists/GetByTitle('Brand Spotlight')/Items?$select=BrandLocation,Title,URL,ImageURL,FieldValuesAsText/BrandLocation&$expand=FieldValuesAsText&$top=2",
+			type:"GET",
+			headers: {"accept":"application/json;odata=verbose"},
+			success:function(e){
+				jQuery.each(e.d.results,function(i,t){
+					var s = jQuery('.row .one-half:eq(' + i + ')');
+
+					var tGUID = "";						
+					var translated_title = "";
+
+					if(_spPageContextInfo.currentLanguage != 1033 && t.FieldValuesAsText.BrandLocation != "")
+					{
+						// get translated term for toolkits and playbooks
+						try
+						{														
+							tGUID = t.BrandLocation.results[0].TermGuid;
+							translated_title = GetTermbyGUID(tGUID);
+						}
+						catch(e)
+						{
+							//console.log(e);
+						}
+
+						jQuery(s).css('background-image',"url('" + t.ImageURL.Url + "')").find('a').html(translated_title + '<i class="fa fa-angle-right icon-angle-right"></i>');
+					}
+					else
+					{
+						jQuery(s).css('background-image',"url('" + t.ImageURL.Url + "')").find('a').html(t.Title + '<i class="fa fa-angle-right icon-angle-right"></i>');
+					}					
+					
+					if(t.FieldValuesAsText.BrandLocation != "")
+					{
+						QueueSpotlightDocs(t.FieldValuesAsText.BrandLocation,s,translated_title);
+					}
+					else if(t.URL != "")
+						jQuery(s).find('a').attr('href',t.URL.Url);
+				});
+			},
+			error:function(e){
+				console.log(JSON.stringify(e));
+			}
+		});
+	}
+	
+	var allDocs;
+	
+	function QueueSpotlightDocs(category,selector,translated_title)
+	{
+		if(typeof('allDocs') != 'undefined')
+			SpotlightDocs(category, selector,translated_title);
+		else
+			window.setTimeout(function() {
+				QueueSpotlightDocs(category,selector,translated_title);
+			}, 100);
+	}
+	
+	function CheckFollowedStatus()
+	{
+		jQuery(favorites).each(function(i){
+			var f = favorites[i];
+			if(f.url.indexOf('?section=') > 0)
+			{
+				var span = jQuery(".folderName span:contains('" + f.url.split('?section=')[1] + "')");
+				var folderRoot = jQuery(span).parent().parent();
+				jQuery(folderRoot).find('.icon-star-empty').addClass('icon-star').removeClass('icon-star-empty');
+				if(!jQuery(folderRoot).parent().hasClass('active'))
+				{
+					jQuery(folderRoot).parent().addClass('active')
+					jQuery(folderRoot).find('ul.docs').addClass('active').toggle();
+				}
+			}
+			else if(f.url == window.location.href)
+			{
+				jQuery('.s4-clust.ms-promotedActionButton-icon').addClass('icon-star');
+			}
+			else
+			{
+				var doc = jQuery("a[href='" + f.url + "']");
+				jQuery(doc).parent().find('.icon-star-empty').addClass('icon-star').removeClass('icon-star-empty');
+				var pFolder = jQuery(doc).closest('.folder');
+				if(!jQuery(pFolder).hasClass('active'))
+				{
+					jQuery(pFolder).addClass('active');
+					jQuery(pFolder).find('ul.docs').addClass('active').toggle();
+				}
+			}
+		});
+	}
+	
+	function GetBrandDocs(){
+		var a = [];
+		var webTitle = _spPageContextInfo.webTitle;
+		var currentWebURL = _spPageContextInfo.webAbsoluteUrl.replace("/es/","/Connect/").replace("/fr/","/Connect/").replace("/de/","/Connect/").replace("/pl/","/Connect/").replace("/pt/","/Connect/");
+		currentWebURL = currentWebURL.replace("/ja/","/Connect/").replace("/zhcn/","/Connect/").replace("/zhhk/","/Connect/").replace("/ru/","/Connect/");
+		
+		jQuery.ajax({
+			//&$filter=substringof('" + _spPageContextInfo.webTitle + "',FieldValuesAsText/SiteLocation)
+			//Currently sharepoint does not support filtering via rest for either MMS fields or expanded properties. So we have to filter after the result is determined :(
+			//When this eventually gets fixed, the filter for this query is on the first line :)
+			url: currentWebURL + "/_api/web/lists/GetByTitle('Brand Documents')/Items?$select=BrandLocation,FileSystemObjectType,Created,ID,FieldValuesAsText/FileLeafRef,FieldValuesAsText/FileRef,FieldValuesAsText/BrandLocation&$expand=FieldValuesAsText&$top=1000&$filter=startswith(ContentTypeId,'0x0101')&$orderby=Title desc",
+			type: "GET",
+			headers: {"accept": "application/json;odata=verbose"},
+			success:function(e){
+				jQuery.each(e.d.results,function(i,t){
+										
+					if(t.FieldValuesAsText.BrandLocation.indexOf(';') > -1)
+					{
+						jQuery.each(t.BrandLocation.results, function(n,x){
+							a.push(BuildFileRef(t,x.Label));
+						});
+					}
+					else
+						a.push(BuildFileRef(t,t.FieldValuesAsText.BrandLocation));
+				});
+				//sort by location to display the item
+				//can't sort using expanded properties like FieldValuesAsText, so doing it here :)
+				a.sort(function(a,b){
+					if(a.fullbrand.indexOf(':Innovation:') > 0 && a.fullbrand > b.fullbrand) return -1;
+					if(a.fullbrand.indexOf(':Innovation:') > 0) return 0;
+					if(a.fullbrand < b.fullbrand) return -1;
+					if(a.fullbrand > b.fullbrand) return 1;
+					if(a.title > b.title) return 1;
+					if(a.title < b.title) return -1;
+					return 0;
+				});
+				allDocs = a;
+				BuildBrandGrid(a);
+			},
+			error:function(e) {
+				console.log(JSON.stringify(e));
+			}
+		});
+	}
+	
+	function HandleToggle()
+	{
+		jQuery('.folderName > div').click(function() {
+			if(jQuery(this).parent().parent().parent().hasClass('Innovation'))
+			{
+				if(jQuery(this).find('.icon-angle-down').length)
+					jQuery(this).find('.icon-angle-down').removeClass('icon-angle-down').addClass('icon-angle-right');
+				else
+					jQuery(this).find('.icon-angle-right').removeClass('icon-angle-right').addClass('icon-angle-down');
+			}
+			if(jQuery(this).parent().parent().hasClass('active')){
+				jQuery(this).parent().parent().removeClass('active');
+				jQuery(this).parent().next().removeClass('active').toggle();
+			}
+			else
+			{
+				jQuery('.docs.active').toggle();
+				jQuery(this).parent().parent().addClass('active');
+				jQuery(this).parent().next().addClass('active').toggle();
+			}
+		});
+	}
+	
+	function BuildFileRef(item,Brand)
+	{
+		var r = Brand;
+		var f = "";
+		var t = item.FieldValuesAsText.FileLeafRef;
+		t = t.substring(0,t.lastIndexOf('.'));
+		var termguid ="";		
+
+		try
+		{
+			termguid = item.BrandLocation.results[0].TermGuid;
+		}
+		catch(e)
+		{
+			//console.log(e);
+		}
+		
+		if(Brand.indexOf(':') > -1)
+		{
+			r = Brand.split(':')[0];
+			f = Brand.split(':')[1];
+		}
+		else
+			f = r;
+			
+		var i = ({
+			url:item.FieldValuesAsText.FileRef,
+			title:t,
+			id:item.ID,
+			site:item.FieldValuesAsText.SiteLocation,
+			fullbrand:Brand,
+			brand:r,
+			folder:f,
+			termid:termguid
+		});
+
+		//console.log(i);
+		return i;
+	}
+	
+	function SpotlightDocs(category, selector, translated_title)
+	{
+		try
+		{
+			if(_spPageContextInfo.currentLanguage == 1033)
+			{
+				// will be empty for english, so set it the same as category
+				translated_title = category;
+			}
+
+			var docHtml = '<div class="docView"><div class="toggleDocview"><h3>' + translated_title + '</h3><i class="icon-remove"></i></div><ul>';
+			jQuery.each(allDocs,function(i,t){
+				if(t.brand != category)
+					return true;
+				var currentWebURL = _spPageContextInfo.webAbsoluteUrl.replace("/es/","/Connect/").replace("/fr/","/Connect/").replace("/de/","/Connect/").replace("/pl/","/Connect/").replace("/pt/","/Connect/");
+				currentWebURL = currentWebURL.replace("/ja/","/Connect/").replace("/zhcn/","/Connect/").replace("/zhhk/","/Connect/").replace("/ru/","/Connect/");
+				var currentDocDeepURL = t.url.replace("/es/","/Connect/").replace("/fr/","/Connect/").replace("/de/","/Connect/").replace("/pl/","/Connect/").replace("/pt/","/Connect/");
+				currentDocDeepURL = currentDocDeepURL.replace("/ja/","/Connect/").replace("/zhcn/","/Connect/").replace("/zhhk/","/Connect/").replace("/ru/","/Connect/");
+				docURL = currentWebURL + '/_layouts/15/WopiFrame.aspx?sourcedoc=' + currentDocDeepURL;
+				docHtml += 
+					'<li class="doc">' +
+						'<span class="fa fa-star-o icon-star-empty"></span><a href="' + docURL + '">' + t.title + '</a>' +
+					'</li>';
+			});
+			
+			docHtml += '</ul></div>';
+			jQuery(selector).append(docHtml);
+			jQuery(selector).find('a').click(function()
+			{
+				jQuery(this).parent().addClass('active');
+			});
+			jQuery(selector).find('.toggleDocview').click(function()
+			{
+				jQuery(this).parent().parent().removeClass('active');
+			});
+		}
+		catch(e){
+			//for some reason we are getting to spotlightdocs with an undefined allDocs despite checking in the queue function immediately beforehand
+			window.setTimeout(function() {
+				SpotlightDocs(category,selector,translated_title);
+				}, 100);
+		}
+	}	
+
+	function BuildBrandGrid(docs)
+	{
+		var ul = jQuery('#BrandGrid');
+		var root = "";
+		var folder = "";
+		var html = "";
+		var hasInnovation = false;	
+		var translated_root = "";
+		var translated_folder = "";		
+		
+		jQuery.each(docs, function(i,t)
+		{
+			if(t.brand == "2016 Repack" || t.brand == "Toolkits" || t.brand == "Playbooks")
+				return true;
+
+			if(_spPageContextInfo.currentLanguage != 1033)
+			{
+			//	t.brand = GetTermByPath(t.brand);
+				t.folder = GetTermbyGUID(t.termid);
+			}
+
+			if(t.brand != root)
+			{
+				if(root != "")
+					html += 
+								'</ul>' + //docs
+						'</ul>' + //folder
+					'</ul>'; //library
+					
+				if(root == "Innovation")
+				{
+					html += "</div>";
+				}								
+
+				root = t.brand;
+				folder = "";								
+				
+				if(root == "Innovation")
+				{
+					hasInnovation = true;
+					html += '<div class="Innovation">';
+				}
+
+				if(_spPageContextInfo.currentLanguage != 1033)
+				{
+					translated_root = GetTermByPath(t.brand);
+				}
+				else
+				{
+					translated_root = t.brand;
+				}
+
+
+				html += 
+					'<ul class="library ' + root.replace(' ','') + '">' +
+						'<li class="libraryName">' + translated_root + '</li>';
+			}
+			if(t.folder != folder)
+			{
+				if(folder != "")
+				{
+					html += 
+								'</ul>' + //docs
+						'</ul>'; //folder
+				}
+								
+				folder = t.folder;
+				
+				html += 
+						'<ul class="folder ' + folder.replace(' ','') + '">' +
+							//'<li class="folderName"><i class="fa fa-star-o icon-star-empty"></i><div><span>' + folder + '</span><i class="fa fa-angle-right icon-angle-right"></i></div></li>' +
+							'<li class="folderName"><div><span>' + folder + '</span><i class="fa fa-angle-right icon-angle-right"></i></div></li>' +
+								'<ul class="docs">';
+			}
+			
+			var fileUrl = t.url;
+			var extension = fileUrl.split('.').pop().split(/\#|\?/)[0];
+			var currentWebURL = _spPageContextInfo.webAbsoluteUrl.replace("/es/","/Connect/").replace("/fr/","/Connect/").replace("/de/","/Connect/").replace("/pl/","/Connect/").replace("/pt/","/Connect/");
+			currentWebURL = currentWebURL.replace("/ja/","/Connect/").replace("/zhcn/","/Connect/").replace("/zhhk/","/Connect/").replace("/ru/","/Connect/");
+			var currentDocDeepURL = t.url.replace("/es/","/Connect/").replace("/fr/","/Connect/").replace("/de/","/Connect/").replace("/pl/","/Connect/").replace("/pt/","/Connect/");
+			currentDocDeepURL = currentDocDeepURL.replace("/ja/","/Connect/").replace("/zhcn/","/Connect/").replace("/zhhk/","/Connect/").replace("/ru/","/Connect/");
+			GALink = "var that=this;_gaq.push(['_trackEvent','Download','Clicked','" + currentDocDeepURL + "']);setTimeout(function(){location.href='" + currentDocDeepURL + "';},200);return false;";
+			GALink = "ga('send', 'event', 'Download', 'Clicked', '" + t.url + "');"
+
+			var docURL = "";
+			if (['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'].indexOf(extension) >= 0) {
+				docURL = currentWebURL + '/_layouts/15/WopiFrame.aspx?sourcedoc=' + currentDocDeepURL;
+				html += 
+					'<li class="doc">' +
+						'<span class="fa fa-star-o icon-star-empty"></span>' +
+						'<a href="' + docURL + '">' + t.title + '</a>' +
+						'<span class="docDownload"><a href="' + currentDocDeepURL + '" download  onclick="' + GALink  + '"><i class="fa fa-download icon-download-alt"></i></a></span>' +
+					'</li>';
+			}
+			else if (['mp4'].indexOf(extension) >= 0) {
+				docURL = _spPageContextInfo.siteAbsoluteUrl + "/Pages/VideoPlayer.aspx?videopath=" + currentDocDeepURL;
+				html += 
+					'<li class="doc">' +
+						'<span class="fa fa-star-o icon-star-empty"></span>' +
+						'<a href="' + docURL + '">' + t.title + '</a>' +
+						'<span class="docDownload"><a href="' + currentDocDeepURL + '" download onclick="' + GALink  + '"><i class="fa fa-download icon-download-alt"></i></a></span>' +
+					'</li>';
+			}
+			else {
+				docURL = _spPageContextInfo.siteAbsoluteUrl + currentDocDeepURL;
+				html += 
+					'<li class="doc">' +
+						'<span class="fa fa-star-o icon-star-empty"></span>' +
+						'<a href="' + docURL + '">' + t.title + '</a>' +
+						'<span class="docDownload"><a href="' + currentDocDeepURL + '" download onclick="' + GALink  + '"><i class="fa fa-download icon-download-alt"></i></a></span>' +
+					'</li>';
+			}
+	
+		});
+		html += 
+								'</ul>' + //docs
+						'</ul>' + //folder
+				'</ul>'; //library
+		jQuery(ul).append(html);
+		if(hasInnovation)
+			jQuery(ul).addClass('spannedData');
+		else
+			jQuery(ul).addClass('noSpannedData');
+		
+		if(hasInnovation)
+		{
+			var hi = jQuery('div.Innovation').html();
+			jQuery('div.Innovation').remove();
+			jQuery('#BrandGrid').prepend('<div class="Innovation">' + hi + '</div>');
+		}
+		
+		if(docs.length == 0)
+		{
+			jQuery('#BrandGrid').prepend('<div><h2>No Documents found</h2></div>');
+		}
+		
+		jQuery(document).on('click', 'icon-star-empty',function(){
+			addFavorite(GetFollowUrl(jQuery(this)), GetFollowTitle(jQuery(this)));
+			//FollowDocument(GetFollowUrl(jQuery(this)), false, jQuery(this));
+		});
+		
+		HandleToggle();
+		jQuery('.doc').mouseenter(function() {
+			var i = jQuery(this).find('iframe');
+			if(jQuery(i).attr('src') != jQuery(i).attr('url'))
+				jQuery(i).attr('src', jQuery(i).attr('url'));
+		});
+		jQuery('.docPreview').click(function() {
+			jQuery(this).parent().find('a').click();
+		});
+		CheckFollowedStatus();
+	}
+</script>
+<div id="BrandGrid" style="">
+</div>
+<style>
+	.active .docView {display:block;height:12em;width:calc(100% - 3em);margin:1em auto;background:rgba(255,255,255,0.8);padding:0.5em;border-radius:0.5em;}
+	.docView {display:none;}
+	.toggleDocview {cursor:pointer;color:#424242;font-size:2em;border-bottom:1px solid rgba(0,0,0,0.2);padding-bottom:0.25em;}
+	.toggleDocview h3 {width:94%; float:left;}
+	.docView ul {list-style-type:none;padding-left:1em;}
+	.docView li {float:left;max-width:calc(30% - 2em);color:#424242;padding:0 0.5em;background:#fff;min-width:calc(30% - 2em);border-left:3px solid #fff; font-family:"Quattrocento","Arial","Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif;}
+	.docView li:hover {cursor:pointer;border-left-color:#cc0a0a;}
+	.docView .docPreview {left:auto;margin-left:-0.8em;border-top-left-radius:0;margin-top:0;font-family:"Quattrocento","Arial","Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif;}
+	.active .callToAction {display:none !important;}
+	.doc .icon-star, .doc .icon-star-empty {margin-right:1em;cursor:pointer;}
+	.doc .icon-star:hover, .doc .icon-star-empty:hover {color:#000;}
+	.doc > a {display:inline-block;max-width:calc(100% - 4em);}
+	.folderName > i {float:left;}
+	.playbook i.icon-remove {font-size:0.65em;}
+	@media screen and (max-width:640px)
+	{
+		.toggleDocview h3 {width:85%; float:left;font-size:0.8em; line-height:1.8em;}
+	}
+</style>

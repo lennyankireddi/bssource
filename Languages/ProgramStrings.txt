@@ -1,0 +1,100 @@
+"connect": [
+    "Programs",
+    "Active Programs",
+    "Add New Program",
+    "See all documents",
+    "Edit",
+    "Run Time",
+    "Pages",
+    "Featured Files"
+],
+"zhhk": [
+    "Programs",
+    "Active Programs",
+    "Add New Program",
+    "See all documents",
+    "Edit",
+    "Run Time",
+    "Pages",
+    "Featured Files"
+],
+"zhcn": [
+    "Programs",
+    "Active Programs",
+    "Add New Program",
+    "See all documents",
+    "Edit",
+    "Run Time",
+    "Pages",
+    "Featured Files"
+],
+"fr": [
+    "Programs",
+    "Active Programs",
+    "Add New Program",
+    "See all documents",
+    "Edit",
+    "Run Time",
+    "Pages",
+    "Featured Files"
+],
+"de": [
+    "Programs",
+    "Active Programs",
+    "Add New Program",
+    "See all documents",
+    "Edit",
+    "Run Time",
+    "Pages",
+    "Featured Files"
+],
+"ja": [
+    "Programs",
+    "Active Programs",
+    "Add New Program",
+    "See all documents",
+    "Edit",
+    "Run Time",
+    "Pages",
+    "Featured Files"
+],
+"pl": [
+    "Programs",
+    "Active Programs",
+    "Add New Program",
+    "See all documents",
+    "Edit",
+    "Run Time",
+    "Pages",
+    "Featured Files"
+],
+"pt": [
+    "Programs",
+    "Active Programs",
+    "Add New Program",
+    "See all documents",
+    "Edit",
+    "Run Time",
+    "Pages",
+    "Featured Files"
+],
+"ru": [
+    "Programs",
+    "Active Programs",
+    "Add New Program",
+    "See all documents",
+    "Edit",
+    "Run Time",
+    "Pages",
+    "Featured Files"
+],
+"es": [
+    "Programas",
+    "Programas Activos",
+    "Agregar Nuevo Programa",
+    "Ver todos los documentos",
+    "Editar",
+    "Tiempo de ejecución",
+    "Paginas",
+    "Archivos recomendados"
+]

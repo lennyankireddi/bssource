@@ -1,5 +1,5 @@
 <div class="program-docs program-featured">
-    <h3 id="featuredDocHeader">Featured Files</h3>
+    <h3 id="featuredDocHeader"></h3>
     <div id="featuredDocs">
     </div>
 </div>
@@ -18,7 +18,7 @@
 
     function GetDocIcon(extension)
     {
-        switch(extension)
+        switch(extension.toLowerCase())
         {
             case "aspx":
                 return "/_layouts/15/images/icgen.gif";
@@ -56,8 +56,8 @@
     }
     
     function RenderFeaturedDocs () {
-        var programName = getParameterByName("name");
-        var url = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/getfolderbyserverrelativeurl('Programs/" + programName + "')/files?$expand=ListItemAllFields";
+        var programId = getParameterByName("progid");
+        var url = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/lists/getbytitle('Program Documents')/items?$select=File,Featured,Programs&$filter=Featured ne 'false'&$expand=File";
         query = "";
         jQuery.ajax({
 	        url: url + query,
@@ -75,24 +75,33 @@
                 var docUrl = "";
                 var docsFound = data.d.results.length;
                 for (i = 0; i < docsFound; i++) {
+                    result = data.d.results[i];
                     if (docsAdded == 2) {
                         break;
                     }
                     else {
-                        if (data.d.results[i].ListItemAllFields.Featured == true) {
-                            if (docsAdded == 0) {
-                                htmlString += "<ul class='list-unstyled'>";
+                        if (result.Featured == true) {
+                            if (IsOfficeDocument(extension)) {
+                                docUrl = _spPageContextInfo.siteAbsoluteUrl + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + result.File.ServerRelativeUrl;
                             }
-                            filename = data.d.results[i].Name;
-                            extension = filename.substr(filename.lastIndexOf('.') + 1);
-                            icon = GetDocIcon(extension);
+                            else {
+                                docUrl = result.File.ServerRelativeUrl;
+                            }
+                            if (result.Programs.indexOf(programId) != -1) {
+                                if (docsAdded == 0) {
+                                    htmlString += "<ul class='list-unstyled'>";
+                                }
+                                filename = result.File.Name;
+                                extension = filename.substr(filename.lastIndexOf('.') + 1);
+                                icon = GetDocIcon(extension);
 
-                            htmlString += "<li>";
-                            htmlString += "<span class='docIcon'><img src='" + icon + "'/></span>&nbsp;";
-                            htmlString += "<span class='docUrl'><a href='" + data.d.results[i].ServerRelativeUrl + "'>" + data.d.results[i].Title + "</a></span>";
-                            htmlString += "<span class='label label-featured'>FEATURED</span>";
-                            htmlString += "</li>";
-                            docsAdded++;
+                                htmlString += "<li>";
+                                htmlString += "<span class='docIcon'><img src='" + icon + "'/></span>&nbsp;";
+                                htmlString += "<span class='docUrl'><a href='" + docUrl + "'>" + result.File.Name + "</a></span>";
+                                htmlString += "&nbsp;<i class='fa fa-thumb-tack icon-featured'></i>";
+                                htmlString += "</li>";
+                                docsAdded++;
+                            }
                         }
                     }
                 }
@@ -100,17 +109,22 @@
                     htmlString += "</ul>";
                 }
                 else {
-                    jQuery("#featuredDocHeader").html("No files are featured")
+                    jQuery(".program-featured").hide();
                 }
                 jQuery("#featuredDocs").html(htmlString);
 	        },
 	        error: function (data) {
-                var htmlString = "";
-	            htmlString += "No featured files found.";
-                jQuery("#featuredDocs").html(htmlString);
+                jQuery(".program-featured").hide();
 	        }
 	    });
     }
 
+    function TranslateDOMStrings() {
+        siteLang = GetSiteLang();
+        jQuery("#featuredDocHeader").text(GetProgramString("Featured Files", siteLang));
+    }
+
+    var siteLang = "";
+    TranslateDOMStrings();
     RenderFeaturedDocs();
 </script>

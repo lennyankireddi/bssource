@@ -76,9 +76,11 @@ _#-->
                 </div>
 <!--#_
             }
+            console.log('Item title = ' + ctx.CurrentItem.Title);
             var titleHtml = String.format('<a clicktype="{0}" id="{1}" href="{2}" class="ms-srch-item-link" title="{3}" onfocus="{4}" {5}>{6}</a>',
                                           $htmlEncode(clickType), $htmlEncode(id + Srch.U.Ids.titleLink), $urlHtmlEncode(url), $htmlEncode(ctx.CurrentItem.Title), 
                                           showHoverPanelCallback, appAttribs, Srch.U.trimTitle(title, maxTitleLengthInChars, termsToUse));
+            console.log('After conversion = ' + titleHtml);
 _#-->       
             <div id="_#= $htmlEncode(id + Srch.U.Ids.title) =#_" class="ms-srch-item-title"> 
                 <h3 class="ms-srch-ellipsis">
@@ -92,7 +94,7 @@ _#-->
 <!--#_ 
             }
             if (displayPath != 'azjbbfpspdw1.cloudapp.net' && displayPath != 'connect2dev.beamsuntory.com') {
-            	displayPath = displayPath.replace('http://','').replace('azjbbfpspdw1.cloudapp.net', '').replace('connect2dev.beamsuntory.com', '');
+            	displayPath = displayPath.replace('http://','').replace('connect.beamsuntory.com', '').replace('connectadmin.beamsuntory.com', '');
             }
             var truncatedUrl = Srch.U.truncateHighlightedUrl(displayPath, pathLength);
             
@@ -103,19 +105,34 @@ _#-->
             </div>
 
 <!--#_
+            function PrepURLs(body) {
+                while (body.indexOf("<") != -1) {
+                    start = body.indexOf("<");
+                    end = body.indexOf(">");
+                    bracedUrl = body.substr(start, end - start + 1);
+                    url = body.substr(start + 1, end - start - 1);
+                    body = body.replace(bracedUrl, encodeURI(url));
+                }
+                return body;
+            }
             var emailBody = "";
+            var emailBodyMobile = "";
             var newline = "%0D%0A";
             if (ctx.CurrentItem.Path) {
                 emailBody += "Open:";
-                emailBody += newline + "[" + encodeURIComponent(ctx.CurrentItem.Path) + "]";
+                emailBody += newline + "<" + encodeURI(ctx.CurrentItem.Path) + ">";
+                emailBodyMobile += "<a href='" + encodeURI(ctx.CurrentItem.Path) + "'>Open</a>";
                 if (ctx.CurrentItem.ServerRedirectedURL) {
                     emailBody += newline + "Open in Web:";
-                    emailBody += newline + "[" + encodeURIComponent(ctx.CurrentItem.ServerRedirectedURL) + "]";
+                    emailBody += newline + "<" + encodeURI(ctx.CurrentItem.ServerRedirectedURL) + ">";
+                    emailBodyMobile += "<br/><br/><a href='" + encodeURIComponent(ctx.CurrentItem.ServerRedirectedURL) + "'>Open in web</a>";
                 }
             }
+            emailBody = PrepURLs(emailBody);
 _#-->
             <div class="ms-srch-hover-action">
-                <a rel="external" href="mailto:?subject=_#= ctx.CurrentItem.Title =#_&body=_#= emailBody =#_"><span class="icon-envelope"></span>&nbsp;SEND</a>
+                <a class="desktopSendAction" rel="external" href="mailto:?subject=_#= ctx.CurrentItem.Title =#_&body=_#= emailBody =#_"><span class="icon-envelope"></span>&nbsp;SEND</a>
+                <a class="mobileSendAction" rel="external" href="mailto:?subject=_#= ctx.CurrentItem.Title =#_&body=_#= emailBodyMobile =#_"><span class="icon-envelope"></span>&nbsp;SEND</a>
             </div>
         </div>
 

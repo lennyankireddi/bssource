@@ -1,0 +1,178 @@
+<div class="form-horizontal">
+    <div>
+        <fieldset>
+            <!-- Program ID -->
+            <input type="hidden" id="programIdField" value="" />
+            <!-- Program Title -->
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label" for="program-name"><h3>* Program Name</h3>
+                </label>
+                </div>
+                <div class="col-md-8">
+                    <input class="form-control input-md" id="program-name" name="textinput" placeholder="Program Name" type="text">
+                </div>
+            </div>
+            <!-- Language drop down -->
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label" for="program-name"><h3>* Language</h3></label>
+                </div>
+                <div class="col-md-4">
+                    <div class="program-filter language-filter" id="programFilter">
+                        <div class="dropdown-program">
+                            <a class="dropdown-button" id="ddbtnLanguage" href="javascript:{}"><span>Select Language</span><i class="icon-caret-down"></i></a>
+                            <div class="dropdown-program-content" id="ddLanguage">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- Multiple Radios (inline) -->                            
+            <div class="form-group">
+                <div class="col-md-2">
+                        <label class="control-label" for="audience"><h3>* Program Scope</h3>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <div class="program-filter language-filter" id="programFilter">
+                        <div class="dropdown-program">
+                            <a class="dropdown-button" id="ddbtnScope" href="javascript:{}"><span>Select Scope</span><i class="icon-caret-down"></i></a>
+                            <div class="dropdown-program-content" id="ddScope">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- Multiple Radios (inline) -->      
+            <div class="form-group">
+                <div class="col-md-2">
+                        <label class="control-label" for="run-time"><h3>* Run Time</h3>
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <label class="radio-inline" for="radio-fixed">
+                    <input checked="checked" id="radio-fixed" name="runtime" type="radio" value="Fixed"> Fixed</label>
+                    <label class="radio-inline" for="radio-open">
+                    <input id="radio-open" name="runtime" type="radio" value="Open"> Open</label>
+                    <div class="form-calendar">
+                        <div class="form-group calendar-inner-addon col-sm-6">
+                            <label for="exampleInputName2">Start Date:</label>
+                            <div class="input-calendar"><input class="form-control input-sm" id="datepicker-start" type="text"></div>
+                        </div>
+                        <div class="form-group calendar-inner-addon col-sm-6">
+                            <label for="exampleInputEmail2">End Date:</label>
+                            <div class="input-calendar"><input class="form-control input-sm" id="datepicker-end" type="text"></div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- Textarea -->
+            <div class="form-group">
+                <div class="col-md-2">
+                        <label class="control-label" for="textarea"><h3>Description</h3>
+                    </label>
+                    <div id="textarea_feedback">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <textarea class="form-control textarea-teaser-box" id="textarea" maxlength="150" name="textarea" placeholder="Enter" rows="3"></textarea>
+                </div>
+            </div><!-- File Button -->
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label" for="filebutton"><h3>* Program Photo</h3></label>
+                </div>
+                <div class="col-md-3">
+                    <img class="img-responsive" id="programPhotoImage" src="/_catalogs/masterpage/Resources/img-upload.png">
+                </div>
+                <div class="col-md-4">
+                    <p>
+                        <input type="file" id="programPhotoFile" class="program-photo" />
+                        <label class="program-logo-label" id="lblProgramPhoto" for="programPhotoFile"><i class="fa fa-upload"></i> Choose a file</label>
+                        <a href="javascript:{}" class="upload-button btn btn-primary" id="uploadProgramPhoto" style="display: none;">Upload</a>
+                    </p>
+                    <a href="#" type="button" data-toggle="modal" data-target="#photo-modal">Use Existing Photo</a>
+                </div>
+            </div><!-- File Button -->
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label" for="filebutton"><h3>* Program Logo</h3></label>
+                </div>
+                <div class="col-md-3">
+                    <img class="img-responsive" id="programLogoImage" src="/_catalogs/masterpage/Resources/img-upload.png">
+                </div>
+                <div class="col-md-4">
+                    <p>
+                        <input type="file" id="programLogoFile" class="program-logo" />
+                        <label class="program-logo-label" id="lblProgramLogo" for="programLogoFile"><i class="fa fa-upload"></i> Choose a file</label>
+                        <a href="javascript:{}" class="upload-button btn btn-primary" id="uploadProgramLogo" style="display: none;">Upload</a>
+                    </p>
+                    <a href="#" type="button" data-toggle="modal" data-target="#logo-modal">Use Existing Logo</a>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+<!-- Preview -->
+
+<!-- Action buttons -->
+<div class="btn-container pull-right">
+    <button id="btnCancel" class="btn btn-default" type="button">Cancel</button> 
+    <button id="btnSave" class="btn btn-default btn-save" type="button">Save</button> 
+    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#publish-modal">Publish</button>
+</div>
+<div style="clear:both"></div>
+<div class="page-status pull-right">
+    <h3><i id="pageStatusIcon" class="fa fa-check" aria-hidden="true"></i>&nbsp;<span id="pageStatusText"></span></h3>
+</div>
+
+<div style="clear:both"></div>
+
+
+<!-- Publish Modal -->
+<div class="modal fade" id="publish-modal" tabindex="-1" role="dialog" aria-labelledby="publish-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content  modal-simple ">
+      <div class="modal-body">
+         <div class="btn-container">
+            <h2>Are you sure you want to Publish?</h2>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button id="btnPublish" type="button" class="btn btn-primary" data-dismiss="modal">Publish</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Photo Modal -->
+<div class="modal fade" id="photo-modal" tabindex="-1" role="dialog" aria-labelledby="photo-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content  modal-simple ">
+      <div class="modal-body">
+         <div id="photoImageList" class="image-list">
+         </div>
+         <div>
+            <input type="text" value="" id="photoImageUrl" class="image-url" />
+            <input type="button" value="Apply" id="btnApplyPhoto" class="btn btn-primary" data-dismiss="modal" />
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Logo Modal -->
+<div class="modal fade" id="logo-modal" tabindex="-1" role="dialog" aria-labelledby="logo-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content  modal-simple ">
+      <div class="modal-body">
+         <div id="logoImageList" class="image-list">
+         </div>
+         <div>
+            <input type="text" value="" id="logoImageUrl" class="image-url form-control" />
+            <input type="button" value="Apply" id="btnApplyLogo" class="btn btn-primary" data-dismiss="modal" />
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="/_catalogs/masterpage/resources/programadmin.js"></script>

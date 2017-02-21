@@ -1,0 +1,34 @@
+{
+    "__metadata": {
+        "type": "SP.Data.ProgramsListItem"
+    },
+    "Title": "",
+    "Language": "English",
+    "StartDate": "",
+    "OData__EndDate": "",
+    "Program_x0020_Logo": {
+        "__metadata": {
+            "type": "SP.FieldUrlValue"
+        },
+        "Description": "/SiteAssets/Program_Logos/bourbonlegends.png",
+        "Url": "/SiteAssets/Program_Logos/bourbonlegends.png"
+    },
+    "Program_x0020_Photo": {
+        "__metadata": {
+            "type": "SP.FieldUrlValue"
+        },
+        "Description": "/SiteAssets/Program_Photos/bottles.png",
+        "Url": "/SiteAssets/Program_Photos/bottles.png"
+    },
+    "Program_x0020_Scope": {
+        "__metadata": {
+            "type": "SP.Taxonomy.TaxonomyFieldValue"
+        },
+        "Label": "2453",
+        "TermGuid": "87c2063b-5792-4e52-9282-81309a4e8a13",
+        "WssId": 2453
+    },
+    "Run_x0020_Time": "Fixed",
+    "ProgramID": "",
+    "BeamConnectDescription": ""
+}
