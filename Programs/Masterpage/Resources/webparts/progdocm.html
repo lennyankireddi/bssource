@@ -1,5 +1,5 @@
-<link rel="stylesheet" type="text/css" href="/_catalogs/masterpage/resources/jquery.dataTables.min.css">
-<script type="text/javascript" charset="utf8" src="/_catalogs/masterpage/resources/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
 <h3>Content</h3>
 <div class="document-table">
     <table class="table docs-table">
@@ -16,34 +16,10 @@
     </table>
 </div>
 
-<div style="clear: both"></div>
-
-<a class="add-remove-docs" href="javascript:{}" type="button" onclick="jQuery('.docs-all').toggle(100);" style="display: block; margin-top: 15px;">
-    <h3 class="addNew-doc-link">
-        <span class="fa-stack fa-lg">
-          <i class="fa fa-plus fa-stack-2x"></i>
-          <i class="fa fa-minus fa-stack-1x"></i>
-        </span>
-    Add/Remove Documents</h3>
-</a>
-<div class="document-table docs-all" style="display: none; margin-top: 10px;">
-    <table class="table docs-table-all">
-        <thead>
-            <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Add/Remove</th>
-            </tr>
-        </thead>
-        <tbody id="allDocsContainer">
-            
-        </tbody>
-    </table>
-</div>
-
 <!-- Document Library link -->
-<a class="manage-docs" href="" type="button" data-toggle="modal" data-target="#document-modal" style="display: block; margin-top: 15px;">
-    <h3 class="addNew-doc-link"><i aria-hidden="true" class="fa fa-gear" >           
+<div class="program-id-message">Please use the Program ID <span id="progIdHolder"></span> for document associations.</div>
+<a href="#" type="button" data-toggle="modal" data-target="#document-modal">
+    <h2 class="addNew-doc-link"><i aria-hidden="true" class="fa fa-gear" >           
     </i> Manage Documents</h2>
 </a>
 
@@ -62,7 +38,7 @@
       </div>
       <div class="modal-footer">
         <div class="btn-container">
-          <button type="button" id="btnCloseDocModal" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -199,7 +175,6 @@
     }
 
     function ToggleFeatured(tack) {
-        jQuery(tack).removeClass("fa-thumb-tack").addClass("fa-spinner").addClass("fa-spin").addClass("fa-fw");
         var url = jQuery(tack).attr("value");
         jQuery.ajax({
             url: url,
@@ -223,10 +198,9 @@
                         "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
                         "content-type": "application/json;odata=verbose",
                         "X-HTTP-Method": "MERGE",
-                        "If-Match": "*"
+                        "If-Match": match
                     },
                     success: function(data) {
-                        jQuery(tack).removeClass("fa-spinner").removeClass("fa-spin").removeClass("fa-fw").addClass("fa-thumb-tack");
                         if (!featured) {
                             if (!jQuery(tack).hasClass("icon-featured")) {
                                 jQuery(tack).addClass("icon-featured");
@@ -239,310 +213,9 @@
                         }
                     },
                     error: function(err) {
-                        jQuery(tack).removeClass("fa-spinner").removeClass("fa-spin").removeClass("fa-fw").addClass("fa-thumb-tack");
                         console.log(JSON.stringify(err));
                     }
                 });
-            },
-            error: function(err) {
-                console.log(JSON.stringify(err));
-            }
-        });
-    }
-
-    function ToggleDocumentAssociation(icon, action) {
-        if (action == "ADD") {
-            jQuery(icon).removeClass("fa-plus").addClass("fa-spinner").addClass("fa-spin").addClass("fa-fw");
-        }
-        if (action == "REMOVE") {
-            jQuery(icon).removeClass("fa-remove").addClass("fa-spinner").addClass("fa-spin").addClass("fa-fw");
-        }
-        var url = jQuery(icon).attr("value");
-        jQuery.ajax({
-            url: url,
-            method: "GET",
-            headers: {
-                "Accept": "application/json;odata=verbose"
-            },
-            success: function(result) {
-                var match = result.d.__metadata.etag;
-                var programs = result.d.Programs;
-                var programNames = result.d.Program_x0020_Names;
-                var programList;
-                var programNameList;
-                if (action == "ADD") {
-                    if (!programs) {
-                        programs = pa_programId;
-                    }
-                    else {
-                        if (programs.indexOf(pa_programId) == -1) {
-                            programs += "," + pa_programId;
-                        }
-                    }
-
-                    if (!programNames) {
-                        programNames = pa_programName;
-                    }
-                    else {
-                        if (programNames.indexOf(pa_programName) == -1) {
-                            programNames += "," + pa_programName;
-                        }
-                    }
-                }
-                if (action == "REMOVE") {
-                    if (programs) {
-                        programList = programs.split(",");
-                    }
-                    programs = "";
-                    if (programList) {
-                        if (programList.length > 1) {
-                            for (i = 0; i < programList.length; i++) {
-                                if (programList[i] != pa_programId) {
-                                    if (programs == "") {
-                                        programs += programList[i];
-                                    }
-                                    else {
-                                        programs += "," + programList[i];
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if (programNames) {
-                        programNameList = programNames.split(",");
-                    }
-                    programNames = "";
-                    if (programNameList) {
-                        if (programNameList.length > 1) {
-                            for (i = 0; i < programNameList.length; i++) {
-                                if (programNameList[i] == pa_programName) {
-                                    if (programNames == "") {
-                                        programNames += programNameList[i];
-                                    }
-                                    else {
-                                        programNames += "," + programNameList[i];
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                var data = { "__metadata": { "type": "SP.Data.Program_x0020_DocumentsItem" }, "Programs": programs, "Program_x0020_Names": programNames }
-                jQuery.ajax({
-                    url: url,
-                    method: "POST",
-                    data: JSON.stringify(data),
-                    headers: {
-                        "Accept": "application/json;odata=verbose",
-                        "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
-                        "content-type": "application/json;odata=verbose",
-                        "X-HTTP-Method": "MERGE",
-                        "If-Match": match
-                    },
-                    success: function(data) {
-                        jQuery(icon).removeClass("fa-spinner").removeClass("fa-spin").removeClass("fa-fw");
-                        if (action == "ADD") {
-                            if (jQuery(icon).hasClass("fa-plus")) {
-                                jQuery(icon).removeClass("fa-plus");
-                            }
-                            if (!jQuery(icon).hasClass("fa-remove")) {
-                                jQuery(icon).addClass("fa-remove");
-                            }
-                        }
-                        if (action == "REMOVE") {
-                            if (jQuery(icon).hasClass("fa-remove")) {
-                                jQuery(icon).removeClass("fa-remove");
-                            }
-                            if (!jQuery(icon).hasClass("fa-plus")) {
-                                jQuery(icon).addClass("fa-plus");
-                            }
-                        }
-                        RefreshProgramDocuments();
-                    },
-                    error: function(err) {
-                        console.log(JSON.stringify(err));
-                    }
-                });
-            },
-            error: function(err) {
-                console.log(JSON.stringify(err));
-            }
-        });
-    }
-
-    function RefreshProgramDocuments() {
-        var url = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/lists/getbytitle('Program Documents')/items?$select=File,Featured&$expand=File&$filter=substringof('" + pa_programId + "', Programs)&$top=500";
-        jQuery.ajax({
-            url: url,
-            method: "GET",
-            headers: { 
-                        "Accept": "application/json; odata=verbose",
-                    },
-            success: function (data) {
-                var html = "";
-                var allDocs = "";
-                var docName = "";
-                var extension = "";
-                var docUrl = "";
-                var itemUri = "";
-                var result;
-                for (i = 0; i < data.d.results.length; i++) {
-                    result = data.d.results[i];
-                    docName = result.File.Name;
-                    extension = docName.substr(docName.lastIndexOf('.') + 1);
-                    itemUri = result.__metadata.uri;
-
-                    if (IsOfficeDocument(extension)) {
-                        docUrl = _spPageContextInfo.webAbsoluteUrl + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + result.File.ServerRelativeUrl;
-                    }
-                    else if (IsVideoFile(extension)) {
-                        docUrl = _spPageContextInfo.siteAbsoluteUrl + "/Pages/VideoPlayer.aspx?videopath=" + result.File.ServerRelativeUrl;
-                    }
-                    else {
-                        docUrl = result.File.ServerRelativeUrl;
-                    }
-
-                    // Add to the HTML for program bound documents
-                    html +=
-                        '<tr>' +
-                            '<td><img src="' + GetDocIcon(extension) + '"></td>' +
-                            '<td><a href="' + docUrl + '">' + docName + '</a></td>';
-                    if (result.Featured) {
-                        html +=
-                            '<td><i class="fa fa-thumb-tack icon-featured" aria-hidden="true" value="' + itemUri + '"></i></td>';
-                    }
-                    else {
-                        html +=
-                            '<td><i class="fa fa-thumb-tack" aria-hidden="true" value="' + itemUri + '"></i></td>';
-                    }
-                    html +=
-                        '</tr>';
-                }
-                jQuery("#docsContainer").html(html);
-            },
-            error: function(err) {
-                console.log(JSON.stringify(err));
-            }
-        });
-    }
-
-    function LoadProgramDocuments(initTables) {
-        var url = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/lists/getbytitle('Program Documents')/items?$select=File,Featured,Programs&$expand=File&$top=500";
-        jQuery.ajax({
-            url: url,
-            method: "GET",
-            headers: { 
-                        "Accept": "application/json; odata=verbose",
-                    },
-            success: function (data) {
-                var html = "";
-                var allDocs = "";
-                var docName = "";
-                var extension = "";
-                var docUrl = "";
-                var itemUri = "";
-                var result;
-                console.log(data.d.results.length);
-                for (i = 0; i < data.d.results.length; i++) {
-                    result = data.d.results[i];
-                    docName = result.File.Name;
-                    extension = docName.substr(docName.lastIndexOf('.') + 1);
-                    itemUri = result.__metadata.uri;
-
-                    if (IsOfficeDocument(extension)) {
-                        docUrl = _spPageContextInfo.webAbsoluteUrl + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + result.File.ServerRelativeUrl;
-                    }
-                    else if (IsVideoFile(extension)) {
-                        docUrl = _spPageContextInfo.siteAbsoluteUrl + "/Pages/VideoPlayer.aspx?videopath=" + result.File.ServerRelativeUrl;
-                    }
-                    else {
-                        docUrl = result.File.ServerRelativeUrl;
-                    }
-
-                    // Add item to all document listing
-                    allDocs +=
-                        '<tr>' +
-                            '<td><img src="' + GetDocIcon(extension) + '"></td>' +
-                            '<td><a href="' + docUrl + '">' + docName + '</a></td>' +
-                            '<td><i class="fa fa-plus toggle-docs" aria-hidden="true" value="' + itemUri + '" style="cursor: pointer;"></i></td>' + 
-                        '</tr>';
-
-                    // Add to the HTML for program bound documents
-                    if (result.Programs) {
-                        if (result.Programs.indexOf(pa_programId) != -1) {
-                            html +=
-                                '<tr>' +
-                                    '<td><img src="' + GetDocIcon(extension) + '"></td>' +
-                                    '<td><a href="' + docUrl + '">' + docName + '</a></td>';
-                            if (result.Featured) {
-                                html +=
-                                    '<td><i class="fa fa-thumb-tack icon-featured" aria-hidden="true" value="' + itemUri + '"></i></td>';
-                            }
-                            else {
-                                html +=
-                                    '<td><i class="fa fa-thumb-tack" aria-hidden="true" value="' + itemUri + '"></i></td>';
-                            }
-                            html +=
-                                '</tr>';
-
-                        }
-                    }
-                }
-                jQuery("#docsContainer").html(html);
-
-                if (initTables) {
-                    // Turn table into sortable datatable
-                    jQuery(".docs-table").DataTable({
-                        "paging": false,
-                        "searching": false,
-                        "info": false,
-                        "ordering": true,
-                        "order": [[1, "asc"]],
-                        "columnDefs": [
-                            { "orderable": false, "targets": 0 },
-                            { "orderable": false, "targets": 2 },
-                        ]
-                    });
-                }
-
-                // Add tack handler
-                jQuery(document).on("click", ".fa-thumb-tack", function() {
-                    ToggleFeatured(jQuery(this));
-                });
-
-                // Add all document content to container
-                jQuery("#allDocsContainer").html(allDocs);
-
-                if (initTables) {
-                    // Load all documents container
-                    jQuery(".docs-table-all").DataTable({
-                        "paging": true,
-                        "searching": true,
-                        "info": false,
-                        "ordering": true,
-                        "order": [[1, "asc"]],
-                        "columnDefs": [
-                            { "orderable": false, "targets": 0 },
-                            { "orderable": false, "targets": 2 },
-                        ]
-                    });
-                }
-                
-                // Add handler to add document to program
-                jQuery(document).on("click", ".toggle-docs", function() {
-                    if (jQuery(this).hasClass("fa-plus")) {
-                        ToggleDocumentAssociation(jQuery(this), "ADD");
-                    }
-                    if (jQuery(this).hasClass("fa-remove")) {
-                        ToggleDocumentAssociation(jQuery(this), "REMOVE");
-                    }
-                });
-
-                jQuery('#document-modal').on('hidden.bs.modal', function (e) {
-                    LoadProgramDocuments(false);
-                })
-                
             },
             error: function(err) {
                 console.log(JSON.stringify(err));
@@ -551,11 +224,73 @@
     }
 
     var programId = getParameterByName("progid");
-    if (programId) {
-        jQuery("#progIdHolder").text(programId);
-    }
-    else {
-        jQuery("#progIdHolder").hide();
-    }
-    LoadProgramDocuments(true);
+    var url = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/lists/getbytitle('Program Documents')/items?$select=File,Featured&$filter=substringof('" + programId + "', Programs)&$expand=File";
+    query = "";
+    jQuery.ajax({
+        url: url + query,
+        method: "GET",
+        headers: { 
+                    "Accept": "application/json; odata=verbose",
+                },
+        success: function (data) {
+            var html = "";
+            var docName = "";
+            var extension = "";
+            var docUrl = "";
+            var itemUri = "";
+            var result;
+            for (i = 0; i < data.d.results.length; i++) {
+                result = data.d.results[i];
+                docName = result.File.Name;
+                extension = docName.substr(docName.lastIndexOf('.') + 1);
+                itemUri = result.__metadata.uri;
+
+                if (IsOfficeDocument(extension)) {
+                    docUrl = _spPageContextInfo.webAbsoluteUrl + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + result.File.ServerRelativeUrl;
+                }
+                else if (IsVideoFile(extension)) {
+                    docUrl = _spPageContextInfo.siteAbsoluteUrl + "/Pages/VideoPlayer.aspx?videopath=" + result.File.ServerRelativeUrl;
+                }
+                else {
+                    docUrl = result.File.ServerRelativeUrl;
+                }
+                html +=
+                    '<tr>' +
+                        '<td><img src="' + GetDocIcon(extension) + '"></td>' +
+                        '<td><a href="' + docUrl + '">' + docName + '</a></td>';
+                if (result.Featured) {
+                    html +=
+                        '<td><i class="fa fa-thumb-tack icon-featured" aria-hidden="true" value="' + itemUri + '"></i></td>';
+                }
+                else {
+                    html +=
+                        '<td><i class="fa fa-thumb-tack" aria-hidden="true" value="' + itemUri + '"></i></td>';
+                }
+                html +=
+                    '</tr>';
+            }
+            jQuery("#docsContainer").html(html);
+
+            // Turn table into sortable datatable
+            jQuery(".docs-table").DataTable({
+                "paging": false,
+                "searching": false,
+                "info": false,
+                "ordering": true,
+                "order": [[1, "asc"]],
+                "columnDefs": [
+                    { "orderable": false, "targets": 0 },
+                    { "orderable": false, "targets": 2 },
+                ]
+            });
+
+            // Add tack handler
+            jQuery(".fa-thumb-tack").on("click", function() {
+                ToggleFeatured(jQuery(this));
+            });
+        },
+        error: function(err) {
+            console.log(JSON.stringify(err));
+        }
+    });
 </script>

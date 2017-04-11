@@ -426,7 +426,7 @@
 					'<li class="doc">' +
 						'<span class="fa fa-star-o icon-star-empty"></span>' +
 						'<a href="' + docURL + '">' + t.title + '</a>' +
-						'<span class="docDownload"><a href="' + currentDocDeepURL + '" download ><i class="fa fa-download icon-download-alt"></i></a></span>' +
+						'<span class="docDownload"><a href="' + currentDocDeepURL + '" download  onclick="' + GALink  + '"><i class="fa fa-download icon-download-alt"></i></a></span>' +
 					'</li>';
 			}
 			else if (['mp4'].indexOf(extension) >= 0) {
@@ -435,7 +435,7 @@
 					'<li class="doc">' +
 						'<span class="fa fa-star-o icon-star-empty"></span>' +
 						'<a href="' + docURL + '">' + t.title + '</a>' +
-						'<span class="docDownload"><a href="' + currentDocDeepURL + '" download><i class="fa fa-download icon-download-alt"></i></a></span>' +
+						'<span class="docDownload"><a href="' + currentDocDeepURL + '" download onclick="' + GALink  + '"><i class="fa fa-download icon-download-alt"></i></a></span>' +
 					'</li>';
 			}
 			else {
@@ -444,7 +444,7 @@
 					'<li class="doc">' +
 						'<span class="fa fa-star-o icon-star-empty"></span>' +
 						'<a href="' + docURL + '">' + t.title + '</a>' +
-						'<span class="docDownload"><a href="' + currentDocDeepURL + '" download><i class="fa fa-download icon-download-alt"></i></a></span>' +
+						'<span class="docDownload"><a href="' + currentDocDeepURL + '" download onclick="' + GALink  + '"><i class="fa fa-download icon-download-alt"></i></a></span>' +
 					'</li>';
 			}
 	

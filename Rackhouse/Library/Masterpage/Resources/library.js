@@ -175,16 +175,10 @@ function PrepURLs(body) {
     return body;
 }
 
-function ReplaceLanguageInUrl(url, lang) {
-    var newUrl =  url.replace("/zhcn/", lang).replace("/zhhk/", lang).replace("/de/", lang).replace("/es/", lang).replace("/fr/", lang).replace("/ja/", lang).replace("/pl/", lang).replace("/pt/", lang).replace("/ru/", lang);
-    console.log(newUrl);
-    return newUrl;
-}
-
 function PrintLibraryItems(element){
 
     jQuery.ajax({
-        url: ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/GetByTitle('Rackhouse Documents')/items?$expand=File&$orderby=Modified desc",
+        url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Documents')/items?$expand=File&$orderby=Modified desc",
         type:"GET",
         headers:{Accept:"application/json;odata=verbose"},
         success:function(data)

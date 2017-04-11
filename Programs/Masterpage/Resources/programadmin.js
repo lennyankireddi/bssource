@@ -1,13 +1,12 @@
 /* Environment specific variables - CHANGE BEFORE DEPLOYING */
-pa_termStoreName = "Managed Metadata Service - Connect";
-pa_scopeTermSetGuid = "9ab060e7-ba3e-4b81-bd0d-c35c302372a2";
+pa_termStoreName = "Managed Metadata Service Application";
+pa_scopeTermSetGuid = "25f982c6-18bc-4d08-b107-82582b3df7ac";
 
 // Global Variables
 var pa_formMode = "NEW";
 var pa_savedData;
 var pa_publishedData;
 var pa_programId = "";
-var pa_programName = "";
 var pa_programScopes = {};
 var pa_programScopesById = {};
 var pa_language = "";
@@ -298,7 +297,7 @@ function GetZuluDate(dateString) {
 }
 
 function LoadFormData() {
-    var programsUri = "/_api/web/lists/getbytitle('Programs')/items?$select=ProgramID,Title,Language,Program_x0020_Scope,Order1,Run_x0020_Time,StartDate,OData__EndDate,BeamConnectDescription,Program_x0020_Photo,Program_x0020_Logo&$filter=ProgramID eq '" + pa_programId + "'";
+    var programsUri = "/_api/web/lists/getbytitle('Programs')/items?$select=ProgramID,Title,Language,Program_x0020_Scope,Run_x0020_Time,StartDate,OData__EndDate,BeamConnectDescription,Program_x0020_Photo,Program_x0020_Logo&$filter=ProgramID eq '" + pa_programId + "'";
     jQuery.ajax({
         url: programsUri,
         type: "GET",
@@ -313,7 +312,7 @@ function LoadFormData() {
         }
     });
     
-    var savedProgramsUri = "/_api/web/lists/getbytitle('Programs Saved')/items?$select=ProgramID,Title,Language,Program_x0020_Scope,Run_x0020_Time,Order1,StartDate,OData__EndDate,BeamConnectDescription,Program_x0020_Photo,Program_x0020_Logo&$filter=ProgramID eq '" + pa_programId + "'";
+    var savedProgramsUri = "/_api/web/lists/getbytitle('Programs Saved')/items?$select=ProgramID,Title,Language,Program_x0020_Scope,Run_x0020_Time,StartDate,OData__EndDate,BeamConnectDescription,Program_x0020_Photo,Program_x0020_Logo&$filter=ProgramID eq '" + pa_programId + "'";
     jQuery.ajax({
         url: savedProgramsUri,
         type: "GET",
@@ -323,20 +322,19 @@ function LoadFormData() {
         success: function(data) {
             var prog = data.d.results[0];
             pa_savedData = prog;
-            pa_programName = prog.Title;
             jQuery("#program-name").val(prog.Title);
             jQuery("#ddbtnLanguage").find("span").text(prog.Language);
             jQuery("#ddbtnScope").find("span").text(pa_programScopesById[prog.Program_x0020_Scope.TermGuid]);
             if (prog.Run_x0020_Time == "Fixed") {
                 jQuery("#radio-fixed").attr("checked", true);
                 jQuery("#radio-open").attr("checked", false);
-                jQuery("#datepicker-end").val(GetShortDate(prog.OData__EndDate));
             }
             else {
                 jQuery("#radio-fixed").attr("checked", false);
                 jQuery("#radio-open").attr("checked", true);
             }
             jQuery("#datepicker-start").val(GetShortDate(prog.StartDate));
+            jQuery("#datepicker-end").val(GetShortDate(prog.OData__EndDate));
             jQuery("#textarea").val(prog.BeamConnectDescription);
             jQuery("#programPhotoImage").attr("src", prog.Program_x0020_Photo.Url);
             jQuery("#programLogoImage").attr("src", prog.Program_x0020_Logo.Url);
@@ -357,7 +355,7 @@ function GetFormData(listName, action, pageAction) {
         "Title": "",
         "Language": "English",
         "StartDate": "",
-        "OData__EndDate": "2030-01-01T00:00:00Z",
+        "OData__EndDate": "",
         "Program_x0020_Logo": {
             "__metadata": {
                 "type": "SP.FieldUrlValue"
@@ -390,34 +388,28 @@ function GetFormData(listName, action, pageAction) {
 
     if (action == "EDIT") {
         if (pageAction == "PUBLISH") {
-            if (pa_publishedData) {
-                data.__metadata.etag = pa_publishedData.__metadata.etag;
-            }
+            data.__metadata.etag = pa_publishedData.__metadata.etag;
         }
         else if (pageAction == "SAVE") {
             data.__metadata.etag = pa_savedData.__metadata.etag;
         }
     }
-    
-    console.log("ETAG in data: " + data.__metadata.etag);
     data.__metadata.type = "SP.Data." + listName.replace(" ", "_x0020_") + "ListItem";
     data.ProgramID = pa_programId;
     data.Title = jQuery("#program-name").val();
     data.Language = jQuery("#ddbtnLanguage").find("span").text();
     if (jQuery("#ddbtnScope").find("span").text() == "Local") {
-        data.Program_x0020_Scope.Label = "2461";
-        data.Program_x0020_Scope.WssId = 2461;
+        data.Program_x0020_Scope.Label = "2454";
+        data.Program_x0020_Scope.WssId = 2454;
     }
     else {
-        data.Program_x0020_Scope.Label = "2460";
-        data.Program_x0020_Scope.WssId = 2460;
+        data.Program_x0020_Scope.Label = "2453";
+        data.Program_x0020_Scope.WssId = 2453;
     }
     data.Program_x0020_Scope.TermGuid = pa_programScopes[jQuery("#ddbtnScope").find("span").text()].toString();
     data.Run_x0020_Time = jQuery("input:radio[name=runtime]:checked").val();
     data.StartDate = GetZuluDate(jQuery("#datepicker-start").val());
-    if (jQuery("#datepicker-end").val() != "") {
-        data.OData__EndDate = GetZuluDate(jQuery("#datepicker-end").val());
-    }
+    data.OData__EndDate = GetZuluDate(jQuery("#datepicker-end").val());
     data.BeamConnectDescription = jQuery("#textarea").val();
     data.Program_x0020_Photo.Description = photoUrl;
     data.Program_x0020_Photo.Url = photoUrl;
@@ -469,8 +461,6 @@ function EditProgram(listName, pageAction) {
         url = pa_savedData.__metadata.uri;
         match = pa_savedData.__metadata.etag;
     }
-
-    console.log("Form mode: " + pa_formMode + " Page action: " + pageAction + " Saved ETAG: " + pa_savedData.__metadata.etag + " Published ETAG: " + pa_publishedData.__metadata.etag + " Will match: " + match);
     jQuery.ajax({
         url: url,
         method: "POST",
@@ -480,9 +470,9 @@ function EditProgram(listName, pageAction) {
             "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
             "content-type": "application/json;odata=verbose",
             "X-HTTP-Method": "MERGE",
-            "If-Match": "*"
+            "If-Match": match
         },
-        success: function(data) {
+        success: function() {
             switch (pageAction) {
                 case "SAVE":
                     SetStatus("SUCCESS", "The program has been saved. There are unpublished changes on this program.");
@@ -512,12 +502,6 @@ function SetStatus(type, message) {
                 jQuery("#pageStatusIcon").addClass("fa-check");
             }
             jQuery("#pageStatusIcon").show();
-            if (jQuery(".page-status").hasClass("text-warning")) {
-                jQuery(".page-status").removeClass("text-warning");
-            }
-            if (!jQuery(".page-status").hasClass("text-success")) {
-                jQuery(".page-status").addClass("text-success");
-            }
             break;
         case "ERROR":
             if (jQuery("#pageStatusIcon").hasClass("fa-check")) {
@@ -527,12 +511,6 @@ function SetStatus(type, message) {
                 jQuery("#pageStatusIcon").addClass("fa-remove");
             }
             jQuery("#pageStatusIcon").show();
-            if (jQuery(".page-status").hasClass("text-success")) {
-                jQuery(".page-status").removeClass("text-success");
-            }
-            if (!jQuery(".page-status").hasClass("text-warning")) {
-                jQuery(".page-status").addClass("text-warning");
-            }
             break;
         default:
             jQuery("#pageStatusIcon").hide();
@@ -614,16 +592,11 @@ function SaveFormData(pageAction) {
         else if (pageAction == "PUBLISH") {
             if (pa_formMode == "NEW") {
                 AddProgram("Programs Saved", "");
-                AddProgram("Programs", "PUBLISH");
+                AddPrograms("Programs", "PUBLISH");
             }
             else if (pa_formMode == "EDIT") {
                 EditProgram("Programs Saved", "");
-                if (pa_publishedData) {
-                    EditProgram("Programs", "PUBLISH");
-                }
-                else {
-                    AddProgram("Programs", "PUBLISH");
-                }
+                EditProgram("Programs", "PUBLISH");
             }
         }
     }
@@ -649,11 +622,6 @@ function AddHandlers() {
         pa_scope = choice.text();
     });
 
-    // Handler to set global program name every time it changes
-    jQuery("#program-name").change(function() {
-        pa_programName = jQuery("#program-name").val();
-    });
-
     // Handler to upload program photo
     jQuery("#uploadProgramPhoto").on("click", function() {
         if (jQuery("#programPhotoFile").val() != "") {
@@ -666,32 +634,6 @@ function AddHandlers() {
         if (jQuery("#programLogoFile").val() != "") {
              UploadFile(jQuery("#programLogoFile"), jQuery("#programLogoImage"), "SiteAssets/Program_Logos");
         }
-    });
-
-    // Handler for program photo file input
-    jQuery("#programPhotoFile").change(function() {
-        var text = jQuery("#programPhotoFile").val();
-        if (text == "") {
-            jQuery("#uploadProgramPhoto").hide();
-        }
-        else {
-            jQuery("#uploadProgramPhoto").show();
-        }
-        var filename = text.substr(text.lastIndexOf("\\") + 1);
-        jQuery("#lblProgramPhoto").text(filename);
-    });
-
-    // Handler for program logo file input
-    jQuery("#programLogoFile").change(function() {
-        var text = jQuery("#programLogoFile").val();
-        if (text == "") {
-            jQuery("#uploadProgramLogo").hide();
-        }
-        else {
-            jQuery("#uploadProgramLogo").show();
-        }
-        var filename = text.substr(text.lastIndexOf("\\") + 1);
-        jQuery("#lblProgramLogo").text(filename);
     });
 
     // Handler to apply existing photo

@@ -1,6 +1,6 @@
     
 <h2>Active</h2>
-<div id="activePrograms"></div>
+<div class="activePrograms"></div>
 
 <h2>Inactive</h2>
 <ul class="sidebar-list list-unstyled" id="inactivePrograms">
@@ -42,9 +42,8 @@
     }
 
     function LoadPrograms() {
-        var publishedUri = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/lists/getbytitle('Programs')/items?$select=ProgramID";
-        var pathFilter = _spPageContextInfo.siteAbsoluteUrl + "/Lists/Programs%2520Saved";
-        var savedUri = _spPageContextInfo.siteAbsoluteUrl + "/_api/search/query?querytext=%27ContentType:Connect Program Path:" + pathFilter + "%27&selectproperties=%27ProgramIDOWSTEXT,Title,ProgramScope,Order1OWSNMBR,RunTime,StartDateOWSDATE,EndDateOWSDATE%27&RowLimit=500&sortlist=%27ProgramScope:ascending,Order1OWSNMBR:ascending%27&TrimDuplicates=false";
+        publishedUri = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/lists/getbytitle('Programs')/items?$select=ProgramID";
+        savedUri = _spPageContextInfo.siteAbsoluteUrl + "/_api/search/query?querytext=%27ContentType:Connect Program%27&selectproperties=%27ProgramIDOWSTEXT,Title,ProgramScope,Order1OWSNMBR,RunTime,StartDateOWSDATE,EndDateOWSDATE%27&sortlist=%27ProgramScope:ascending,Order1OWSNMBR:ascending%27";
 
         jQuery.ajax({
             url: publishedUri,
@@ -77,7 +76,6 @@
                         var programUrl;
                         var currentGroup;
                         var itemCount = 0;
-                        var scopes = [];
 
                         jQuery.each(progs.d.query.PrimaryQueryResult.RelevantResults.Table.Rows.results, function(prog, row) {
                             activeClass = "";
@@ -120,31 +118,30 @@
                                 if (ConfirmActive(runTime, startDate, endDate)) {
                                     if (itemCount == 0) {
                                         currentGroup = programScope;
-                                        scopes.push(programScope);
                                         htmlString += "<h3>" + programScope + "</h3>";
-                                        htmlString += "<ul class='sidebar-list list-unstyled' id='sortable" + programScope + "'>";
+                                        htmlString += "<ul class='sidebar-list list-unstyled' id='sortable-local'>";
                                         if (programId == currentId) {
-                                            htmlString += "<li class='ui-state-default'><a class='sidebar-active' href='javascript:{}'><i class='fa fa-reorder' aria-hidden='true'></i>&nbsp;" + title + "</a></li>";
+                                            htmlString += "<li class='ui-state-default'><a class='sidebar-active' href='javascript:{}'><i class='fa fa-reorder' aria-hidden='true'></i>" + title + "</a></li>";
                                         }
                                         else {
-                                            htmlString += "<li class='ui-state-default'><a href='" + programUrl + "'><i class='fa fa-reorder' aria-hidden='true'></i>&nbsp;" + title + "</a></li>";
+                                            htmlString += "<li class='ui-state-default'><a href='" + programUrl + "'><i class='fa fa-reorder' aria-hidden='true'></i>" + title + "</a></li>";
                                         }
                                     }
                                     else {
                                         if (programScope != currentGroup) {
                                             currentGroup = programScope;
-                                            scopes.push(programScope);
                                             htmlString += "</ul>";
                                             htmlString += "<h3>" + programScope + "</h3>";
-                                            htmlString += "<ul class='sidebar-list list-unstyled' id='sortable" + programScope + "'>";
+                                            htmlString += "<ul class='sidebar-list list-unstyled'>";
                                         }
                                         if (programId == currentId) {
-                                            htmlString += "<li class='ui-state-default'><a class='sidebar-active' href='javascript:{}'><i class='fa fa-reorder' aria-hidden='true'></i>&nbsp;" + title + "</a></li>";
+                                            htmlString += "<li><a class='sidebar-active' href='javascript:{}'>" + title + "</a></li>";
                                         }
                                         else {
-                                            htmlString += "<li class='ui-state-default'><a href='" + programUrl + "'><i class='fa fa-reorder' aria-hidden='true'></i>&nbsp;" + title + "</a></li>";
+                                            htmlString += "<li><a href='" + programUrl + "'>" + title + "</a></li>";
                                         }
                                     }
+
                                     itemCount++;
                                 }
                                 else {
@@ -161,17 +158,6 @@
                         jQuery("#activePrograms").html(htmlString);
                         jQuery("#inactivePrograms").html(inactiveHtml);
                         jQuery("#unpublishedPrograms").html(unpublishedHtml);
-
-                        // Call sortable functions
-                        for (index = 0; index < scopes.length; index++) {
-                            jQuery("#sortable" + scopes[index]).sortable({
-                                change: function(event, ui) {
-                                    console.log("Item " + jQuery(ui.item) + " moved from - " + ui.originalPosition.top + " to - " + ui.position.top);
-                                }
-                            });
-                            jQuery("#sortable" + scopes[index]).disableSelection();
-                        }
-
                     },
                     error: function(err) {
                         console.log(JSON.stringify(err));

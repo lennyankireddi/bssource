@@ -81,12 +81,6 @@
                     }
                     else {
                         if (result.Featured == true) {
-                            if (IsOfficeDocument(extension)) {
-                                docUrl = _spPageContextInfo.siteAbsoluteUrl + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + result.File.ServerRelativeUrl;
-                            }
-                            else {
-                                docUrl = result.File.ServerRelativeUrl;
-                            }
                             if (result.Programs.indexOf(programId) != -1) {
                                 if (docsAdded == 0) {
                                     htmlString += "<ul class='list-unstyled'>";
@@ -97,7 +91,7 @@
 
                                 htmlString += "<li>";
                                 htmlString += "<span class='docIcon'><img src='" + icon + "'/></span>&nbsp;";
-                                htmlString += "<span class='docUrl'><a href='" + docUrl + "'>" + result.File.Name + "</a></span>";
+                                htmlString += "<span class='docUrl'><a href='" + result.File.ServerRelativeUrl + "'>" + result.File.Name + "</a></span>";
                                 htmlString += "&nbsp;<i class='fa fa-thumb-tack icon-featured'></i>";
                                 htmlString += "</li>";
                                 docsAdded++;

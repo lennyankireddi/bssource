@@ -1,5 +1,4 @@
 <script src="/_catalogs/masterpage/resources/programstrings.js" type="text/javascript"></script>
-<script src="/_catalogs/masterpage/resources/flip.min.js" type="text/javascript"></script>
 <div class="program-column" id="programColumn">
     <div class="ms-webpart-chrome-title">
         <span class="js-webpart-titleCell">
@@ -23,7 +22,7 @@
             <i class="program-arrow icon-caret-right">
             </i>
         </a>
-        <div id="addNewLink"></div>
+        <a class="program-add-new" href="/Pages/Program-Admin.aspx"><h3> <i class="icon-plus-sign"></i> <span id="addNewProgram"></span></h3></a>
     </div>
 </div>
 
@@ -99,7 +98,7 @@
                 }
             } else {
                 jQuery('#controlL').show();
-                if ((numberofcards * 260) + marginLeftValue < wpWidth) {
+                if ((numberofcards * 260) + marginLeftValue - extraCard <= 0) {
                     jQuery('#controlR').hide();
                 }
                 else {
@@ -383,32 +382,6 @@
         jQuery("#activeNumber").html(programsAdded);
         jQuery("#" + container).html(htmlString);
 
-        // Set width of outer container
-        var widthCards = jQuery('.program-card-container').innerWidth();
-        jQuery('.programs').width(widthCards);
-
-        // Re-evaluate right arrow
-        var marginLeftValue = parseInt(jQuery('.programs').css('margin-left'));
-        var wpWidth = parseInt(jQuery('.wrapper').css('width'));
-        var extraCard;
-        if (wpWidth > 600) {
-            extraCard = 540;
-        }
-        else {
-            extraCard = 0;
-        }
-        if ((programsAdded * 260) + marginLeftValue - extraCard <= 0) {
-            jQuery('#controlR').hide();
-        }
-        else {
-            jQuery('#controlR').show();
-        }
-
-        if(userIsAdmin) {
-            var newProgramLink = '<a class="program-add-new" href="/Pages/Program-Admin.aspx"><h3> <i class="icon-plus-sign"></i> <span id="addNewProgram">' + GetProgramString("Add New Program", siteLang) + '</span></h3></a>';
-            jQuery("#addNewLink").html(newProgramLink);
-        }
-
         // Refresh other web part elements
         RenderScopeDropdown(scopeArray, "programFilter");
         SetupFlipCards();
@@ -417,8 +390,7 @@
     }
 
     function ProgramSearch(programScope) {
-        var pathFilter = _spPageContextInfo.siteAbsoluteUrl + "/Lists/Programs";
-        var searchUrl = _spPageContextInfo.siteAbsoluteUrl + "/_api/search/query?querytext='ContentType:Connect Program AND Path:" + pathFilter + "'&selectproperties='ProgramIDOWSTEXT,Title,BeamConnectDescription,LanguageOWSCHCS,ProgramScope,RunTime,StartDateOWSDATE,EndDateOWSDATE,ProgramPhotoOWSURLH,ProgramLogoOWSURLH'&RowLimit=500&sortlist='Order1OWSNMBR:ascending'&TrimDuplicates=false";
+        var searchUrl = _spPageContextInfo.siteAbsoluteUrl + "/_api/search/query?querytext='ContentType:Connect Program'&selectproperties='ProgramIDOWSTEXT,Title,BeamConnectDescription,LanguageOWSCHCS,ProgramScope,RunTime,StartDateOWSDATE,EndDateOWSDATE,ProgramPhotoOWSURLH,ProgramLogoOWSURLH'";
         
         jQuery.ajax({
             url: searchUrl,
@@ -436,15 +408,18 @@
                 }
             },
             error: function(e) {
-                jQuery("#programWrapper").html("Error getting program results: " + JSON.stringify(e));
+                jQuery("#programWrapper").html("Error getting program results: " + e.message);
             }
         });
     }
 
     function TranslateDOMStrings() {
         var siteLang = GetSiteLang();
+        console.log(siteLang);
         jQuery(".ms-webpart-titleText").text(GetProgramString("Programs", siteLang));
-        jQuery("#activePrograms").text(GetProgramString("Active Programs", siteLang));    }
+        jQuery("#activePrograms").text(GetProgramString("Active Programs", siteLang));
+        jQuery("#addNewProgram").text(GetProgramString("Add New Program", siteLang));
+    }
 
     function CheckUserPermissions() {
         SP.SOD.executeFunc('SP.Runtime.js', 'SP.ClientContext',

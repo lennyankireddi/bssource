@@ -11,7 +11,7 @@ pgms_strings = {
         "Featured Files"
     ],
     "zhhk": [
-        "方案",
+        "Programs",
         "Active Programs",
         "Add New Program",
         "See all documents",
@@ -21,7 +21,7 @@ pgms_strings = {
         "Featured Files"
     ],
     "zhcn": [
-        "方案",
+        "Programs",
         "Active Programs",
         "Add New Program",
         "See all documents",
@@ -31,7 +31,7 @@ pgms_strings = {
         "Featured Files"
     ],
     "fr": [
-        "Programmes",
+        "Programs",
         "Active Programs",
         "Add New Program",
         "See all documents",
@@ -41,13 +41,13 @@ pgms_strings = {
         "Featured Files"
     ],
     "de": [
-        "Programme",
+        "Programs",
         "Active Programs",
         "Add New Program",
         "See all documents",
         "Edit",
         "Run Time",
-        "Seiten",
+        "Pages",
         "Featured Files"
     ],
     "ja": [
@@ -61,27 +61,27 @@ pgms_strings = {
         "Featured Files"
     ],
     "pl": [
-        "Programy",
+        "Programs",
         "Active Programs",
         "Add New Program",
         "See all documents",
         "Edit",
         "Run Time",
-        "Strony",
+        "Pages",
         "Featured Files"
     ],
     "pt": [
-        "Programas",
+        "Programs",
         "Active Programs",
         "Add New Program",
         "See all documents",
         "Edit",
         "Run Time",
-        "Paginas",
+        "Pages",
         "Featured Files"
     ],
     "ru": [
-        "Программы",
+        "Programs",
         "Active Programs",
         "Add New Program",
         "See all documents",

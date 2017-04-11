@@ -31,8 +31,7 @@
         var currentGroup = "";
         var currentId = getParameterByName("progid");
 
-        var pathFilter = _spPageContextInfo.siteAbsoluteUrl + "/Lists/Programs";
-        var searchUrl = "/_api/search/query?querytext=%27ContentType:Connect Program AND Path:" + pathFilter + "%27&selectproperties=%27ProgramIDOWSTEXT,Title,LanguageOWSCHCS,ProgramScope,Order1OWSNMBR,RunTime,StartDateOWSDATE,EndDateOWSDATE%27&sortlist=%27ProgramScope:ascending,Order1OWSNMBR:ascending%27&RowLimit=500&TrimDuplicates=false";
+        var searchUrl = "/_api/search/query?querytext=%27ContentType:Connect Program%27&selectproperties=%27ProgramIDOWSTEXT,Title,LanguageOWSCHCS,ProgramScope,Order1OWSNMBR,RunTime,StartDateOWSDATE,EndDateOWSDATE%27&sortlist=%27ProgramScope:ascending,Order1OWSNMBR:ascending%27";
         jQuery.ajax({
             url: searchUrl,
             method: "GET",
@@ -50,7 +49,6 @@
                         }
                         if (y.Key == "Title") {
                             title = y.Value;
-                            console.log(title);
                         }
                         if (y.Key == "LanguageOWSCHCS") {
                             language = y.Value;
