@@ -1,0 +1,275 @@
+<!-- People grid with thumb navigation -->
+<div class="people-grid people-grid-event" id="slider-thumbs">
+    <h1 class="event-headline"><span id="peopleHeader"></span></h1>
+    <!-- People grid items -->
+    <ul class="people-grid-list" id="peopleGridList">
+
+    </ul>
+</div>
+
+<!-- Person Modal -->
+<div class="modal fade people-modal" id="personModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-8 modal-left-column">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <img id="personPhoto" src="">
+                            </div>
+                            <div class="col-sm-8" id="people-modal-info">
+                                <h2 id="personName" class="modal-title" id="myModalLabel"></h2>
+                                <h3 id="personByline"></h3>
+                                <h3 id="personRole"></h3>
+                                <p id="personDescription"></p>
+                                <div class="read-more"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="personDocsContainer"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 modal-right-column">
+                        <div id="socialLinks" class="social-links">
+                        </div>
+                        <div id="twitterContainer" class="twitter-container">
+                            <div class="people-twitter"><i class=\"icon-twitter\"></i> <span id="personTwitterHandle"></span></div>
+                            <div id="twitterTimeline" class="media">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function ReplaceLanguageInUrl(url, lang) {
+        var newUrl =  url.replace("/zhcn/", lang).replace("/zhhk/", lang).replace("/de/", lang).replace("/es/", lang).replace("/fr/", lang).replace("/ja/", lang).replace("/pl/", lang).replace("/pt/", lang).replace("/ru/", lang);
+        return newUrl;
+    }
+
+    function SetPeopleHeader() {
+        var eventUrl = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Events')/items?$top=1&$select=PeopleHeader";
+        jQuery.ajax({
+            url: eventUrl,
+            method: "GET",
+            headers: {
+                accept: "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var event = data.d.results[0];
+                jQuery("#peopleHeader").html(event.PeopleHeader);
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function PrintPeopleGrid() {
+        var url = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('People')/items?$select=Title,PersonID,ArticleByLine,Role,RichDescription,PersonPhoto,TwitterHandle,FacebookLink,InstagramLink,LinkedInLink&$top=100&$orderby=Order1 asc";
+        jQuery.ajax({
+            url: url,
+            type:"GET",
+            headers: {
+                Accept: "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var personId = "";
+                var name = "";
+                var byline = "";
+                var role = "";
+                var description = "";
+                var photoUrl = "";
+                var twitterHandle = "";
+                var facebookLink = "";
+                var instagramLink = "";
+                var linkedInLink = "";
+                var roleArray = [];
+
+                var primaryHTML = "";
+                var modalHTML = "";
+
+                jQuery.each(data.d.results, function(i, n) {
+                    personId = n.PersonID;
+                    name = n.Title;
+                    byline = n.ArticleByLine;
+                    role = n.Role; 
+                    description = n.RichDescription; 
+                    photoUrl = n.PersonPhoto.Url;
+                    twitterHandle = n.TwitterHandle;
+                    facebookLink = n.FacebookLink;
+                    instagramLink = n.InstagramLink;
+                    linkedInLink = n.LinkedInLink;
+
+                    primaryHTML +=
+                    "<li class=\"people-grid-person ui-state-default\">" + 
+                        "<input type=\"hidden\" value=\"" + n.__metadata.uri + "\" />" + 
+                        "<a href=\"javascript:{}\" class=\"person-modal-launcher\" id=\"" + personId + "\" data-toggle=\"modal\" data-target=\"#personModal\">" +
+                            "<img src=\"" + photoUrl + "\" class=\"img-responsive\"/>" +
+                            "<div class=\"people-grid-overlay\">" + 
+                                "<h2 class=\"people-name\">" + name + "</h2>";
+                    if (byline) {
+                        primaryHTML += 
+                                "<span class=\"people-byline\">" + byline + "</span>";
+                    }
+                    if (role) {
+                        primaryHTML += 
+                                "<span class=\"people-description\">" + role + "</span>";
+                    }
+                    primaryHTML +=
+                            "</div>" + 
+                        "</a>" + 
+                    "</li>";
+                });
+
+                jQuery("#peopleGridList").html(primaryHTML);
+
+                // Handler to close modal if any other location on the document is clicked
+                jQuery(document).on("click", function(event)
+                {
+                    jQuery(".dropdown-program-content").removeClass("open");
+                });
+
+
+                jQuery(document).on("click", ".read-more", function(){
+                    jQuery('#personDescription').toggleClass('description-read-more');
+                    jQuery('.read-more').toggleClass("read-more-open");
+                });
+
+                // Add handler to launch the person modal dialog
+                jQuery(document).on("click", ".person-modal-launcher", function(e) {
+                    var pId = jQuery(e.currentTarget).attr("id");
+
+                    // Clear dialog of residual values from prior load
+                    jQuery("#personPhoto").attr("src", "");
+                    jQuery("#personName").text("");
+                    jQuery("#personByline").text("");
+                    jQuery("#personRole").text("");
+                    jQuery("#personDescription").text("");
+                    jQuery("#actionLinkContainer").html("");
+                    jQuery("#twitterTimeline").html("");
+                    jQuery("#socialLinks").html("");
+                    jQuery(".read-more").hide();
+
+                    // Get and load person attributes
+                    var url = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('People')/items?$select=Title,PersonID,ArticleByLine,Role,RichDescription,PersonPhoto,TwitterHandle,FacebookLink,InstagramLink,LinkedInLink&$filter=PersonID eq '" + pId + "'";
+                    jQuery.ajax({
+                        url: url,
+                        type:"GET",
+                        headers: {
+                            Accept: "application/json;odata=verbose"
+                        },
+                        success: function(data) {
+                            var person = data.d.results[0];
+                            // Load person information
+                            jQuery("#personPhoto").attr("src", person.PersonPhoto.Url);
+                            jQuery("#personName").text(person.Title);
+                            if (person.ArticleByLine) {
+                                jQuery("#personByline").text(person.ArticleByLine);
+                            }
+                            if (person.Role) {
+                                jQuery("#personRole").text(person.Role);
+                            }
+                            if (person.RichDescription) {
+                                jQuery("#personDescription").html(person.RichDescription);
+                            }
+
+                            // Add Twitter timeline
+                            if (person.TwitterHandle) {
+                                var twitterHtml = 
+                                    '<a class="twitter-timeline" data-width="300" data-height="360" data-link-color="#F35757" href="https://twitter.com/' + person.TwitterHandle.replace("@", "") + '">Tweets by @' + person.TwitterHandle.replace("@", "") + '</a>' + 
+                                    '<script sync src="//platform.twitter.com/widgets.js" charset="utf-8"><//script>';
+                                jQuery("#twitterTimeline").html(twitterHtml);
+                            }
+                            
+                            // Construct social media links
+                            var socialLinkHtml = "";
+                            if (person.FacebookLink) {
+                                socialLinkHtml += 
+                                    "<a class=\"social-link\" href=\"" + person.FacebookLink + "\"><i class=\"fa fa-facebook\"></i></a>";
+                            }
+                            if (person.InstagramLink) {
+                                socialLinkHtml += 
+                                    "<a class=\"social-link\" href=\"" + person.InstagramLink + "\"><i class=\"fa fa-instagram\"></i></a>";
+                            }
+                            if (person.LinkedInLink) {
+                                socialLinkHtml += 
+                                    "<a class=\"social-link\" href=\"" + person.LinkedInLink + "\"><i class=\"fa fa-linkedin\"></i></a>";
+                            }
+                            if (socialLinkHtml) {
+                                jQuery("#socialLinks").html(socialLinkHtml);
+                            }
+
+                            if((jQuery("#personDescription").text().length) > 300 ){
+                                jQuery('.read-more').show();
+                            }
+                        },
+                        error: function(err) {
+                            console.log(JSON.stringify(err))
+                        }
+                    });
+
+                    // Get and load person documents
+                    docsUrl = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Rackhouse Documents')/items?$select=File,People&$top=50&$expand=File";
+                    jQuery.ajax({
+                        url: docsUrl,
+                        method: "GET",
+                        headers: {
+                            accept: "application/json;odata=verbose"
+                        },
+                        success: function(data) {
+                            var htmlString = "";
+                            var docUrl = "";
+                            var filename = "";
+                            var extension = "";
+                            var docIcon = "";
+
+                            htmlString += "<ul class='list-unstyled'>";
+                            jQuery.each(data.d.results, function(i, doc) {
+                                if (doc.People) {
+                                    if (doc.People.indexOf(pId) != -1) {
+                                        filename = doc.File.Name;
+                                        extension = filename.substr(filename.lastIndexOf(".") + 1);
+                                        if (IsOfficeDocument(extension)) {
+                                            docUrl = _spPageContextInfo.webAbsoluteUrl + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + doc.File.ServerRelativeUrl;
+                                        }
+                                        else {
+                                            docUrl = doc.File.ServerRelativeUrl;
+                                        }
+
+                                        docIcon = GetDocIcon(extension);
+                                        htmlString += 
+                                                    "<li>" + 
+                                                        "<span class='doc-icon'><img src='" + docIcon + "'></span>&nbsp;" + 
+                                                        "<span class='docUrl'><a href='" + docUrl + "'>" + filename + "</a>" + 
+                                                    "</li>";
+                                    }
+                                }
+                            });
+                            htmlString += "</ul>";
+                            jQuery("#personDocsContainer").html(htmlString);
+                        },
+                        error: function(err) {
+                            console.log(JSON.stringify(err));
+                        }
+                    });
+                });
+            },
+            error:function(d) {
+                console.log(JSON.stringify(d));
+            }
+        });
+    }
+
+    jQuery(document).ready(function(){
+        SetPeopleHeader();
+        PrintPeopleGrid();
+    });
+</script>

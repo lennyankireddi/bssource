@@ -1,0 +1,1085 @@
+<script type="text/javascript" charset="utf8" src="/_catalogs/masterpage/resources/jquery.easyeditor.js"></script>
+<script type="text/javascript" charset="utf8" src="/_catalogs/masterpage/resources/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/_catalogs/masterpage/resources/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="/_catalogs/masterpage/resources/easyeditor.css">
+<div class="form-horizontal">
+    <div>
+        <fieldset>
+            <!-- Hidden Person ID field -->
+            <input type="hidden" id="personIdField" value="" />
+            <!-- Person name field -->
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label" for="person-name"><h3>Name</h3>
+                    </label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control input-md" id="person-name" name="textinput" placeholder="Name" type="text">
+                </div>
+            </div>
+            <!-- Role field -->
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label" for="person-role"><h3>Role</h3>
+                    </label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control input-md" id="person-role" name="textinput" placeholder="Role" type="text">
+                </div>
+            </div>
+            <!-- Byline field -->
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label" for="person-byline"><h3>Byline</h3>
+                    </label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control input-md" id="person-byline" name="textinput" placeholder="Byline" type="text">
+                </div>
+            </div>
+            <!-- Description field -->
+            <div class="form-group">
+                <div class="col-md-2">
+                        <label class="control-label" for="textarea"><h3>Description</h3>
+                    </label>
+                    <div id="textarea_feedback">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div id="rtbDescription">
+                    </div>
+                </div>
+            </div>
+            <!-- Picture field -->
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label" for="filebutton"><h3>Picture</h3></label>
+                </div>
+                <div class="col-md-3">
+                    <img class="img-responsive" id="personPhotoImage" src="/_catalogs/masterpage/Resources/person-icon.png">
+                </div>
+                <div class="col-md-4">
+                    <p>
+                        <input type="file" id="personPhotoFile" class="program-logo" />
+                        <label class="program-logo-label" id="lblPersonPhoto" for="personPhotoFile"><i class="fa fa-upload"></i> Choose a file</label>
+                        <a href="javascript:{}" class="upload-button btn btn-primary" id="uploadPersonPhoto" style="display: none;">Upload</a>
+                    </p>
+                    <a href="#" type="button" data-toggle="modal" data-target="#photo-modal">Use Existing Picture</a>
+                </div>
+            </div>
+            <!-- Social media link fields -->
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label" for="person-name"><h3>Social Media</h3>
+                    </label>
+                </div>
+                <div class="col-md-6 social-form">
+                    <i class="fa fa-twitter pull-left"></i><input class="form-control input-md" id="twitterHandle" name="textinput" placeholder="Twitter" type="text">
+                    <br>
+                    <i class="fa fa-facebook pull-left"></i><input class="form-control input-md" id="facebookLink" name="textinput" placeholder="Facebook" type="text">
+                    <br>
+                    <i class="fa fa-instagram pull-left"></i><input class="form-control input-md" id="instagramLink" name="textinput" placeholder="Instagram" type="text">
+                    <br>
+                    <i class="fa fa-linkedin pull-left"></i><input class="form-control input-md" id="linkedInLink" name="textinput" placeholder="LinkedIn" type="text">
+                </div>
+            </div>
+
+            <div class="form-group container-appointments" style="display: none">
+                <div class="col-md-2">
+                    <label class="control-label" for="person-name"><h3>Appointments</h3></label>
+                </div>
+                <div class="col-md-8">
+                    <div class="document-table">
+                        <div class="dataTables_wrapper no-footer" id="DataTables_Table_0_wrapper">
+                            <table class="table" id="appointmentsTable">
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group-add-Date">
+                        <div class="form-group col-sm-6">
+                            <label for="txtApptTitle">Title</label>
+                            <div>
+                                <input class="form-control input-sm" type="text" id="txtApptTitle">
+                            </div>
+
+                            <div class="form-group calendar-inner-addon col-sm-6">
+                                <label for="txtApptStartDate">Start Date:</label>
+                                <div class="input-calendar">
+                                    <input class="form-control" type="text" id="txtApptStartDate">
+                                </div>
+                            </div>
+
+                            <div class="form-group calendar-inner-addon col-sm-6">
+                                <label for="txtApptEndDate">End Date:</label>
+                                <div class="input-calendar">
+                                    <input class="form-control" type="text" id="txtApptEndDate">
+                                </div>
+                                <label for="txtApptEndDate">Will be set to start date if empty</label>
+                            </div>
+                        </div> 
+                        <div class="form-group col-sm-6 form-group-right">
+                            <label for="txtApptDescription">Description</label>
+                            <textarea class="form-control input-sm" type="text" id="txtApptDescription"></textarea> 
+                        </div> 
+                        <a href="javascript:{}" class="action-link btn btn-primary add-date pull-right" id="btnAddAppointment">Add</a>
+                    </div>
+                    <a class="add-link" href="javascript:{}"><i class="icon-plus"></i> Add New Appointment</a>
+                    <div class="appt-status" id="apptStatus" style="display: none"><h3><i id="apptStatusIcon" class="fa fa-check" aria-hidden="true"></i><span id="apptStatusMessage"></span></h3></div>
+                </div>
+            </div>
+
+
+            <div class="form-group container-links" style="display: none">
+                <div class="col-md-2">
+                    <label class="control-label" for="person-name"><h3>Links</h3></label>
+                </div>
+                <div class="col-md-8">
+                    <div class="document-table">
+                        <div class="dataTables_wrapper no-footer" id="DataTables_Table_0_wrapper">
+                            <table class="table" id="linksTable">
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="form-group-double form-group-add-Link">
+                        <div class="form-group col-sm-6">
+                            <label for="txtLinkTitle">Display Text</label>
+                            <div>
+                                <input class="form-control input-sm" type="text" id="txtLinkTitle">
+                            </div>
+                            <label for="txtLinkUrl">Url</label>
+                            <div>
+                                <input class="form-control input-sm" type="text" id="txtLinkUrl">
+                            </div>
+                        </div> 
+                        <div class="form-group col-sm-6">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="chkLinkPrivate"> Private
+                                </label>
+                            </div>
+                        </div> 
+                        <a href="javascript:{}" class="action-link btn btn-primary add-date pull-right" id="btnAddLink">Add</a>
+                    </div>
+                    <a class="add-link" href="javascript:{}"><i class="icon-plus"></i> Add New Link</a>
+                    <div class="link-status" id="linkStatus" style="display: none"><h3><i id="linkStatusIcon" class="fa fa-check" aria-hidden="true"></i><span id="linkStatusMessage"></span></h3></div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<div class="btn-container pull-left">
+    <a href="javascript:{}" id="btnDelete" class="action-link btn btn-default" style="display:none">Delete</a> 
+</div>
+<div class="btn-container pull-right">
+    <a href="javascript:{}" id="btnCancel" class="action-link btn btn-default">Cancel</a> 
+    <a href="javascript:{}" id="btnSave" class="action-link btn btn-primary btn-save">Save</a> 
+    <div class="page-status"><h3><i id="pageStatusIcon" class="fa fa-check" aria-hidden="true"></i>&nbsp;<span id="pageStatusText"></span></h3></div>
+</div>
+
+<!-- Picture Modal -->
+<div class="modal fade" id="photo-modal" tabindex="-1" role="dialog" aria-labelledby="photo-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content  modal-simple ">
+      <div class="modal-body">
+         <div id="photoImageList" class="image-list">
+         </div>
+         <div>
+            <input type="text" value="" id="photoImageUrl" class="image-url" />
+            <input type="button" value="Apply" id="btnApplyPhoto" class="btn btn-primary" data-dismiss="modal" />
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    // Global Variables
+    var pa_webUrl = "";
+    var pa_formMode = "NEW";
+    var pa_person;
+    var pa_personId = "";
+    var pa_personRoles = {};
+    var pa_personRolesById = {};
+    var pa_appointmentsTable;
+    var pa_linksTable;
+
+    // Generate new program ID
+    function GeneratePersonId() {
+        var date = new Date();
+        var month = date.getMonth() + 1;
+        month = month.toString().length == 1 ? "0" + month.toString() : month.toString();
+        var day = date.getDate();
+        day = day.toString().length == 1 ? "0" + day.toString() : day.toString();
+        var year = date.getFullYear();
+        var hours = date.getHours();
+        hours = hours.toString().length == 1 ? "0" + hours.toString() : hours.toString();
+        var minutes = date.getMinutes();
+        minutes = minutes.toString().length == 1 ? "0" + minutes.toString() : minutes.toString();
+        var seconds = date.getSeconds();
+        seconds = seconds.toString().length == 1 ? "0" + seconds.toString() : seconds.toString();
+        return (month + day + year + hours + minutes + seconds);
+    }
+
+    function getParameterByName(name, url) {
+        if (!url) {
+            url = window.location.href;
+        }
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    function ReplaceLanguageInUrl(url, lang) {
+        var newUrl =  url.replace("/zhcn/", lang).replace("/zhhk/", lang).replace("/de/", lang).replace("/es/", lang).replace("/fr/", lang).replace("/ja/", lang).replace("/pl/", lang).replace("/pt/", lang).replace("/ru/", lang);
+        return newUrl;
+    }
+
+    // Set the referring web Url
+    function SetWebUrl() {
+        var webUrl = getParameterByName("weburl");
+        if (webUrl) {
+            pa_webUrl = webUrl;
+        }
+        else {
+            pa_webUrl = "";
+        }
+    }
+
+    // Set the program ID hidden field
+    function SetPersonId() {
+        var personid = getParameterByName("personid");
+        if (personid) {
+            pa_formMode = "EDIT";
+            pa_personId = personid;
+            GetCurrentPerson();
+            jQuery("#btnDelete").show();
+        }
+        else {
+            pa_personId = GeneratePersonId();
+        }
+        jQuery("#personidField").text(pa_personId);
+    }
+
+    // Get person currently being managed on the form
+    function GetCurrentPerson() {
+        var requestUrl = _spPageContextInfo.siteAbsoluteUrl + pa_webUrl + "/_api/web/lists/getbytitle('People')/items?$select=Title,PersonID,Role,ArticleByLine,RichDescription,PersonPhoto,TwitterHandle,FacebookLink,InstagramLink,LinkedInLink&$orderby=Order1 asc&$filter=PersonID eq '" + pa_personId + "'";
+        jQuery.ajax({
+            url: requestUrl,
+            method: "GET",
+            headers: {
+                accept: "application/json;odata=verbose"
+            },
+            success: function(data) {
+                pa_person = data.d.results[0];
+                LoadFormData();                
+                LoadAppointmentsTable();
+                LoadLinksTable();
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+                pa_person = null;
+            }
+        });
+    }
+
+    // Upload file procedure
+    function UploadFile(fileInput, img, serverRelativeUrlToFolder) {
+
+        // Initiate method calls using jQuery promises.
+        // Get the local file as an array buffer.
+        var getFile = getFileBuffer();
+        getFile.done(function (arrayBuffer) {
+
+            // Add the file to the SharePoint folder.
+            var addFile = addFileToFolder(arrayBuffer);
+            addFile.done(function (file, status, xhr) {
+                var getItem = getListItem(file.d.ListItemAllFields.__deferred.uri);
+                getItem.done(function (listItem, status, xhr) {
+                    img.attr("src", listItem.d.ServerRelativeUrl);
+                    fileInput.val("");
+                });
+                getItem.fail(UploadError);
+            });
+            addFile.fail(UploadError);
+        });
+        getFile.fail(UploadError);
+
+        // Get the local file as an array buffer.
+        function getFileBuffer() {
+            var deferred = jQuery.Deferred();
+            var reader = new FileReader();
+            reader.onloadend = function (e) {
+                deferred.resolve(e.target.result);
+            }
+            reader.onerror = function (e) {
+                deferred.reject(e.target.error);
+            }
+            reader.readAsArrayBuffer(fileInput[0].files[0]);
+            return deferred.promise();
+        }
+
+        // Add the file to the file collection in the Shared Documents folder.
+        function addFileToFolder(arrayBuffer) {
+
+            // Get the file name from the file input control on the page.
+            var parts = fileInput[0].value.split('\\');
+            var fileName = parts[parts.length - 1];
+
+            // Construct the endpoint.
+            var fileCollectionEndpoint = String.format(
+                "{0}/_api/web/getfolderbyserverrelativeurl('{1}')/files" +
+                "/add(overwrite=true, url='{2}')",
+                _spPageContextInfo.siteAbsoluteUrl, serverRelativeUrlToFolder, fileName);
+
+            // Send the request and return the response.
+            // This call returns the SharePoint file.
+            return jQuery.ajax({
+                url: fileCollectionEndpoint,
+                type: "POST",
+                data: arrayBuffer,
+                processData: false,
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val()
+                }
+            });
+        }
+
+        // Get the list item that corresponds to the file by calling the file's ListItemAllFields property.
+        function getListItem(fileListItemUri) {
+            // Send the request and return the response.
+            fileListItemUri = fileListItemUri.replace("/ListItemAllFields","");
+            return jQuery.ajax({
+                url: fileListItemUri,
+                type: "GET",
+                headers: { "accept": "application/json;odata=verbose" }
+            });
+        }
+    }
+
+    function UploadError(error) {
+        console.log(error.responseText);
+    }
+
+    function LoadImages(sourceUri, container, image) {
+        jQuery.ajax({
+            url: sourceUri,
+            type: "GET",
+            headers: { "accept": "application/json;odata=verbose" },
+            success: function(data) {
+                var html = "";
+                html += "<ul class='image-listing'";
+                for (i = 0; i < data.d.results.length; i++) {
+                    html +=
+                        "<li class='image-tile'>" +
+                            "<img class='tile-picture " + image + "-picture' src='" + data.d.results[i].ServerRelativeUrl + "' onclick='pa_programPhotoUrl = jQuery(this).attr(\"src\"); jQuery(\"#" + image + "ImageUrl\").val(jQuery(this).attr(\"src\"))'>" +
+                            "<div class='tile-caption'>" + data.d.results[i].Name + "</div>" +
+                        "</li>";
+                }
+                html += "</ul>";
+                container.html(html);
+            },
+            error: function(error) {
+                console.log(JSON.stringify(error));
+            }
+        });
+    }
+
+    // Load the image picker dialogs with images availabe in assets folders
+    function LoadImagePicker() {
+        photoSource = "/SiteAssets/People_Photos";
+
+        var photoUri = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/getfolderbyserverrelativeurl('" + photoSource + "')/files";
+        LoadImages(photoUri, jQuery("#photoImageList"), "photo");
+    }
+
+    function LoadFormData() {
+        if (pa_person) {
+            jQuery("#person-name").val(pa_person.Title);
+            jQuery("#person-role").val(pa_person.Role);
+            jQuery("#person-byline").val(pa_person.ArticleByLine);
+            jQuery("#rtbDescription").html(pa_person.RichDescription);
+            jQuery("#personPhotoImage").attr("src", pa_person.PersonPhoto.Url);
+            jQuery("#twitterHandle").val(pa_person.TwitterHandle);
+            jQuery("#facebookLink").val(pa_person.FacebookLink);
+            jQuery("#instagramLink").val(pa_person.InstagramLink);
+            jQuery("#linkedInLink").val(pa_person.LinkedInLink);
+        }
+    }
+
+    function LoadAppointmentsTable() {
+        var requestUrl = _spPageContextInfo.siteAbsoluteUrl + pa_webUrl + "/_api/web/lists/GetByTitle('Appointments')/items?$select=Title,BeamConnectDescription,StartDate,OData__EndDate&$top=500&$filter=People eq '" + pa_personId + "'";
+        var appts = [];
+        jQuery.ajax({
+            url: requestUrl,
+            method: "GET",
+            headers: {
+                accept: "application/json;odata=verbose"
+            },
+            success: function(data) {
+                for (i = 0; i < data.d.results.length; i++) {
+                    var appt = data.d.results[i];
+                    var apptData = []
+                    apptData.push(
+                        appt.Title,
+                        appt.BeamConnectDescription,
+                        (new Date(appt.StartDate)).format("MMM d, yyyy"),
+                        (new Date(appt.OData__EndDate)).format("MMM d, yyyy"),
+                        "<a href='javascript:{}'><i class='fa fa-trash del-appt' value=\"" + appt.__metadata.uri + "\"></i></a>"
+                    );
+                    appts.push(apptData);
+                }
+                pa_appointmentsTable = jQuery("#appointmentsTable").DataTable({
+                    data: appts,
+                    columns: [
+                        { title: "Title" },
+                        { title: "Description" },
+                        { title: "Start Date" },
+                        { title: "End Date" },
+                        { title: "Delete", orderable: false }
+                    ],
+                    paging: false,
+                    info: false,
+                    ordering: true,
+                    searching: false
+                });
+                jQuery(".container-appointments").show();
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function LoadLinksTable() {
+        // Kick of the data table
+        pa_linksTable = 
+            jQuery("#linksTable").DataTable({
+                data: [],
+                columns: [
+                    { title: "Display Text" },
+                    { title: "URL" },
+                    { title: "Privacy", orderable: false },
+                    { title: "Delete", orderable: false }
+                ],
+                paging: false,
+                searching: false,
+                ordering: true,
+                info: false
+            });
+
+        // Get public URLs directly from the Links list first
+        var publicLinkUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(pa_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Links')/items?$select=Title,Link&$filter=Private eq 'false'";
+        jQuery.ajax({
+            url: publicLinkUrl,
+            method: "GET",
+            headers: {
+                accept: "application/json;odata=verbose"
+            },
+            success: function(publicLinks) {
+                jQuery.each(publicLinks.d.results, function(i, link) {
+                    pa_linksTable.row.add([
+                        link.Title,
+                        link.Link.Url,
+                        "<i class='fa fa-users'></i>",
+                        "<a href='javascript:{}'><i class='fa fa-trash del-link' value=\"" + link.__metadata.uri + "\"></i></a>"
+                    ]).draw();
+                });
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+
+        // Next, get the private URLs by first looking up PeopleLinks for the Person
+        // and then the Links list for link details
+        var peopleLinkUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(pa_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('PeopleLinks')/items?$select=PersonID,LinkID&$top=5&$filter=PersonID eq '" + pa_personId + "'";
+        jQuery.ajax({
+            url: peopleLinkUrl,
+            method: "GET",
+            headers: {
+                accept: "application/json;odata=verbose"
+            },
+            success: function(peopleLinks) {
+                jQuery.each(peopleLinks.d.results, function(pli, peopleLink) {
+                    var linkUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(pa_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Links')/items?$select=Title,Link&$filter=LinkID eq '" + peopleLink.LinkID + "'";
+                    jQuery.ajax({
+                        url: linkUrl,
+                        method: "GET",
+                        headers: {
+                            accept: "application/json;odata=verbose"
+                        },
+                        success: function(links) {
+                            jQuery.each(links.d.results, function(li, link) {
+                                pa_linksTable.row.add([
+                                    link.Title,
+                                    link.Link.Url,
+                                    "<i class='fa fa-user'></i>",
+                                    "<a href='javascript:{}'><i class='fa fa-trash del-link' value=\"" + link.__metadata.uri + "\"></i></a>"
+                                ]).draw();
+                            });
+                        },
+                        error: function(err) {
+                            console.log(JSON.stringify(err));
+                        }
+                    });
+                });
+                
+                jQuery(".container-links").show();
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function GetFormData() {
+        var data = {
+            "__metadata": {
+                "type": "SP.Data.PeopleListItem"
+            },
+            "Title": jQuery("#person-name").val(),
+            "PersonID": pa_personId,
+            "Role": jQuery("#person-role").val(),
+            "ArticleByLine": jQuery("#person-byline").val(),
+            "RichDescription": jQuery("#rtbDescription").html(),
+            "PersonPhoto": {
+                "__metadata": {
+                    "type": "SP.FieldUrlValue"
+                },
+                "Description": jQuery("#personPhotoImage").attr("src").replace(_spPageContextInfo.siteAbsoluteUrl, ""),
+                "Url": jQuery("#personPhotoImage").attr("src").replace(_spPageContextInfo.siteAbsoluteUrl, "")
+            },
+            "TwitterHandle": jQuery("#twitterHandle").val(),
+            "FacebookLink": jQuery("#facebookLink").val(),
+            "InstagramLink": jQuery("#instagramLink").val(),
+            "LinkedInLink": jQuery("#linkedInLink").val()
+        }
+        return data;
+    }
+
+    //Save Function for New Person
+    function AddPerson(listName) {
+        var requestUrl = _spPageContextInfo.siteAbsoluteUrl + pa_webUrl + "/_api/web/lists/GetByTitle('People')/items";
+        jQuery.ajax({
+            url: requestUrl,
+            method: "POST",
+            data: JSON.stringify(GetFormData()),
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                "content-type": "application/json;odata=verbose"
+            },
+            success: function() {
+                SetStatus("SUCCESS", "The person has been added.", "page");
+                pa_formMode = "EDIT";
+                pa_person = GetCurrentPerson();
+                jQuery("#btnDelete").show();
+            },
+            error: function(err) {
+                SetStatus("ERROR", "An error occurred while adding the person. Please check the inputs and retry.", "page");
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    // Update the person object with values from the form
+    function UpdatePerson() {
+        pa_person.Title = jQuery("#person-name").val();
+        pa_person.Role = jQuery("#person-role").val();
+        pa_person.ArticleByLine = jQuery("#person-byline").val();
+        pa_person.RichDescription = jQuery("#rtbDescription").html();
+        pa_person.PersonPhoto.Description = jQuery("#personPhotoImage").attr("src").replace(_spPageContextInfo.siteAbsoluteUrl, "");
+        pa_person.PersonPhoto.Url = jQuery("#personPhotoImage").attr("src").replace(_spPageContextInfo.siteAbsoluteUrl, "");
+        pa_person.TwitterHandle = jQuery("#twitterHandle").val();
+        pa_person.FacebookLink = jQuery("#facebookLink").val();
+        pa_person.InstagramLink = jQuery("#instagramLink").val();
+        pa_person.LinkedInLink = jQuery("#linkedInLink").val();
+    }
+
+    //Edit function for an exisitng Person
+    function EditPerson(listName) {
+        UpdatePerson();
+        jQuery.ajax({
+            url: pa_person.__metadata.uri,
+            method: "POST",
+            data: JSON.stringify(pa_person),
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                "content-type": "application/json;odata=verbose",
+                "X-HTTP-Method": "MERGE",
+                "If-Match": "*"
+            },
+            success: function() {
+                SetStatus("SUCCESS", "Changes to the person have been saved.", "page");
+                window.location.href = _spPageContextInfo.siteAbsoluteUrl + pa_webUrl;
+            },
+            error: function(err) {
+                SetStatus("ERROR", "An error occurred while saving the person. Please check the inputs and retry.", "page");
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function DeletePerson() {
+        var personUrl = pa_person.__metadata.uri
+        jQuery.ajax({
+            url: personUrl,
+            method: "POST",
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                "content-type": "application/json;odata=verbose",
+                "X-HTTP-Method": "DELETE",
+                "If-Match": "*"
+            },
+            success: function(data) {
+                SetStatus("SUCCESS", "The person has been deleted.", "page");
+                window.location.href = pa_webUrl;
+            },
+            error: function(err) {
+                SetStatus("ERROR", "Could not delete the person.", "page")
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function SetStatus(type, message, target) {
+        switch(type) {
+            case "SUCCESS":
+                if (jQuery("#" + target + "StatusIcon").hasClass("fa-remove")) {
+                    jQuery("#" + target + "StatusIcon").removeClass("fa-remove");
+                }
+                if (!jQuery("#" + target + "StatusIcon").hasClass("fa-check")) {
+                    jQuery("#" + target + "StatusIcon").addClass("fa-check");
+                }
+                jQuery("#" + target + "StatusIcon").show();
+                if (jQuery("." + target + "-status").hasClass("text-warning")) {
+                    jQuery("." + target + "-status").removeClass("text-warning");
+                }
+                if (!jQuery("." + target + "-status").hasClass("text-success")) {
+                    jQuery("." + target + "-status").addClass("text-success");
+                }
+                break;
+            case "ERROR":
+                if (jQuery("#" + target + "StatusIcon").hasClass("fa-check")) {
+                    jQuery("#" + target + "StatusIcon").removeClass("fa-check");
+                }
+                if (!jQuery("#" + target + "StatusIcon").hasClass("fa-remove")) {
+                    jQuery("#" + target + "StatusIcon").addClass("fa-remove");
+                }
+                jQuery("#" + target + "StatusIcon").show();
+                if (jQuery("." + target + "-status").hasClass("text-success")) {
+                    jQuery("." + target + "-status").removeClass("text-success");
+                }
+                if (!jQuery("." + target + "-status").hasClass("text-warning")) {
+                    jQuery("." + target + "-status").addClass("text-warning");
+                }
+                break;
+            default:
+                jQuery("#" + target + "StatusIcon").hide();
+        }
+
+        jQuery("#" + target + "StatusText").text(message);
+        jQuery("." + target + "-status").show();
+    }
+
+    function ClearStatus(target) {
+        jQuery("." + target + "-status").hide();
+    }
+
+    function ValidateInputs() {
+        // Validate that person name is not blank
+        if (jQuery("#person-name").val() == "") {
+            SetStatus("ERROR", "Person name cannot be empty.", "page");
+            return false;
+        }
+
+        // Validate that person Role is not blank
+        if (jQuery("#person-role").val() == "") {
+            SetStatus("ERROR", "Person role cannot be empty.", "page");
+            return false;
+        }
+        return true;
+    }
+
+    function SaveFormData() {
+        // If the target web URL is not available through querystring, error out
+        if (pa_webUrl == "") {
+            SetStatus("ERROR", "The target site where the person is to be created is unknown.", "page");
+            return;
+        }
+
+        // Validate input fields before saving
+        if (ValidateInputs()) {
+            if (pa_formMode == "NEW") {
+                AddPerson("People");
+            }
+            else if (pa_formMode == "EDIT") {
+                EditPerson("People");
+            }
+        }
+    }
+
+    function SetAppointmentStatus(type, message) {
+        switch(type) {
+            case "SUCCESS": 
+                jQuery("#apptStatusIcon").removeClass("fa-remove");
+                jQuery("#apptStatusIcon").addClass("fa-check");
+                jQuery("#apptStatusMessage").html(message);
+                break;
+            case "ERROR": 
+                jQuery("#apptStatusIcon").removeClass("fa-check");
+                jQuery("#apptStatusIcon").addClass("fa-remove");
+                jQuery("#apptStatusMessage").html(message);
+                break;
+            default: 
+                jQuery(".appt-status").hide();
+        }
+        jQuery(".appt-status").show();
+    }
+
+    function ClearAppointmentForm() {
+        jQuery("#txtApptTitle").val("");
+        jQuery("#txtApptDescription").val("");
+        jQuery("#txtApptStartDate").val("");
+        jQuery("#txtApptEndDate").val("");
+        jQuery(".appt-status").hide();
+    }
+    
+    function ValidateAppointmentForm() {
+        if (!jQuery("#txtApptTitle").val()) {
+            SetAppointmentStatus("ERROR", "Title is required");
+            return false;
+        }
+        if (!jQuery("#txtApptStartDate").val()) {
+            SetAppointmentStatus("ERROR", "Start Date is required");
+            return false;
+        }
+        if (!jQuery("#txtApptEndDate").val()) {
+            jQuery("#txtApptEndDate").val(jQuery("#txtApptStartDate").val());
+        }
+        var startDate = new Date(jQuery("#txtApptStartDate").val());
+        var endDate = new Date(jQuery("#txtApptEndDate").val());
+        if (startDate > endDate) {
+            SetAppointmentStatus("ERROR", "Program end date precedes start date.");
+            return false;
+        }
+        return true;
+    }
+
+    function SaveAppointment() {
+        if(ValidateAppointmentForm()) {
+            var data = {
+                "__metadata": {
+                    "type": "SP.Data.AppointmentsListItem"
+                },
+                "Title": jQuery("#txtApptTitle").val(),
+                "BeamConnectDescription": jQuery("#txtApptDescription").val(),
+                "StartDate": (new Date(jQuery("#txtApptStartDate").val())).toISOString(),
+                "OData__EndDate": (new Date(jQuery("#txtApptEndDate").val())).toISOString(),
+                "People": pa_personId
+            }
+            var apptUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(pa_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Appointments')/items";
+            jQuery.ajax({
+                url: apptUrl,
+                method: "POST",
+                data: JSON.stringify(data),
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                    "content-type": "application/json;odata=verbose"
+                },
+                success: function(data) {
+                    pa_appointmentsTable.row.add([
+                        jQuery("#txtApptTitle").val(),
+                        jQuery("#txtApptDescription").val(),
+                        (new Date(jQuery("#txtApptStartDate").val())).format("MMM d, yyyy"),
+                        (new Date(jQuery("#txtApptEndDate").val())).format("MMM d, yyyy"),
+                        "<a href='javascript:{}'><i class='fa fa-trash del-appt' value=\"" + data.d.__metadata.uri + "\"></i></a>"
+                    ]).draw();
+                    ClearAppointmentForm();
+                    jQuery('.form-group-add-Date').hide();
+                    jQuery('.container-appointments .add-link').show();
+                },
+                error: function(err) {
+                    console.log(JSON.stringify(err));
+                }
+            });
+        }
+    }
+
+    function SetLinkStatus(type, message) {
+        switch(type) {
+            case "SUCCESS": 
+                jQuery("#linkStatusIcon").removeClass("fa-remove");
+                jQuery("#linkStatusIcon").addClass("fa-check");
+                jQuery("#linkStatusMessage").html(message);
+                break;
+            case "ERROR": 
+                jQuery("#linkStatusIcon").removeClass("fa-check");
+                jQuery("#linkStatusIcon").addClass("fa-remove");
+                jQuery("#linkStatusMessage").html(message);
+                break;
+            default: 
+                jQuery(".link-status").hide();
+        }
+        jQuery(".link-status").show();
+    }
+
+    function ClearLinkForm() {
+        jQuery("#txtLinkTitle").val("");
+        jQuery("#txtLinkUrl").val("");
+        jQuery("#chkLinkPrivate").prop("checked", false);
+        jQuery(".link-status").hide();
+    }
+    
+    function ValidateLinkForm() {
+        if (!jQuery("#txtLinkTitle").val()) {
+            SetLinkStatus("ERROR", "Title is required");
+            return false;
+        }
+        if (!jQuery("#txtLinkUrl").val()) {
+            SetLinkStatus("ERROR", "Start Date is required");
+            return false;
+        }
+        return true;
+    }
+
+    function SaveLink() {
+        if(ValidateLinkForm()) {
+            var newId = (new Date()).format("MMddyyyyhhmmss");
+            var title = jQuery("#txtLinkTitle").val();
+            var link = jQuery("#txtLinkUrl").val();
+            var private = false;
+            var privacyIcon = "<i class='fa fa-users'></i>";
+            if(jQuery("#chkLinkPrivate").prop("checked")) {
+                private = true;
+                privacyIcon = "<i class='fa fa-user'></i>";
+            }
+            var data = {
+                "__metadata": {
+                    "type": "SP.Data.LinksListItem"
+                },
+                "Title": jQuery("#txtLinkTitle").val(),
+                "Link": {
+                    "__metadata": {
+                        "type": "SP.FieldUrlValue"
+                    },
+                    "Description": jQuery("#txtLinkUrl").val(),
+                    "Url": jQuery("#txtLinkUrl").val()
+                },
+                "Private": private,
+                "LinkID": newId
+            }
+            var linkUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(pa_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Links')/items";
+            jQuery.ajax({
+                url: linkUrl,
+                method: "POST",
+                data: JSON.stringify(data),
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                    "content-type": "application/json;odata=verbose"
+                },
+                success: function(data) {
+                    pa_linksTable.row.add([
+                        jQuery("#txtLinkTitle").val(),
+                        jQuery("#txtLinkUrl").val(),
+                        privacyIcon,
+                        "<a href='javascript:{}'><i class='fa fa-trash del-link' value=\"" + data.d.__metadata.uri + "\"></i></a>"
+                    ]).draw();
+                    if (private) {
+                        var peopleLinkData = {
+                            "__metadata": {
+                                "type": "SP.Data.PeopleLinksListItem"
+                            },
+                            "Title": "None",
+                            "PersonID": pa_personId,
+                            "LinkID": newId
+                        }
+                        var peopleLinksUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(pa_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('PeopleLinks')/items";
+                        jQuery.ajax({
+                            url: peopleLinksUrl,
+                            method: "POST",
+                            data: JSON.stringify(peopleLinkData),
+                            headers: {
+                                "accept": "application/json;odata=verbose",
+                                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                                "content-type": "application/json;odata=verbose"
+                            },
+                            success: function(data) {
+                            },
+                            error: function(err) {
+                                console.log(JSON.stringify(err));
+                            }
+                        });
+                    }
+                    ClearLinkForm();
+                    jQuery('.form-group-add-Link').hide();
+                    jQuery('.container-links .add-link').show();
+                },
+                error: function(err) {
+                    console.log(JSON.stringify(err));
+                }
+            });
+        }
+    }
+
+    function DeleteTableItem(elem, itemType) {
+        var element = jQuery(elem);
+        element.removeClass("fa-trash");
+        element.addClass("fa-spinner").addClass("fa-spin").addClass("fa-fw");
+        var parentRow = jQuery(elem).parents("tr");
+        var delUrl = element.attr("value");
+        jQuery.ajax({
+            url: delUrl,
+            method: "POST",
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery('#__REQUESTDIGEST').val(),
+                "content-type": "application/json;odata=verbose",
+                "X-HTTP-Method": "DELETE",
+                "If-Match": "*"
+            },
+            success: function(data) {
+                switch(itemType) {
+                    case "appointment":
+                        pa_appointmentsTable.row(parentRow).remove().draw();
+                        break;
+                    case "link":
+                        pa_linksTable.row(parentRow).remove().draw();
+                        break;
+                }
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function InitiateDescriptionBox() {
+        jQuery("#rtbDescription").easyEditor({
+            buttons: ['bold', 'italic', 'link', 'h2', 'h3', 'h4', 'alignleft', 'aligncenter', 'alignright', 'quote', 'code', 'image', 'youtube', 'x'],
+            buttonsHtml: {
+                'bold': '<i class="fa fa-bold"></i>',
+                'italic': '<i class="fa fa-italic"></i>',
+                'link': '<i class="fa fa-link"></i>',
+                'header-2': '<i class="fa fa-header"></i>2',
+                'header-3': '<i class="fa fa-header"></i>3',
+                'header-4': '<i class="fa fa-header"></i>4',
+                'align-left': '<i class="fa fa-align-left"></i>',
+                'align-center': '<i class="fa fa-align-center"></i>',
+                'align-right': '<i class="fa fa-align-right"></i>',
+                'quote': '<i class="fa fa-quote-left"></i>',
+                'code': '<i class="fa fa-code"></i>',
+                'insert-image': '<i class="fa fa-picture-o"></i>',
+                'insert-youtube-video': '<i class="fa fa-youtube"></i>',
+                'remove-formatting': '<i class="fa fa-ban"></i>'
+            }
+        });
+    }
+
+    // Add event AddHandlers
+    function AddHandlers() {
+        // Handler to upload program photo
+        jQuery("#uploadPersonPhoto").on("click", function() {
+            if (jQuery("#personPhotoFile").val() != "") {
+                UploadFile(jQuery("#personPhotoFile"), jQuery("#personPhotoImage"), "/SiteAssets/People_Photos");
+            }
+        });
+
+        // Handlers for date pickers
+        jQuery("#txtApptStartDate").datepicker();
+        jQuery("#txtApptEndDate").datepicker();
+
+        // Handler for program photo file input
+        jQuery("#personPhotoFile").change(function() {
+            var text = jQuery("#personPhotoFile").val();
+            if (text == "") {
+                jQuery("#uploadPersonPhoto").hide();
+            }
+            else {
+                jQuery("#uploadPersonPhoto").show();
+            }
+            var filename = text.substr(text.lastIndexOf("\\") + 1);
+            jQuery("#lblPersonPhoto").text(filename);
+        });
+
+        // Handler to apply existing photo
+        jQuery("#btnApplyPhoto").on("click", function() {
+            jQuery("#personPhotoImage").attr("src", jQuery("#photoImageUrl").val());
+        });
+
+        // Handler to Cancel
+        jQuery("#btnCancel").on("click", function() {
+            window.location.href = _spPageContextInfo.siteAbsoluteUrl + pa_webUrl;
+        });
+
+        // Handler to save form data
+        jQuery("#btnSave").on("click", function() {
+            SaveFormData();
+        });
+
+        // Add handler to delete event
+        jQuery("#btnDelete").on("click", function() {
+            if (confirm("Are you sure you want to delete " + pa_person.Title + "? This action cannot be reversed.")) {
+                DeletePerson();
+            }
+        });
+
+        // Handler to clean up status display if any form input changes
+        jQuery("input").change(function() {
+            ClearStatus();
+        });
+
+        // Add handler to toggle add link for appointments
+        jQuery('.container-appointments .add-link').on("click", function(){
+            jQuery('.form-group-add-Date').show();
+            jQuery(this).hide();
+        });
+
+        // Add handler to toggle add link for links
+        jQuery('.container-links .add-link').on("click", function(){
+            jQuery('.form-group-add-Link').show();
+            jQuery(this).hide();
+        });
+
+        // Add handler to the Add appointments button
+        jQuery("#btnAddAppointment").on("click", function() {
+            SaveAppointment();
+        });
+
+        // Add handler to the Add links button
+        jQuery("#btnAddLink").on("click", function() {
+            SaveLink();
+        });
+
+        // Add handler to delete appointment on trash icon click
+        jQuery(document).on("click", ".del-appt", function(e) {
+            if (confirm("Are you sure you want to delete this appointment?")) {
+                DeleteTableItem(this, "appointment");
+            }
+        });
+
+        // Add handler to delete link on trash icon click
+        jQuery(document).on("click", ".del-link", function(e) {
+            if (confirm("Are you sure you want to delete this link?")) {
+                DeleteTableItem(this, "link");
+            }
+        });
+    }
+
+    jQuery(document).ready(function() {
+        SetWebUrl();
+        SetPersonId();
+        InitiateDescriptionBox();
+        LoadImagePicker();
+        AddHandlers();
+    });
+</script><head><title></title></head>

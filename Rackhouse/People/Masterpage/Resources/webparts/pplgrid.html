@@ -1,0 +1,564 @@
+<script type="text/javascript" src="/_catalogs/masterpage/resources/moment.min.js"></script>
+<script type="text/javascript" src="/_catalogs/masterpage/resources/underscore-min.js"></script>
+<script type="text/javascript" src="/_catalogs/masterpage/resources/clndr.min.js"></script>
+<a href="/Pages/People-Admin.aspx" id="addNewLink" class="add-person-link" type="button">
+    <h2 class="addNew-doc-link"><i aria-hidden="true" class="fa fa-plus" ></i> Add Person</h2>
+</a>
+
+<!-- Role selection dropdown -->
+<div class="filter-container" id="programFilter">
+</div>
+
+<!-- People grid with thumb navigation -->
+<div class="people-grid" id="slider-thumbs">
+    <!-- People grid items -->
+    <ul class="people-grid-list" id="peopleGridList">
+
+    </ul>
+</div>
+
+<!-- Person Modal -->
+<div class="modal fade people-modal" id="personModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-8 modal-left-column">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <img id="personPhoto" src="">
+                            </div>
+                            <div class="col-sm-8" id="people-modal-info">
+                                <h2 id="personName" class="modal-title" id="myModalLabel"></h2>
+                                <div class='edit-link' id="editLink"><a class='person-edit' href="">Edit</a></div>
+                                <h3 id="personByline"></h3>
+                                <h3 id="personRole"></h3>
+                                <p id="personDescription"></p>
+                                <div class="read-more"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="calendar" class="calendar"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 modal-right-column">
+                        <div id="actionLinkContainer" class="action-links">
+                        </div>
+                        <div id="socialLinks" class="social-links">
+                        </div>
+                        <div id="twitterContainer" class="twitter-container">
+                            <div class="people-twitter"><i class=\"icon-twitter\"></i> <span id="personTwitterHandle"></span></div>
+                            <div id="twitterTimeline" class="media">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var ppl_calendar;
+
+    function CheckUserPermissions() {
+        SP.SOD.executeFunc('SP.Runtime.js', 'SP.ClientContext',
+            function() {
+            SP.SOD.executeFunc('SP.js', 'SP.ClientContext',
+                function() {
+                    var siteUrl = _spPageContextInfo.webAbsoluteUrl;
+                    var clientContext = new SP.ClientContext(siteUrl);
+                    web = clientContext.get_web();
+                    clientContext.load(web, 'Title', 'EffectiveBasePermissions');
+                    clientContext.executeQueryAsync(onSuccess, onError);
+                });
+            });
+    }
+
+    function onSuccess(){
+        var permissions = SP.PermissionKind.manageWeb;
+        if(web.get_effectiveBasePermissions().has(permissions)){
+            userIsAdmin = true;
+            jQuery("#addNewLink").attr("href", "/Pages/People-Admin.aspx?weburl=" + ReplaceLanguageInUrl(_spPageContextInfo.webServerRelativeUrl, "/CONNECT/"));
+            jQuery("#addNewLink").show();
+        }
+        PrintPeopleGrid();
+    }
+
+    function onError(sender, args) {
+        console.log(args.get_message() + '\n' + args.get_stackTrace());
+        PrintPeopleGrid();
+    }
+
+    function ReplaceLanguageInUrl(url, lang) {
+        var newUrl =  url.replace("/zhcn/", lang).replace("/zhhk/", lang).replace("/de/", lang).replace("/es/", lang).replace("/fr/", lang).replace("/ja/", lang).replace("/pl/", lang).replace("/pt/", lang).replace("/ru/", lang);
+        return newUrl;
+    }
+
+    function GetMonthString(monthNum) {
+        switch(monthNum) {
+            case 0: return "January";
+            case 1: return "February";
+            case 2: return "March";
+            case 3: return "April";
+            case 4: return "May";
+            case 5: return "June";
+            case 6: return "July";
+            case 7: return "August";
+            case 8: return "September";
+            case 9: return "October";
+            case 10: return "November";
+            case 11: return "December";
+        }
+    }
+
+    function GetMonthDay(date) {
+        var input = new Date(date);
+        return input.format("MMMM d");
+    }
+
+    function RenderRoleDropdown(roleArray, container) {
+        var i;
+        roleArray.sort();
+        var roleHtml = "";
+        roleHtml += 
+            "<div class='dropdown-program'>" +
+                "<a class='dropdown-button' href='javascript:{}'><span>" + activeRole + "</span><i class='icon-caret-down'></i></a>" + 
+                "<div class='dropdown-program-content'>" + 
+                    "<a value='All' class='dropdown-program-link";
+
+        if (activeRole == "All") {
+            roleHtml += " active-filter";
+        }
+        roleHtml += 
+                    "' href='javascript:{}'>All</a>";
+
+        for (i = 0; i < roleArray.length; i++) {
+            roleHtml += 
+                    "<a value='" + roleArray[i] + "' class='dropdown-program-link";
+            if (activeRole == roleArray[i]) {
+                roleHtml += " active-filter";
+            }
+            roleHtml += "' href='javascript:{}'>" + roleArray[i] + "</a>";
+        }
+        roleHtml += 
+                "</div>" +
+            "</div>";
+        jQuery("#" + container).html(roleHtml);
+    }
+
+    function PrintPeopleGrid() {
+        var url = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('People')/items?$select=Title,PersonID,ArticleByLine,Role,RichDescription,PersonPhoto,TwitterHandle,FacebookLink,InstagramLink,LinkedInLink&$orderby=Order1 asc";
+        jQuery.ajax({
+            url: url,
+            type:"GET",
+            headers: {
+                Accept: "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var personId = "";
+                var name = "";
+                var byline = "";
+                var role = "";
+                var description = "";
+                var photoUrl = "";
+                var twitterHandle = "";
+                var facebookLink = "";
+                var instagramLink = "";
+                var linkedInLink = "";
+                var roleArray = [];
+
+                var primaryHTML = "";
+                var modalHTML = "";
+
+                jQuery.each(data.d.results, function(i, n) {
+                    personId = n.PersonID;
+                    name = n.Title;
+                    byline = n.ArticleByLine;
+                    role = n.Role; 
+                    description = n.RichDescription; 
+                    photoUrl = n.PersonPhoto.Url;
+                    twitterHandle = n.TwitterHandle;
+                    facebookLink = n.FacebookLink;
+                    instagramLink = n.InstagramLink;
+                    linkedInLink = n.LinkedInLink;
+
+                    // Add scope to array
+                    if (role) {
+                        if (roleArray.indexOf(role) == -1) {
+                            roleArray.push(role);
+                        }
+                    }
+
+                    if (activeRole.toLowerCase() == n.Role.toLowerCase() || activeRole == "All") {
+                        primaryHTML +=
+                        "<li class=\"people-grid-person ui-state-default\">" + 
+                            "<input type=\"hidden\" value=\"" + n.__metadata.uri + "\" />" + 
+                            "<a href=\"javascript:{}\" class=\"person-modal-launcher\" id=\"" + personId + "\" data-toggle=\"modal\" data-target=\"#personModal\">" +
+                                "<img src=\"" + photoUrl + "\" class=\"img-responsive\"/>" +
+                                "<div class=\"people-grid-overlay\">" +
+                                    "<h2 class=\"people-name\">" + name + "</h2>";
+                        if (userIsAdmin) {
+                            primaryHTML += 
+                                    "<button id=\"btnEdit\" class=\"btn btn-primary action-link\">Edit</button>";
+                        }
+                        if (byline) {
+                            primaryHTML += 
+                                    "<span class=\"people-byline\">" + byline + "</span>";
+                        }
+                        primaryHTML += 
+                                    "<span class=\"people-description\">" + role + "</span>" + 
+                                "</div>";
+
+                        if (userIsAdmin) {
+                            primaryHTML += 
+                                "<div class=\"person-move\">" +
+                                    "<i class=\"icon-move\"></i>" +
+                                "</div>";
+                        }
+
+                        primaryHTML +=        
+                            "</a>" + 
+                        "</li>";
+                    }
+                });
+
+                jQuery("#peopleGridList").html(primaryHTML);
+
+                // Load the Role selection drop down list
+                RenderRoleDropdown(roleArray, "programFilter");
+
+                // Set up handlers for the dropdown
+                jQuery(".dropdown-button").on("click", function(e) {
+                    jQuery(".dropdown-program-content").toggleClass("open");
+                    e.stopPropagation()
+                });
+
+                // Handler to close modal if any other location on the document is clicked
+                jQuery(document).on("click", function(event)
+                {
+                    jQuery(".dropdown-program-content").removeClass("open");
+                });
+
+                // Add a handler for the edit button
+                jQuery(document).on("click", "#btnEdit", function(e) {
+                    var pId = jQuery(e.currentTarget).parent().parent().attr("id");
+                    window.location.href = "/Pages/People-Admin.aspx?weburl=" + ReplaceLanguageInUrl(_spPageContextInfo.webServerRelativeUrl, "/CONNECT/") + "&personid=" + pId;
+                });
+
+                // Add handler to scope drop down selections
+                jQuery(".dropdown-program-link").click(function(e) {
+                    activeRole = jQuery(this).text();
+                    PrintPeopleGrid();
+                });
+
+                jQuery(document).on("click", ".read-more", function(){
+                    jQuery('#personDescription').toggleClass('description-read-more');
+                    jQuery('.read-more').toggleClass("read-more-open");
+                });
+
+                // Add handler to launch the person modal dialog
+                jQuery(document).on("click", ".person-modal-launcher", function(e) {
+                    var pId = jQuery(e.currentTarget).attr("id");
+
+                    // Clear dialog of residual values from prior load
+                    jQuery("#personPhoto").attr("src", "");
+                    jQuery("#personName").text("");
+                    jQuery("#personByline").text("");
+                    jQuery("#personRole").text("");
+                    jQuery("#personDescription").text("");
+                    jQuery("#actionLinkContainer").html("");
+                    jQuery("#twitterTimeline").html("");
+                    jQuery("#socialLinks").html("");
+                    jQuery(".read-more").hide();
+
+                    // Get and load person attributes
+                    var url = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('People')/items?$select=Title,PersonID,ArticleByLine,Role,RichDescription,PersonPhoto,TwitterHandle,FacebookLink,InstagramLink,LinkedInLink&$filter=PersonID eq '" + pId + "'";
+                    jQuery.ajax({
+                        url: url,
+                        type:"GET",
+                        headers: {
+                            Accept: "application/json;odata=verbose"
+                        },
+                        success: function(data) {
+                            var person = data.d.results[0];
+                            // Load person information
+                            jQuery("#personPhoto").attr("src", person.PersonPhoto.Url);
+                            jQuery("#personName").text(person.Title);
+                            if (person.ArticleByLine) {
+                                jQuery("#personByline").text(person.ArticleByLine);
+                            }
+                            jQuery("#personRole").text(person.Role);
+                            jQuery("#personDescription").html(person.RichDescription);
+
+                            // Add edit link for admins
+                            if (userIsAdmin) {
+                                jQuery("#editLink").find("a").attr("href", "/Pages/People-Admin.aspx?weburl=" + ReplaceLanguageInUrl(_spPageContextInfo.webServerRelativeUrl, "/CONNECT/") + "&personid=" + pId);
+                                jQuery("#editLink").show();
+                            }
+
+                            // Add Twitter timeline
+                            if (person.TwitterHandle) {
+                                var twitterHtml = 
+                                    '<a class="twitter-timeline" data-width="300" data-height="360" data-link-color="#F35757" href="https://twitter.com/' + person.TwitterHandle.replace("@", "") + '">Tweets by @' + person.TwitterHandle.replace("@", "") + '</a>' + 
+                                    '<script sync src="//platform.twitter.com/widgets.js" charset="utf-8"><//script>';
+                                jQuery("#twitterTimeline").html(twitterHtml);
+                            }
+                            
+                            // Construct social media links
+                            var socialLinkHtml = "";
+                            if (person.FacebookLink) {
+                                socialLinkHtml += 
+                                    "<a class=\"social-link\" href=\"" + person.FacebookLink + "\"><i class=\"fa fa-facebook\"></i></a>";
+                            }
+                            if (person.InstagramLink) {
+                                socialLinkHtml += 
+                                    "<a class=\"social-link\" href=\"" + person.InstagramLink + "\"><i class=\"fa fa-instagram\"></i></a>";
+                            }
+                            if (person.LinkedInLink) {
+                                socialLinkHtml += 
+                                    "<a class=\"social-link\" href=\"" + person.LinkedInLink + "\"><i class=\"fa fa-linkedin\"></i></a>";
+                            }
+                            if (socialLinkHtml) {
+                                jQuery("#socialLinks").html(socialLinkHtml);
+                            }
+
+                            if((jQuery("#personDescription").text().length) > 300 ){
+                                jQuery('.read-more').show();
+                            }
+                        },
+                        error: function(err) {
+                            console.log(JSON.stringify(err))
+                        }
+                    });
+
+                    // Get and load public links
+                    var publicLinkUrl = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Links')/items?$select=Title,Link&$top=5&$filter=Private eq 'false'";
+                    var publicLinkHtml = "";
+                    jQuery.ajax({
+                        url: publicLinkUrl,
+                        method: "GET",
+                        headers: {
+                            accept: "application/json;odata=verbose"
+                        },
+                        success: function(publicLinks) {
+                            jQuery.each(publicLinks.d.results, function(i, link) {
+                                publicLinkHtml += 
+                                    "<a href=\"" + link.Link.Url + "\" class=\"btn btn-primary action-link\">" + link.Title + "</a>";
+                            });
+                            jQuery("#actionLinkContainer").append(publicLinkHtml);
+                        },
+                        error: function(err) {
+                            console.log(JSON.stringify(err));
+                        }
+                    });
+
+
+                    // Get and load private links
+                    var peopleLinkUrl = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('PeopleLinks')/items?$select=PersonID,LinkID&$filter=PersonID eq '" + pId + "'";
+                    jQuery.ajax({
+                        url: peopleLinkUrl,
+                        method: "GET",
+                        headers: {
+                            accept: "application/json;odata=verbose"
+                        },
+                        success: function(peopleLinks) {
+                            jQuery.each(peopleLinks.d.results, function(pli, peopleLink) {
+                                var linkUrl = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Links')/items?$select=Title,Link&$filter=LinkID eq '" + peopleLink.LinkID + "'";
+                                jQuery.ajax({
+                                    url: linkUrl,
+                                    method: "GET",
+                                    headers: {
+                                        accept: "application/json;odata=verbose"
+                                    },
+                                    success: function(links) {
+                                        jQuery.each(links.d.results, function(li, link) {
+                                            jQuery("#actionLinkContainer").append("<a href=\"" + link.Link.Url + "\" class=\"btn btn-primary action-link\">" + link.Title + "</a>");
+                                        });
+                                    },
+                                    error: function(err) {
+                                        console.log(JSON.stringify(err));
+                                    }
+                                });
+                            });
+                        },
+                        error: function(err) {
+                            console.log(JSON.stringify(err));
+                        }
+                    });
+
+                    // Load calendar and appointments
+                    var calendarTemplate = 
+                        "<div class='row clndr-container'>" + 
+                            "<div class='col-sm-6'>" + 
+                                "<div class='clndr-controls'>" +
+                                    "<div class='clndr-control-button'>" +
+                                        "<span class='clndr-previous-button'><i class='fa fa-chevron-left'></i></span>" +
+                                    "</div>" +
+                                    "<div class='month'><%= month %> <%= year %></div>" +
+                                    "<div class='clndr-control-button rightalign'>" +
+                                        "<span class='clndr-next-button'><i class='fa fa-chevron-right'></i></span>" +
+                                    "</div>" +
+                                "</div>" +
+                                "<table class='clndr-table' border='0' cellspacing='0' cellpadding='0'>" +
+                                    "<thead>" +
+                                        "<tr class='header-days'>" +
+                                        "<% for(var i = 0; i < daysOfTheWeek.length; i++) { %>" +
+                                            "<td class='header-day'><%= daysOfTheWeek[i] %></td>" +
+                                        "<% } %>" +
+                                        "</tr>" +
+                                    "</thead>" +
+                                    "<tbody>" +
+                                    "<% for(var i = 0; i < numberOfRows; i++){ %>" +
+                                        "<tr>" +
+                                        "<% for(var j = 0; j < 7; j++){ %>" +
+                                        "<% var d = j + i * 7; %>" +
+                                            "<td class='<%= days[d].classes %>'>" +
+                                                "<div class='day-contents'><%= days[d].day %></div>" +
+                                            "</td>" +
+                                        "<% } %>" +
+                                        "</tr>" +
+                                    "<% } %>" +
+                                    "</tbody>" +
+                                "</table>" + 
+                            "</div>" + 
+                            "<div class='col-sm-6'>" + 
+                                "<div class='event-listing'>" + 
+                                    "<div class='event-listing-title'>APPOINTMENTS</div>" + 
+                                    "<% _.each(eventsThisMonth, function(event) { %>" + 
+                                    "<% var t = (new Date()).toISOString(); %>" + 
+                                    "<% if (event.end < t) { %>" + 
+                                    "<div class='event-item event-item-past'>" + 
+                                    "<% } %>" + 
+                                    "<% if (event.end >= t) { %>" + 
+                                    "<div class='event-item'>" + 
+                                    "<% } %>" + 
+                                        "<div class='event-item-start'><%= event.startDate %></div>" + 
+                                        "<% if (event.endDate != event.startDate) { %>" + 
+                                        "<div class='event-item-end'> - <%= event.endDate %></div>" + 
+                                        "<% } %>" + 
+                                        "<div class='event-item-name'><%= event.title %></div>" + 
+                                        "<% if (event.description) { %>" + 
+                                        "<div class='event-item-location'><%= event.description %></div>" + 
+                                        "<% } %>" +
+                                    "</div>" +
+                                    "<% }); %>" + 
+                                "</div>" + 
+                            "</div>" + 
+                        "</div>";
+                    var appointments = [];
+                    var appointment;
+                    var apptsUrl = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Appointments')/items?$select=Title,BeamConnectDescription,StartDate,OData__EndDate&$top=500&$filter=People eq '" + pId + "'";
+                    jQuery.ajax({
+                        url: apptsUrl,
+                        method: "GET",
+                        headers: {
+                            accept: "application/json;odata=verbose"
+                        },
+                        success: function(data) {
+                            for (i = 0; i < data.d.results.length; i++) {
+                                appointment = data.d.results[i];
+                                var startDate = GetMonthDay(appointment.StartDate);
+                                var endDate = "";
+                                if (appointment.OData__EndDate) {
+                                    endDate = GetMonthDay(appointment.OData__EndDate);
+                                }
+                                else {
+                                    endDate = startDate;
+                                }
+
+                                appointments.push({
+                                    start: appointment.StartDate,
+                                    end: appointment.OData__EndDate,
+                                    title: appointment.Title,
+                                    description: appointment.BeamConnectDescription,
+                                    startDate: startDate,
+                                    endDate: endDate
+                                });
+                            }
+
+                            // Sort object in ascending order of start date
+                            appointments.sort(function(a, b) {
+                                var dateA = new Date(a.start);
+                                var dateB = new Date(b.start);
+                                return dateA - dateB;
+                            });
+                            
+                            if (ppl_calendar) {
+                                ppl_calendar.setEvents(appointments);
+                            }
+                            else {
+                                ppl_calendar = 
+                                jQuery("#calendar").clndr({
+                                    template: calendarTemplate,
+                                    events: appointments,
+                                    multiDayEvents: {
+                                        endDate: 'end',
+                                        startDate: 'start',
+                                        singleDay: 'date'
+                                    }
+                                });
+                            }
+
+                            // Alter display of past events
+
+                        },
+                        error: function(err) {
+                            console.log(JSON.stringify(err));
+                        }
+                    });
+                });
+
+                if (userIsAdmin) {
+                    jQuery( ".people-grid-list" ).sortable({
+                        update: function(event, ui) {
+                            var items = jQuery(this).children("li");
+                            items.each(function(index, element) {
+                                var item = jQuery(this);
+                                var newOrder = item.index() + 1;
+                                var reqUrl = item.find("input[type=hidden]").val();
+                                jQuery.ajax({
+                                    url: reqUrl,
+                                    method: "POST",
+                                    data: JSON.stringify({
+                                        "__metadata": {
+                                            "type": "SP.Data.PeopleListItem"
+                                        },
+                                        "Order1": newOrder.toString()
+                                    }),
+                                    headers: {
+                                        "accept": "application/json;odata=verbose",
+                                        "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                                        "content-type": "application/json;odata=verbose",
+                                        "X-HTTP-Method": "MERGE",
+                                        "If-Match": "*"
+                                    },
+                                    success: function() {
+                                        console.log("Updated order of items.");
+                                    },
+                                    error: function(err) {
+                                        console.log(JSON.stringify(err));
+                                    }
+                                });
+                            });
+                        }
+                    });
+                    jQuery( ".people-grid-list" ).disableSelection();
+                }
+            },
+            error:function(d) {
+                console.log(JSON.stringify(d));
+            }
+        });
+    }
+
+    var userIsAdmin = false;
+    var activeRole = "All";
+
+    jQuery(document).ready(function(){
+        CheckUserPermissions();
+    });
+</script>

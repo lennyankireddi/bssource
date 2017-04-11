@@ -1,0 +1,24 @@
+<h3 id="listHeader"></h3>
+<ul class="sidebar-list list-unstyled" id="articleList">
+</ul>
+<script>
+    function LoadVolumeArticles(pub, vol) {
+        var liHtml = "";
+        var defaultHeader = "In this Volume";
+        GetTranslation(defaultHeader, pi_language, function(header) {
+            jQuery("#listHeader").text(header ? header : defaultHeader);
+        });
+        jQuery.each(pi_allArticles, function(i, article) {
+            if (article.Publication.Label == pub && article.Volume == vol && article.ConnectLanguage == pi_language) {
+                liHtml += 
+                    "<li><a href=\"/Pages/Publication.aspx?articleid=" + article.ArticleID + "&lang=" + pi_language + "\"";
+                if (article.ArticleID == pi_articleId) {
+                    liHtml += 
+                    "class=\"sidebar-active\"";;
+                }
+                liHtml += ">" + article.Title + "</a></li>";
+            }
+        });
+        jQuery("#articleList").html(liHtml);
+    }
+</script>

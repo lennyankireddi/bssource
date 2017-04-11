@@ -1,0 +1,379 @@
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  
+
+	<div class="container-fluid beam">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="form-horizontal">
+					<div>
+						<fieldset>
+							<!-- Text input-->
+							<div class="form-group">
+								<h3><label class="col-md-2 control-label" for="textinput">Event Name</label></h3>
+								<div class="col-md-4">
+									<input class="form-control input-md" id="textinput" name="textinput" placeholder="Program Name" type="text">
+								</div>
+							</div>
+
+                            <div class="form-group">
+								<h3><label class="col-md-2 control-label" for="textinput">Event Location</label></h3>
+								<div class="col-md-4">
+									<input class="form-control input-md" id="textinput" name="textinput" placeholder="Location Name" type="text">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div>
+									<h3><label class="col-md-2 control-label" for="textinput">Event Date</label></h3>
+								</div>
+								<div class="col-md-4">
+									<div class="form-calendar">
+										<div class="form-group calendar-inner-addon col-sm-6">
+											<label for="exampleInputName2">Start Date:</label>
+											<div class="input-calendar"><input class="form-control input-sm" id="datepicker-start" type="text"></div>
+										</div>
+										<div class="form-group calendar-inner-addon col-sm-6">
+											<label for="exampleInputEmail2">End Date:</label>
+											<div class="input-calendar"><input class="form-control input-sm" id="datepicker-end" type="text"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+                             <!-- Textarea -->
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="textarea">
+                                    <h3>Description
+                                    </h3>
+                                    <div id="textarea_feedback">
+                                    </div>
+                                </label>
+                                <div class="col-md-6">
+                                    <textarea placeholder="Enter" rows="3" class="form-control textarea-teaser-box" id="textarea" name="textarea"></textarea>
+                                </div>
+                            </div>
+
+
+							<div class="form-group">
+								<h3><label class="col-md-2  control-label" for="radios">External Links</label></h3>
+								<div class="col-md-8">
+                                    <div class="document-table">
+                                        <div class="dataTables_wrapper no-footer" id="DataTables_Table_0_wrapper">
+                                            <table class="table docs-table dataTable no-footer" id="DataTables_Table_0" role="grid">
+                                                <thead>
+                                                    <tr role="row">
+                                                        <th aria-controls="DataTables_Table_0" aria-label="Name: activate to sort column descending" aria-sort="ascending" class="sorting_asc" colspan="1" rowspan="1" tabindex="0">Link Text</th>
+                                                        <th aria-label="Featured" class="sorting_disabled" colspan="1" rowspan="1">Url</th>
+                                                        <th aria-label="Featured" class="sorting_disabled" colspan="1" rowspan="1">Delete</th>
+                                                        <th aria-label="Featured" class="sorting_disabled" colspan="1" rowspan="1">Edit</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="docsContainer">
+                                                    <tr role="row">
+                                                        <td>Google</td>
+                                                        <td>http://google.com</td>
+                                                        <td><a href="#"><i class="fa fa-trash"></i></a></td>
+                                                        <td><i class="fa fa-edit"></i></td>
+                                                    </tr>
+                                                    <tr role="row">
+                                                        <td>Another Link</td>
+                                                        <td>http://google.com</td>
+                                                        <td><a href="#"><i class="fa fa-trash"></i></a></td>
+                                                        <td><a href="#"><i class="fa fa-edit"></i></a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div><!--End Doc Table-->
+                                    <div class="form-group-double form-group-add-Link">
+                                        <div class="form-group col-sm-8">
+                                            <label for="exampleInputName2">Name</label>
+                                            <div>
+                                                <input class="form-control input-sm" type="text">
+                                            </div>
+                                            <label for="exampleInputName2">Url</label>
+                                            <div>
+                                                <input class="form-control input-sm" type="text">
+                                            </div>
+                                        </div> 
+                                        <a href="javascript:{}" class="action-link btn btn-primary add-date pull-right">Save</a>
+                                    </div>                                   
+
+                                 <a class="add-link" href="#"><i class="icon-plus"></i> Add New Link</a>
+                                    
+								</div>
+							
+								
+							</div>	
+			                
+
+                            <div class="form-group">
+                                <div class="col-md-2">
+                                    <input class="form-control input-md" id="textinput" name="textinput" placeholder="People" type="text">
+                                </div>
+                                
+								<div class="col-md-8">
+
+
+
+                                <div class="people-grid-event-admin" id="slider-thumbs">
+                                    <!-- People grid items -->
+                                    <ul class="people-grid-list ui-sortable" id="peopleGridList">
+                                        <li class="people-grid-person ui-state-default ui-sortable-handle">
+                                            <input type="hidden" value=""><a class="person-modal-launcher" data-target="#personModal" data-toggle="modal" href="javascript:{}" id="">
+                                                <img class="img-responsive" src="http://azjbbfpspdw1.cloudapp.net/SiteAssets/People_Photos/isaac-newton-21.jpg">
+                                            <div class="people-grid-overlay">
+                                                <h2 class="people-name">Isaac Newton</h2><button class="btn btn-primary action-link" id="btnEdit">Edit</button><span class="people-description">Consummate Genius</span>
+                                            </div>
+                                            <div class="person-move">
+                                                <i class="icon-move"></i>
+                                            </div></a>
+                                        </li>
+                                        <li class="people-grid-person ui-state-default ui-sortable-handle">
+                                            <input type="hidden" value=""><a class="person-modal-launcher" data-target="#personModal" data-toggle="modal" href="javascript:{}" id="">
+                                                <img class="img-responsive" src="http://azjbbfpspdw1.cloudapp.net/SiteAssets/People_Photos/isaac-newton-21.jpg">
+                                            <div class="people-grid-overlay">
+                                                <h2 class="people-name">Isaac Newton</h2><button class="btn btn-primary action-link" id="btnEdit">Edit</button><span class="people-description">Consummate Genius</span>
+                                            </div>
+                                            <div class="person-move">
+                                                <i class="icon-move"></i>
+                                            </div></a>
+                                        </li>
+                                        <li class="people-grid-person ui-state-default ui-sortable-handle">
+                                            <input type="hidden" value=""><a class="person-modal-launcher" data-target="#personModal" data-toggle="modal" href="javascript:{}" id="">
+                                                <img class="img-responsive" src="http://azjbbfpspdw1.cloudapp.net/SiteAssets/People_Photos/isaac-newton-21.jpg">
+                                            <div class="people-grid-overlay">
+                                                <h2 class="people-name">Isaac Newton</h2><button class="btn btn-primary action-link" id="btnEdit">Edit</button><span class="people-description">Consummate Genius</span>
+                                            </div>
+                                            <div class="person-move">
+                                                <i class="icon-move"></i>
+                                            </div></a>
+                                        </li>
+                                        <li class="people-grid-person ui-state-default ui-sortable-handle">
+                                            <input type="hidden" value=""><a class="person-modal-launcher" data-target="#personModal" data-toggle="modal" href="javascript:{}" id="">
+                                                <img class="img-responsive" src="http://azjbbfpspdw1.cloudapp.net/SiteAssets/People_Photos/isaac-newton-21.jpg">
+                                            <div class="people-grid-overlay">
+                                                <h2 class="people-name">Isaac Newton</h2><a href="#" class="btn btn-primary action-link" id="btnEdit">Edit</a><span class="people-description">Consummate Genius</span>
+                                            </div>
+                                            <div class="person-move">
+                                                <i class="icon-move"></i>
+                                            </div></a>
+                                        </li>
+                                        <li class="people-grid-person ui-state-default ui-sortable-handle">
+                                            <input type="hidden" value=""><a class="person-modal-launcher" data-target="#personModal" data-toggle="modal" href="javascript:{}" id="">
+                                                <img class="img-responsive" src="http://azjbbfpspdw1.cloudapp.net/SiteAssets/People_Photos/isaac-newton-21.jpg">
+                                            <div class="people-grid-overlay">
+                                                <h2 class="people-name">Isaac Newton</h2><button class="btn btn-primary action-link" id="btnEdit">Edit</button><span class="people-description">Consummate Genius</span>
+                                            </div>
+                                            <div class="person-move">
+                                                <i class="icon-move"></i>
+                                            </div></a>
+                                        </li>
+                                        <li class="people-grid-person ui-state-default ui-sortable-handle">
+                                            <input type="hidden" value=""><a class="person-modal-launcher" data-target="#personModal" data-toggle="modal" href="javascript:{}" id="">
+                                                <img class="img-responsive" src="http://azjbbfpspdw1.cloudapp.net/SiteAssets/People_Photos/isaac-newton-21.jpg">
+                                            <div class="people-grid-overlay">
+                                                <h2 class="people-name">Isaac Newton</h2><button class="btn btn-primary action-link" id="btnEdit">Edit</button><span class="people-description">Consummate Genius</span>
+                                            </div>
+                                            <div class="person-move">
+                                                <i class="icon-move"></i>
+                                            </div></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="person-zone">
+                                    <div class="form-group-double">
+                                        <div class="form-group col-sm-6">
+                                            <label>Name</label>
+                                            <div>
+                                                <input placeholder="Enter Name" class="form-control input-md" type="text">
+                                            </div>
+                                            <label for="exampleInputName2">Brand</label>
+                                            <div>
+                                                <input placeholder="Enter Brand" class="form-control input-md" type="text">
+                                            </div>
+                                            <label >Title</label>
+                                            <div>
+                                                <input placeholder="Enter Title" class="form-control input-md" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 social-form">
+                                            <i class="fa fa-twitter pull-left"></i><input class="form-control input-md" id="twitterHandle" name="textinput" placeholder="Twitter handle" type="text"><br>
+                                            <i class="fa fa-facebook pull-left"></i><input class="form-control input-md" id="facebookLink" name="textinput" placeholder="Facebook URL" type="text"><br>
+                                            <i class="fa fa-instagram pull-left"></i><input class="form-control input-md" id="instagramLink" name="textinput" placeholder="Instagram URL" type="text"><br>
+                                            <i class="fa fa-linkedin pull-left"></i><input class="form-control input-md" id="linkedInLink" name="textinput" placeholder="LinkedIn URL" type="text">
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="form-group col-sm-6">
+                                            <div class="col-md-6">
+                                                <img class="img-responsive" src="/_catalogs/masterpage/Resources/img-upload.png">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>
+                                                    <input type="file" id="personPhotoFile" class="program-logo">
+                                                    <label class="program-logo-label" id="lblPersonPhoto" for="personPhotoFile"><i class="fa fa-upload"></i> Choose a file</label>
+                                                    <a href="javascript:{}" class="upload-button btn btn-primary" id="uploadPersonPhoto" style="display: none;">Upload</a>
+                                                </p>
+                                                <a href="#">Upload Existing Photo</a>
+                                            </div>
+                                        </div>                    
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="btn-container pull-right">
+                                            <button id="btnCancel" class="btn btn-default" type="button">Cancel</button> 
+                                            <button href="javascript:{}" class="action-link btn btn-primary add-person pull-right" id="">Save</button>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                
+                                <a class="add-link add-link-person" href="#"><i class="icon-plus"></i> Add New</a>
+
+								</div>
+								
+							</div>	
+
+                            <div class="form-group">
+                                <div class="col-md-2">
+                                    <input class="form-control input-md" id="textinput" name="textinput" placeholder="Documents" type="text">
+                                </div>
+                            
+								<div class="col-md-8">
+                                    <div class="document-table">
+                                        <div class="dataTables_wrapper no-footer" id="">
+                                            <table class="table docs-table dataTable no-footer" id="" role="grid">
+                                                <thead>
+                                                    <tr role="row">
+                                                        <th aria-label="" class="sorting_disabled" colspan="1" rowspan="1"></th>
+                                                        <th aria-controls="DataTables_Table_0" aria-label="Name: activate to sort column descending" aria-sort="ascending" class="sorting_asc" colspan="1" rowspan="1" tabindex="0">Name</th>
+                                                        <th aria-label="Featured" class="sorting_disabled" colspan="1" rowspan="1">Speaker</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="docsContainer">
+                                                    <tr class="odd" role="row">
+                                                        <td><img src="/Style%20Library/Images/doc-icons/icpptx.png"></td>
+                                                        <td class="sorting_1">
+                                                            <a href="http://azjbbfpspdw1.cloudapp.net/_layouts/15/WopiFrame.aspx?sourcedoc=/Program%20Documents/Bartenders%204%20Bourbon%20Faciltators%20guide.pptx">Bartenders 4 Bourbon Faciltators guide.pptx</a>
+                                                        </td>
+                                                        <td>Goerge Glass</td>
+                                                    </tr>
+                                                    <tr class="even" role="row">
+                                                        <td><img src="/Style%20Library/Images/doc-icons/icpdf.png"></td>
+                                                        <td class="sorting_1">
+                                                            <a href="/Program%20Documents/Bartenders%204%20Bourbon%20Toolkit%20Sep%202015.pdf">Bartenders 4 Bourbon Toolkit Sep 2015.pdf</a>
+                                                        </td>
+                                                        <td>Isaac Newton</td>
+                                                    </tr>
+                                                    <tr class="odd" role="row">
+                                                        <td><img src="/Style%20Library/Images/doc-icons/icpdf.png"></td>
+                                                        <td class="sorting_1">
+                                                            <a href="/Program%20Documents/Bartenders%20for%20Bourbon%20Facilitators%20Guide.pdf">Bartenders for Bourbon Facilitators Guide.pdf</a>
+                                                        </td>
+                                                        <td>Goerge Glass</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>   
+
+                                </div>
+                            
+
+                            </div>
+							
+
+						</fieldset>
+					</div>
+
+				</div>
+
+                <div class="btn-container pull-right">
+                    <button id="btnCancel" class="btn btn-default" type="button">Cancel</button> 
+                    <button id="btnSave" class="btn btn-primary btn-save" type="button">Save</button> 
+                    <div class="page-status"><h3><i class="fa fa-check" aria-hidden="true"></i></h3></div>
+                </div>
+
+
+		</div><!--End Row-->
+	</div><!-- End Beam/bootstrap Container  -->
+
+<script>
+
+
+	var extLinkHTML= "<div class=\"form-group-double\">" +
+							"<div class=\"form-group col-sm-6\">" +
+								"<label>Link Name</label>" +
+								"<div>" +
+									"<input placeholder=\"Link Display Name\" class=\"form-control input-sm\" type=\"text\">" +
+								"</div>" +
+							"</div>" +
+							"<div class=\"form-group col-sm-6 \">" +
+								"<label>Link URL</label>" +
+								"<input placeholder=\"Link URL\" class=\"form-control input-sm\" type=\"text\">" +
+							"</div>" +
+						"</div>";
+
+jQuery('.add-link-external').on("click", function(){
+	jQuery(extLinkHTML).appendTo('.external-link-zone')
+
+});
+
+
+
+
+
+
+jQuery(".action-link").on("click", function(){
+	jQuery('.person-zone').show();
+    jQuery(this).closest(".people-grid-person").addClass('person-selected');
+});
+
+jQuery(".add-link-person").on("click", function(){
+	jQuery('.person-zone').show();
+
+});
+
+
+$(document).ready(function(){
+ $( function() {
+    $( "#peopleGridList" ).sortable();
+    $( "#peopleGridList" ).disableSelection();
+  } );
+
+
+  jQuery( function() {
+    jQuery( "#datepicker-start" ).datepicker();
+	jQuery( "#datepicker-end" ).datepicker();
+
+    jQuery( "#anim" ).on( "change", function() {
+      jQuery( "#datepicker-end" ).datepicker( "option", "showAnim", jQuery( this ).val() );
+	  jQuery( "#datepicker-start" ).datepicker( "option", "showAnim", jQuery( this ).val() );
+    });
+  } );
+
+})
+
+
+
+jQuery(document).on("click", ".add-link", function(){
+    jQuery(".form-group-add-Link").show();
+});
+
+
+
+
+
+
+  </script><html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><head>
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+<title></title>
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>

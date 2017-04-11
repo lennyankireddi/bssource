@@ -31,7 +31,8 @@
         var currentGroup = "";
         var currentId = getParameterByName("progid");
 
-        var searchUrl = "/_api/search/query?querytext=%27ContentType:Connect Program%27&selectproperties=%27ProgramIDOWSTEXT,Title,LanguageOWSCHCS,ProgramScope,Order1OWSNMBR,RunTime,StartDateOWSDATE,EndDateOWSDATE%27&sortlist=%27ProgramScope:ascending,Order1OWSNMBR:ascending%27";
+        var pathFilter = _spPageContextInfo.siteAbsoluteUrl + "/Lists/Programs";
+        var searchUrl = "/_api/search/query?querytext=%27ContentType:Connect Program AND Path:" + pathFilter + "%27&selectproperties=%27ProgramIDOWSTEXT,Title,LanguageOWSCHCS,ProgramScope,Order1OWSNMBR,RunTime,StartDateOWSDATE,EndDateOWSDATE%27&sortlist=%27ProgramScope:ascending,Order1OWSNMBR:ascending%27&RowLimit=500&TrimDuplicates=false";
         jQuery.ajax({
             url: searchUrl,
             method: "GET",

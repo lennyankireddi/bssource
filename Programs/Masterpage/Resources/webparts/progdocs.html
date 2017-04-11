@@ -149,7 +149,7 @@
                     filename = result.File.Name;
                     extension = filename.substr(filename.lastIndexOf('.') + 1);
                     if (IsOfficeDocument(extension)) {
-                        docUrl = _spPageContextInfo.webAbsoluteUrl + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + result.File.ServerRelativeUrl;
+                        docUrl = _spPageContextInfo.siteAbsoluteUrl + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + result.File.ServerRelativeUrl;
                     }
                     else {
                         docUrl = result.File.ServerRelativeUrl;
@@ -197,12 +197,16 @@
 
                 var docInfo;
                 for (i = 0; i < keys.length; i++) {
-                    htmlString += "<div class='program-docs'>";
-                    htmlString += "<h3>" + keys[i] + "</h3>"
-                    htmlString += "<ul class='list-unstyled'>";
+                    var headerAdded = false;
                     for (j = 0; j < arrayList[i].length; j++) {
                         docInfo = arrayList[i][j].split('|');
                         if (docInfo[3] === "false") {
+                            if (!headerAdded) {
+                                htmlString += "<div class='program-docs'>";
+                                htmlString += "<h3>" + keys[i] + "</h3>"
+                                htmlString += "<ul class='list-unstyled'>";
+                                headerAdded = true;
+                            }
                             htmlString += "<li>";
                             htmlString += "<span class='docIcon'><img src='" + docInfo[2] + "'/></span>&nbsp;";
                             htmlString += "<span class='docUrl'><a href='" + docInfo[1] + "'>" + docInfo[0] + "</a></span>";

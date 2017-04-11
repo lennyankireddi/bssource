@@ -1,0 +1,296 @@
+<script type="text/javascript" charset="utf8" src="/_catalogs/masterpage/resources/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/_catalogs/masterpage/resources/jquery.dataTables.min.css">
+
+<div id="eventDocs">
+    <h1 class="event-headline"><span id="docsHeader"></span></h1>
+    <div class="row" id="docsAndPreview">
+        <div class="col-sm-6" id="docsContainer"></div>
+        <div class="col-sm-6" id="previewContainer">
+            <iframe id="previewFrame" width="700px" height="400px" src=""></iframe>
+        </div>
+    </div>
+</div>
+
+<script>
+    function GetFavoritesForUser()
+    {
+        jQuery.ajax({
+            url:"/_api/web/lists/GetByTitle('Favorites')/items?$select=ID,URL,Order,Author/Id&$expand=Author&$filter=(Author/Id eq " + _spPageContextInfo.userId + ")&$orderby=Order asc",
+            type:"GET",
+            headers:{Accept:"application/json;odata=verbose"},
+            success:function(data)
+            {
+                rkhs_favoriteItems = data.d.results;
+                ShowDocuments();
+            },error:function(data) {
+                console.log(JSON.stringify(data));
+            }
+        });
+    }
+
+    function GetFavoriteId(docUrl) {
+        for (index = 0; index < rkhs_favoriteItems.length; index++) {
+            if (rkhs_favoriteItems[index].URL.Url.endsWith(docUrl)) {
+                return rkhs_favoriteItems[index].Id;
+            }
+        }
+        return -1;
+    }
+
+    function AddFavorite(url, title,element)
+    {
+        var d = {
+                    '__metadata':
+                    {
+                        'type':'SP.Data.FavoritesListItem'
+                    },
+                    'URL':{
+                        '__metadata':{'type':'SP.FieldUrlValue'},
+                        'Description':title,
+                        'Url':url
+                    }
+                };
+        jQuery.ajax({
+            url:"/_api/web/lists/GetByTitle('Favorites')/items",
+            type:"POST",
+            headers:{
+                "accept":"application/json;odata=verbose",
+                "X-RequestDigest":jQuery("#__REQUESTDIGEST").val(),
+                "content-type":"application/json;odata=verbose"
+            },
+            data: JSON.stringify(d),
+            success:function(data) {
+                if(typeof(element) != 'undefined') {
+                    jQuery(element).removeClass('fa-star-o').addClass('fa-star');
+                }
+                rkhs_favoriteItems.push(data.d);
+            },
+            error:function(e)
+            {
+                console.log(JSON.stringify(e));
+            }
+        });
+    }
+
+    function RemoveFavorite(id, element)
+    {
+        jQuery.ajax({
+            url:"/_api/web/lists/GetByTitle('Favorites')/items(" + id + ")",
+            type:"POST",
+            headers:{
+                "accept":"application/json;odata=verbose",
+                "X-HTTP-Method":"DELETE",
+                "X-RequestDigest":jQuery("#__REQUESTDIGEST").val(),
+                "IF-MATCH":"*"
+            },
+            success:function(e) {
+                if(typeof(element) != undefined) {
+                    jQuery(element).removeClass('fa-star').addClass('fa-star-o');
+                }
+                rkhs_favoriteItems = rkhs_favoriteItems.filter(function(n) {
+                    return n.Id != id
+                });
+            },
+            error:function(e)
+            {
+                console.log(JSON.stringify(e));
+            }
+        });
+    }
+
+    function ToggleFavorite(element, url, title) {
+        if (jQuery(element).hasClass("fa-star-o")) {
+            AddFavorite(url, title, element);
+        }
+        else if (jQuery(element).hasClass("fa-star")) {
+            var favoriteId = GetFavoriteId(url);
+            if (favoriteId != -1) {
+                RemoveFavorite(favoriteId, element);
+            }
+        }
+    }
+
+    function PrepURLs(body) {
+        while (body.indexOf("<") != -1) {
+            start = body.indexOf("<");
+            end = body.indexOf(">");
+            bracedUrl = body.substr(start, end - start + 1);
+            url = body.substr(start + 1, end - start - 1);
+            body = body.replace(bracedUrl, encodeURI(url));
+        }
+        return body;
+    }
+
+    function ReplaceLanguageInUrl(url, lang) {
+        var newUrl =  url.replace("/zhcn/", lang).replace("/zhhk/", lang).replace("/de/", lang).replace("/es/", lang).replace("/fr/", lang).replace("/ja/", lang).replace("/pl/", lang).replace("/pt/", lang).replace("/ru/", lang);
+        return newUrl;
+    }
+
+    function SetDocumentsHeader() {
+        var eventUrl = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Events')/items?$top=1&$select=DocumentsHeader";
+        jQuery.ajax({
+            url: eventUrl,
+            method: "GET",
+            headers: {
+                accept: "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var event = data.d.results[0];
+                jQuery("#docsHeader").html(event.DocumentsHeader);
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function SetPreviewSource(element) {
+        jQuery("#previewFrame").attr("top")
+        jQuery("#previewFrame").attr("src", jQuery(element).attr("value"));
+    }
+
+    function ShowDocuments() {
+        var docsUrl = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Rackhouse Documents')/items?$select=Subject,File&$expand=File&$top=500";
+        jQuery.ajax({
+            url: docsUrl,
+            method: "GET",
+            headers: {
+                accept: "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var htmlString = "";
+                var docUrl = "";
+                var filename = "";
+                var extension = "";
+                var docIcon = "";
+                var docName = "";
+                var fileType = "";
+                var docSubject = "";
+                var downloadLink = "";
+                var faveLink = "";
+                var emailBody = "";
+                var mobileEmailBody = "";
+                var newLine = "%0D%0A";
+                var shareLink = "";
+                var docData = "";
+                var fileTypes = [];
+                var docsTable;
+                var docsTables = {};
+                var index, i, j;
+                
+                jQuery.each(data.d.results, function(i, doc) {
+                    htmlString = "";
+                    filename = doc.File.Name;
+                    extension = filename.substr(filename.lastIndexOf('.') + 1);
+
+                    // Prepare icon
+                    docIcon = "<span class='docIcon'><img src='" + GetDocIcon(extension) + "'/></span>&nbsp;";
+                    
+                    // Prepare URL
+                    if (IsOfficeDocument(extension)) {
+                        docUrl = _spPageContextInfo.webAbsoluteUrl + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + doc.File.ServerRelativeUrl;
+                    }
+                    else {
+                        docUrl = doc.File.ServerRelativeUrl;
+                    }
+
+                    // Prepare title with link
+                    docName = "<span class='docUrl'><a href='" + docUrl + "'>" + filename + "</a></span>";
+
+                    // Prepare subject
+                    if (doc.Subject) {
+                        docSubject = doc.Subject;
+                    }
+
+                    // Prepare download link
+                    downloadLink = "<a href=\"" + doc.File.ServerRelativeUrl + "\" class=\"download-link\" download><i class=\"fa icon-download-alt\" aria-hidden=\"true\"></i></a>";
+
+                    // Prepare favorites link
+                    if (GetFavoriteId(doc.File.ServerRelativeUrl) != -1) {
+                        faveLink = "&nbsp;&nbsp;<a href=\"javascript:{}\" class=\"favorite-link\"><i class=\"fa fa-star\" aria-hidden=\"true\" onclick=\"ToggleFavorite(this, '" + doc.File.ServerRelativeUrl + "', '" + doc.File.ServerRelativeUrl + "')\"></i></a>";
+                    }
+                    else {
+                        faveLink = "&nbsp;&nbsp;<a href=\"javascript:{}\" class=\"favorite-link\"><i class=\"fa fa-star-o\" aria-hidden=\"true\" onclick=\"ToggleFavorite(this, '" + doc.File.ServerRelativeUrl + "', '" + doc.File.ServerRelativeUrl + "')\"></i></a>";
+                    }
+                    
+                    // Prepare email body for mailto tag
+                    emailBody = "Open:" + newLine + "<" + encodeURI(_spPageContextInfo.siteAbsoluteUrl + doc.File.ServerRelativeUrl) + ">";
+                    mobileEmailBody = "<a href='" + _spPageContextInfo.siteAbsoluteUrl + doc.File.ServerRelativeUrl + "'>Open</a>";
+                    if (IsOfficeDocument(extension)) {
+                        emailBody += newLine + "Open in Web:" + newLine + "<" + encodeURI(docUrl) + ">";
+                        mobileEmailBody += "<br/><br/><a href='" + docUrl + "'>Open in web</a>";
+                    }
+
+                    // Prepare share links
+                    shareLink = 
+                        "&nbsp;&nbsp;<a class=\"share-link hidden-xs hidden-sm\" href=\"mailto:?subject=" + doc.File.Name + "&body=" + PrepURLs(emailBody) + "\"><i class=\"fa icon-envelope\" aria-hidden=\"true\"></i></a>" + 
+                        "&nbsp;<a class=\"share-link hidden-md hidden-lg\" href=\"mailto:?subject=" + doc.File.Name + "&body=" + mobileEmailBody + "\"><i class=\"fa icon-envelope\" aria-hidden=\"true\"></i></a>";
+
+                    // Prepare preview link
+                    previewLink = "<a href=\"javascript:{}\" class=\"preview-doc\" value=\"" + docUrl + "\" onclick=\"SetPreviewSource(this);\"><i class=\"fa fa-eye\"></i></a>";
+
+                    filetype = GetFileType(extension.toUpperCase());
+
+                    // Check if this file type has already been sectionized
+                    if (fileTypes.indexOf(filetype) == -1) {
+                        // A new section is being started
+                        console.log(doc.File.Name);
+                        console.log("Adding section - " + filetype);
+                        htmlString += 
+                            "<div class='event-docs'>" + 
+                                "<h3>" + filetype + "</h3>" + 
+                                "<table id=\"" + filetype + "_Table\"></table>" + 
+                            "</div>";
+
+                        // Add the section to the container
+                        jQuery("#docsContainer").append(htmlString);
+
+                        // Add a datatable for this section
+                        docsTable = jQuery("#" + filetype + "_Table").DataTable({
+                            columns: [
+                                { title: "", orderable: false },
+                                { title: "Name" },
+                                { title: "Subject" },
+                                { title: "Actions", orderable: false },
+                                { title: "Preview", orderable: false }
+                            ],
+                            paging: false,
+                            searching: false,
+                            info: false,
+                            ordering: true,
+                            order: [[ 1, "asc" ]]
+                        });
+
+                        // Add table to hashtable for later retrieval
+                        docsTables[filetype] = docsTable;
+
+                        // Add to file types already added
+                        fileTypes.push(filetype);
+                    }
+                    else {
+                        docsTable = docsTables[filetype];
+                    }
+                    
+                    // Add the document to the appropriate table
+                    docsTable.row.add([
+                        docIcon,
+                        docName,
+                        docSubject,
+                        downloadLink + faveLink + shareLink,
+                        previewLink
+                    ]).draw();
+                });
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    var rkhs_favoriteItems;
+
+    jQuery(document).ready(function() {
+        GetFavoritesForUser();
+        SetDocumentsHeader();
+    });
+</script>

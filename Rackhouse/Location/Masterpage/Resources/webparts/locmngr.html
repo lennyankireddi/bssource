@@ -1,0 +1,1588 @@
+<script type="text/javascript" charset="utf8" src="/_catalogs/masterpage/resources/jquery.easyeditor.js"></script>
+<script type="text/javascript" charset="utf8" src="/_catalogs/masterpage/resources/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/_catalogs/masterpage/resources/easyeditor.css">
+
+<div class="container-fluid beam">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-horizontal">
+                <div>
+                    <fieldset>
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <h3><label class="col-md-2 control-label" for="txtTitle">Location Name</label></h3>
+                            <div class="col-md-4">
+                                <input class="form-control input-md" id="txtTitle" placeholder="Location Name" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <h3><label class="col-md-2 control-label" for="txtLocation">Location</label></h3>
+                            <div class="col-md-4">
+                                <input class="form-control input-md" id="txtLocation" placeholder="Location" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div>
+                                <h3><label class="col-md-2 control-label">Position</label></h3>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-double">
+                                    <div class="form-group  col-sm-6">
+                                        <label for="txtLatitude">Latitude</label>
+                                        <div><input id="txtLatitude" class="form-control input-sm" placeholder="Lat" type="text"></div>
+                                    </div>
+                                    <div class="form-group  col-sm-6">
+                                        <label for="txtLongitude">Longitude:</label>
+                                        <div><input id="txtLongitude" class="form-control input-sm" placeholder="Lng" type="text"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Textarea -->
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="rtbDescription">
+                                <h3>Description</h3>
+                            </label>
+                            <div class="col-md-8">
+                                <div id="rtbDescription">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Links area -->
+                        <div class="form-group" id="linksArea">
+                            <div class="col-md-2">
+                                <input class="form-control input-md" id="txtLinksHeader" placeholder="Links" type="text">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="document-table">
+                                    <table class="table" id="linksTable">
+                                    </table>
+                                </div><!--End Doc Table-->
+                                <div class="link-zone">
+                                    <div class="form-group-double">
+                                        <div class="form-group col-sm-8">
+                                            <label for="txtLinkText">Link Text</label>
+                                            <div>
+                                                <input class="form-control input-sm" id="txtLinkText" type="text">
+                                            </div>
+                                            <label for="txtLinkUrl">URL</label>
+                                            <div>
+                                                <input class="form-control input-sm" id="txtLinkUrl" type="text">
+                                            </div>
+                                            <label>
+                                                <input type="checkbox" id="chkLinkPrivate"> Private
+                                            </label>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="btn-container pull-right">
+                                                <a href="javascript:{}" class="action-link btn btn-default" id="btnCloseLinkForm">Close</a>
+                                                <a href="javascript:{}" class="action-link btn btn-primary" id="btnSaveLink">Save</a>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xs-12">
+                                            <div class="pull-right">
+                                                <div class="link-status"><h3><i id="linkStatusIcon" class="fa fa-check" aria-hidden="true"></i>&nbsp;<span id="linkStatusText"></span></h3></div>
+                                            </div>
+                                        </div>
+                                    </div>                                   
+                                </div>
+                                <a class="add-link add-link-link" href="javascript:{}"><i class="icon-plus"></i> Add New Link</a>
+                            </div>
+                        </div>	
+                        
+                        <!-- Carousel Images Area -->
+                        <div class="form-group" id="imagesArea">
+                            <div class="col-md-2">
+                                <h3><label class="control-label">Location Images</label></h3>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="document-table">
+                                    <div>
+                                        <table class="table docs-table" id="imagesTable">
+                                        </table>
+                                    </div>
+                                </div>   
+                                <div class="image-zone">
+                                    <div class="form-group-double">
+                                        <div class="form-group col-sm-6">
+                                            <div class="col-md-6">
+                                                <img id="imgLocationImage" class="img-responsive" src="/_catalogs/masterpage/Resources/img-upload.png" style="max-width: 150px">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>
+                                                    <input type="file" id="filLocationImage" class="program-logo">
+                                                    <label class="program-logo-label" id="lblLocationImage" for="filLocationImage"><i class="fa fa-upload"></i> Choose a file</label>
+                                                    <a href="javascript:{}" class="upload-button btn btn-primary" id="uploadLocationImage" style="display: none;">Upload</a>
+                                                </p>
+                                                <a href="javascript:{}" type="button" data-toggle="modal" data-target="#photo-modal">Use Existing Picture</a>
+                                            </div>
+                                        </div>                    
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="btn-container pull-right">
+                                            <a href="javascript:{}" id="btnImageCancel" class="action-link btn btn-default">Cancel</a> 
+                                            <a href="javascript:{}" class="action-link btn btn-primary" id="btnImageSave">Save</a>
+                                            <i class="fa fa-spinner fa-spin fa-fw hidden" id="imgSaveSpinner"></i>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <div class="pull-right">
+                                            <div class="image-status"><h3><i id="imageStatusIcon" class="fa fa-check" aria-hidden="true"></i>&nbsp;<span id="imageStatusText"></span></h3></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="add-link add-link-image" href="javascript:{}"><i class="icon-plus"></i> Add New</a>
+                            </div>
+                        </div>	
+
+                        <!-- Documents area -->
+                        <div class="form-group" id="docsArea">
+                            <div class="col-md-2">
+                                <input class="form-control input-md" id="txtAssetsHeader" placeholder="Documents" type="text">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="document-table">
+                                    <div>
+                                        <table class="table" id="locationDocsTable">
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="doc-zone">
+                                    <div class="form-group-double">
+                                        <div class="form-group col-sm-8">
+                                            <p id="docFileControls">
+                                                <input type="file" id="filLocationDocument" class="program-logo">
+                                                <label class="program-logo-label" id="lblLocationDocument" for="filLocationDocument"><i class="fa fa-upload"></i> Choose a file</label>
+                                                <a href="javascript:{}" id="uploadLocationDocument" class="action-link btn btn-primary" style="display:none">Upload</a>
+                                                <i class="fa fa-spinner fa-spin fa-fw hidden" id="docSaveSpinner"></i>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="btn-container pull-right">
+                                            <a href="javascript:{}" id="btnDocCancel" class="action-link btn btn-default">Close</a> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <div class="pull-right">
+                                            <div class="doc-status"><h3><i id="docStatusIcon" class="fa fa-check" aria-hidden="true"></i>&nbsp;<span id="docStatusText"></span></h3></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="add-link add-link-doc" href="javascript:{}"><i class="icon-plus"></i> Add New</a>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="btn-container pull-left">
+                <a href="javascript:{}" id="btnDelete" class="action-link btn btn-default" style="display:none">Delete</a>
+            </div>
+            <div class="btn-container pull-right">
+                <a href="javascript:{}" id="btnCancel" class="action-link btn btn-default">Cancel</a> 
+                <a href="javascript:{}" id="btnSave" class="action-link btn btn-primary btn-save">Save</a> 
+                <div class="page-status"><h3><i id="pageStatusIcon" class="fa fa-check" aria-hidden="true"></i>&nbsp;<span id="pageStatusText"></span></h3></div>
+            </div>
+        </div><!--End Row-->
+    </div>
+</div><!-- End Beam/bootstrap Container  -->
+
+<!-- Picture Modal -->
+<div class="modal fade event-photo-modal" id="photo-modal" tabindex="-1" role="dialog" aria-labelledby="photo-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content  modal-simple ">
+      <div class="modal-body">
+         <div id="photoImageList" class="image-list">
+         </div>
+         <div>
+            <input type="text" value="" id="photoImageUrl" class="image-url" />
+            <input type="button" value="Apply" id="btnApplyPhoto" class="btn btn-primary" data-dismiss="modal" />
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    // Global Variables
+    var lt_webUrl = "";
+    var lt_locationId = "";
+    var lt_formMode = "NEW";
+    var lt_location;
+    var lt_linksTable;
+    var lt_link;
+    var lt_linkFormMode = "NEW";
+    var lt_linkRow;
+    var lt_imgTable;
+    var lt_img;
+    var lt_imgFormMode = "NEW";
+    var lt_imgRow;
+    var lt_docsTable;
+    var lt_doc;
+    var lt_docRow;
+    var lt_docFormMode = "NEW";
+    var lt_locationPhotoUrl;
+    var lt_headers = [];
+
+/* Helper functions */
+    // Reads a querystring parameter from the current location URL
+    function getParameterByName(name, url) {
+        if (!url) {
+            url = window.location.href;
+        }
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    // Replaces language string in URL with CONNECT
+    function ReplaceLanguageInUrl(url, lang) {
+        var newUrl =  url.replace("/zhcn/", lang).replace("/zhhk/", lang).replace("/de/", lang).replace("/es/", lang).replace("/fr/", lang).replace("/ja/", lang).replace("/pl/", lang).replace("/pt/", lang).replace("/ru/", lang);
+        return newUrl;
+    }
+
+    // Set up the rich text box for the location description
+    function InitiateDescriptionBox() {
+        jQuery("#rtbDescription").easyEditor({
+            buttons: ['bold', 'italic', 'link', 'h2', 'h3', 'h4', 'alignleft', 'aligncenter', 'alignright', 'quote', 'code', 'image', 'youtube', 'x'],
+            buttonsHtml: {
+                'bold': '<i class="fa fa-bold"></i>',
+                'italic': '<i class="fa fa-italic"></i>',
+                'link': '<i class="fa fa-link"></i>',
+                'header-2': '<i class="fa fa-header"></i>2',
+                'header-3': '<i class="fa fa-header"></i>3',
+                'header-4': '<i class="fa fa-header"></i>4',
+                'align-left': '<i class="fa fa-align-left"></i>',
+                'align-center': '<i class="fa fa-align-center"></i>',
+                'align-right': '<i class="fa fa-align-right"></i>',
+                'quote': '<i class="fa fa-quote-left"></i>',
+                'code': '<i class="fa fa-code"></i>',
+                'insert-image': '<i class="fa fa-picture-o"></i>',
+                'insert-youtube-video': '<i class="fa fa-youtube"></i>',
+                'remove-formatting': '<i class="fa fa-ban"></i>'
+            }
+        });
+    }
+
+    // Set the referring web Url
+    function SetWebUrl() {
+        var webUrl = getParameterByName("weburl");
+        if (webUrl) {
+            lt_webUrl = webUrl;
+        }
+        else {
+            lt_webUrl = "";
+        }
+    }
+
+    // Generate new ID string
+    function GenerateId() {
+        return (new Date()).format("MMddyyyyhhmmss");
+    }
+
+    // Controls the display of link, image and asset forms
+    function ToggleSecondaryForms(on) {
+        if (on) {
+            jQuery("#linksArea").show();
+            jQuery("#imagesArea").show();
+            jQuery("#docsArea").show();
+            jQuery("#btnDelete").show();
+        }
+        else {
+            jQuery("#linksArea").hide();
+            jQuery("#imagesArea").hide();
+            jQuery("#docsArea").hide();
+            jQuery("#btnDelete").hide();
+        }
+    }
+
+    // Set the section headers from Configuration
+    function SetHeaders() {
+        configUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(lt_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Configuration')/items?$select=Title,Value&$top=100";
+        jQuery.ajax({
+            url: configUrl,
+            method: "GET",
+            headers: {
+                "accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                jQuery.each(data.d.results, function(i, config) {
+                    if (config.Title == "LinksHeader") {
+                        jQuery("#txtLinksHeader").val(config.Value);
+                    }
+                    if (config.Title == "AssetsHeader") {
+                        jQuery("#txtAssetsHeader").val(config.Value);
+                    }
+                    lt_headers.push({
+                        title: config.Title,
+                        value: config.Value,
+                        url: config.__metadata.uri
+                    })
+                });
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function SaveHeaders() {
+        // Check if header values changed and update if necessary
+        jQuery.each(["Links", "Assets"], function(i, n) {
+            var header = jQuery.grep(lt_headers, function(h) { return h.title == n + "Header" });
+            if (header[0].value != jQuery("#txt" + n + "Header").val()) {
+                UpdateHeader(header[0].url, jQuery("#txt" + n + "Header").val());
+            }
+        });
+    }
+
+    function UpdateHeader(url, value) {
+        var body = {
+            "__metadata": {
+                "type": "SP.Data.ConfigurationListItem"
+            },
+            "Value": value
+        }
+        jQuery.ajax({
+            url: url,
+            method: "POST",
+            data: JSON.stringify(body),
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                "content-type": "application/json;odata=verbose",
+                "X-HTTP-Method": "MERGE",
+                "If-Match": "*"
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    // Set the location ID of the current location if available
+    function SetLocationId() {
+        var locationId = getParameterByName("locationid");
+        if (locationId) {
+            lt_locationId = locationId;
+            lt_formMode = "EDIT";
+            InitializeForm();
+        }
+        else {
+            lt_locationId = GenerateId();
+            lt_formMode = "NEW";
+            // We are in new location mode
+            // Hide secondary sections on form
+            ToggleSecondaryForms(false);
+        }
+    }
+
+    function LoadImages(sourceUri, container, image) {
+        jQuery.ajax({
+            url: sourceUri,
+            type: "GET",
+            headers: { "accept": "application/json;odata=verbose" },
+            success: function(data) {
+                var html = "";
+                html += "<ul class='image-listing'";
+                for (i = 0; i < data.d.results.length; i++) {
+                    html +=
+                        "<li class='image-tile'>" +
+                            "<img class='tile-picture " + image + "-picture' src='" + data.d.results[i].ServerRelativeUrl + "' onclick='lt_locationPhotoUrl = jQuery(this).attr(\"src\"); jQuery(\"#" + image + "ImageUrl\").val(jQuery(this).attr(\"src\"))'>" +
+                            "<div class='tile-caption'>" + data.d.results[i].Name + "</div>" +
+                        "</li>";
+                }
+                html += "</ul>";
+                container.html(html);
+            },
+            error: function(error) {
+                console.log(JSON.stringify(error));
+            }
+        });
+    }
+
+    // Load the image picker dialogs with images availabe in assets folders
+    function LoadImagePicker() {
+        photoSource = "/SiteAssets/Location_Photos";
+
+        var photoUri = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/getfolderbyserverrelativeurl('" + photoSource + "')/files";
+        LoadImages(photoUri, jQuery("#photoImageList"), "photo");
+    }
+
+    // Initializes the form with data for a location being edited
+    function InitializeForm() {
+        LoadLocationData();
+        LoadLinks();
+        LoadLocationImages();
+        LoadDocuments();
+
+        jQuery("#btnDelete").show();
+    }
+
+/* Upload functions */
+    // Upload file procedure
+    function UploadFile(fileInput, webUrl, folderName) {
+ 
+        // Initiate method calls using jQuery promises.
+        // Get the local file as an array buffer.
+        var getFile = getFileBuffer();
+        getFile.done(function (arrayBuffer) {
+            // Add the file to the SharePoint folder.
+            var addFile = addFileToFolder(arrayBuffer);
+            addFile.done(function (file, status, xhr) {
+                var getItem = getListItem(file.d.ListItemAllFields.__deferred.uri);
+                getItem.done(function (listItem, status, xhr) {
+                    var updateItem = updateListItem(listItem.d.__metadata, listItem.d.Locations);
+                    updateItem.done(function() {
+                        var parts = fileInput[0].value.split("\\");
+                        var fileName = parts[parts.length - 1];
+                        var extension = fileName.substr(fileName.lastIndexOf(".") + 1);
+                        var docUrl = "";
+                        if (IsOfficeDocument(extension)) {
+                            docUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(lt_webUrl, "/CONNECT") + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + listItem.d.File.ServerRelativeUrl;
+                        }
+                        else if (IsVideoFile(extension)) {
+                            docUrl = _spPageContextInfo.siteAbsoluteUrl + "/Pages/VideoPlayer.aspx?videopath=" + listItem.d.File.ServerRelativeUrl;
+                        }
+                        else {
+                            docUrl = listItem.d.ServerRelativeUrl;
+                        }
+                        lt_docsTable.row.add([
+                            "<img src=\"" + GetDocIcon(extension) + "\">",
+                            "<a href=\"" + docUrl + "\">" + fileName + "</a>",
+                            "<a href='javascript:{}'><i class='fa fa-trash del-doc' value=\"" + listItem.d.__metadata.uri + "\"></i></a>",
+                        ]).draw();
+                        SetStatus("SUCCESS", "Document uploaded", "doc");
+                        ClearDocForm();
+                    });
+                    updateItem.fail(function(err) {
+                        console.log(JSON.stringify(err));
+                    });
+                });
+                getItem.fail(function(err) {
+                    console.log(JSON.stringify(err))
+                });
+            });
+            addFile.fail(function(err) {
+                console.log(JSON.stringify(err))
+            });
+        });
+        getFile.fail(function(err) {
+            console.log(JSON.stringify(err))
+        });
+
+        // Get the local file as an array buffer.
+        function getFileBuffer() {
+            var deferred = jQuery.Deferred();
+            var reader = new FileReader();
+            reader.onloadend = function (e) {
+                deferred.resolve(e.target.result);
+            }
+            reader.onerror = function (e) {
+                deferred.reject(e.target.error);
+            }
+            reader.readAsArrayBuffer(fileInput[0].files[0]);
+            return deferred.promise();
+        }
+
+        // Add the file to the file collection in the given folder.
+        function addFileToFolder(arrayBuffer) {
+
+            // Get the file name from the file input control on the page.
+            var parts = fileInput[0].value.split('\\');
+            var fileName = parts[parts.length - 1];
+
+            // Construct the endpoint.
+            var fileCollectionEndpoint = String.format(
+                "{0}/_api/web/getfolderbyserverrelativeurl('{1}')/files" +
+                "/add(overwrite=true, url='{2}')",
+                webUrl, folderName, fileName);
+
+            // Send the request and return the response.
+            // This call returns the SharePoint file.
+            return jQuery.ajax({
+                url: fileCollectionEndpoint,
+                type: "POST",
+                data: arrayBuffer,
+                processData: false,
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val()
+                }
+            });
+        }
+
+        // Get the list item that corresponds to the file by calling the file's ListItemAllFields property.
+        function getListItem(fileListItemUri) {
+            return jQuery.ajax({
+                url: fileListItemUri + "?$expand=File",
+                type: "GET",
+                headers: { "accept": "application/json;odata=verbose" }
+            });
+        }
+
+        function updateListItem(itemMetadata, locations) {
+            var locnId;
+            if (locations) {
+                var locationIds = locations.split(",");
+                if (locationIds.indexOf(lt_locationId) == -1) {
+                    locnId = locations + "," + lt_locationId;
+                }
+                else {
+                    locnId = locations;
+                }
+            }
+            else {
+                locnId = lt_locationId;
+            }
+
+            var body = String.format("{{'__metadata':{{'type':'{0}'}},'Locations':'{1}'}}",
+            itemMetadata.type, locnId);
+
+            // Send the request and return the promise.
+            // This call does not return response content from the server.
+            return jQuery.ajax({
+                url: itemMetadata.uri,
+                type: "POST",
+                data: body,
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                    "content-type": "application/json;odata=verbose",
+                    "X-HTTP-Method": "MERGE",
+                    "IF-MATCH": "*"
+                }
+            });
+        }
+    }
+
+    // Upload image procedure
+    function UploadImage(fileInput, img, serverRelativeUrlToFolder) {
+
+        // Initiate method calls using jQuery promises.
+        // Get the local file as an array buffer.
+        var getFile = getFileBuffer();
+        getFile.done(function (arrayBuffer) {
+
+            // Add the file to the SharePoint folder.
+            var addFile = addFileToFolder(arrayBuffer);
+            addFile.done(function (file, status, xhr) {
+                var getItem = getListItem(file.d.ListItemAllFields.__deferred.uri);
+                getItem.done(function (listItem, status, xhr) {
+                    img.attr("src", listItem.d.ServerRelativeUrl);
+                    fileInput.val("");
+                });
+                getItem.fail(UploadError);
+            });
+            addFile.fail(UploadError);
+        });
+        getFile.fail(UploadError);
+
+        // Get the local file as an array buffer.
+        function getFileBuffer() {
+            var deferred = jQuery.Deferred();
+            var reader = new FileReader();
+            reader.onloadend = function (e) {
+                deferred.resolve(e.target.result);
+            }
+            reader.onerror = function (e) {
+                deferred.reject(e.target.error);
+            }
+            reader.readAsArrayBuffer(fileInput[0].files[0]);
+            return deferred.promise();
+        }
+
+        // Add the file to the file collection in the given folder.
+        function addFileToFolder(arrayBuffer) {
+
+            // Get the file name from the file input control on the page.
+            var parts = fileInput[0].value.split('\\');
+            var fileName = parts[parts.length - 1];
+
+            // Construct the endpoint.
+            var fileCollectionEndpoint = String.format(
+                "{0}/_api/web/getfolderbyserverrelativeurl('{1}')/files" +
+                "/add(overwrite=true, url='{2}')",
+                _spPageContextInfo.siteAbsoluteUrl, serverRelativeUrlToFolder, fileName);
+
+            // Send the request and return the response.
+            // This call returns the SharePoint file.
+            return jQuery.ajax({
+                url: fileCollectionEndpoint,
+                type: "POST",
+                data: arrayBuffer,
+                processData: false,
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val()
+                }
+            });
+        }
+
+        // Get the list item that corresponds to the file by calling the file's ListItemAllFields property.
+        function getListItem(fileListItemUri) {
+            // Send the request and return the response.
+            fileListItemUri = fileListItemUri.replace("/ListItemAllFields","");
+            return jQuery.ajax({
+                url: fileListItemUri,
+                type: "GET",
+                headers: { "accept": "application/json;odata=verbose" }
+            });
+        }
+    }
+
+    function UploadError(error) {
+        console.log(error.responseText);
+    }
+
+/* Functions for Location management */
+
+    function LoadLocationData() {
+        var locationUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(lt_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Locations')/items?$top=1&$select=Title,Location,Latitude,Longitude,RichDescription&$filter=LocationID eq '" + lt_locationId + "'";
+        jQuery.ajax({
+            url: locationUrl,
+            method: "GET",
+            headers: {
+                accept: "application/json;odata=verbose"
+            },
+            success: function(data) {
+                lt_location = data.d.results[0];
+                jQuery("#txtTitle").val(lt_location.Title);
+                jQuery("#txtLocation").val(lt_location.Location);
+                jQuery("#txtLatitude").val(lt_location.Latitude);
+                jQuery("#txtLongitude").val(lt_location.Longitude);
+                jQuery("#rtbDescription").html(lt_location.RichDescription);
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function LocationInputValid() {
+        var valid = true;
+        if (!jQuery("#txtTitle").val()) {
+            SetStatus("ERROR", "Location title is required.", "page");
+            valid = false;
+        }
+        if (!jQuery("#txtLocation").val()) {
+            SetStatus("ERROR", "Location is required.", "page");
+            valid = false;
+        }
+        if (!jQuery("#txtLatitude").val()) {
+            SetStatus("ERROR", "Latitude is required.", "page");
+            valid = false;
+        }
+        else if (parseFloat(jQuery("#txtLatitude").val()) == NaN) {
+            SetStatus("ERROR", "Latitude needs to be a number with decimals.", "page");
+            valid = false;
+        }
+        if (!jQuery("#txtLongitude").val()) {
+            SetStatus("ERROR", "Longitude is required.");
+            valid = false;
+        }
+        else if (parseFloat(jQuery("#txtLongitude").val()) == NaN) {
+            SetStatus("ERROR", "Longitude needs to be a number with decimals.", "page");
+            valid = false;
+        }
+        return valid;
+    }
+
+    function GetLocationData() {
+        var location = {
+            "__metadata": {
+                "type": "SP.Data.LocationsListItem"
+            },
+            "Title": jQuery("#txtTitle").val(),
+            "LocationID": lt_locationId,
+            "Location": jQuery("#txtLocation").val(),
+            "Latitude": jQuery("#txtLatitude").val(),
+            "Longitude": jQuery("#txtLongitude").val(),
+            "RichDescription": jQuery("#rtbDescription").html()
+        }
+        return location;
+    }
+
+    function AddLocation() {
+        var body = GetLocationData();
+        var locationsUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(lt_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Locations')/items";
+        jQuery.ajax({
+            url: locationsUrl,
+            method: "POST",
+            data: JSON.stringify(body),
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery('#__REQUESTDIGEST').val(),
+                "content-type": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                lt_formMode = "EDIT";
+                SetStatus("SUCCESS", "The location has been saved.", "page");
+                InitializeForm();
+                ToggleSecondaryForms(true);
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+                SetStatus("ERROR", "An error occurred while saving the location. Please check your inputs and try again.", "page");
+            }
+        });
+    }
+
+    function UpdateLocation() {
+        lt_location.Title = jQuery("#txtTitle").val();
+        lt_location.Location = jQuery("#txtLocation").val();
+        lt_location.Latitude = jQuery("#txtLatitude").val();
+        lt_location.Longitude = jQuery("#txtLongitude").val();
+        lt_location.RichDescription = jQuery("#rtbDescription").html();
+    }
+
+    function EditLocation() {
+        UpdateLocation();
+        var locationUrl = lt_location.__metadata.uri + "?$select=LocationID,Title,Location,Latitude,Longitude,RichDescription";
+        jQuery.ajax({
+            url: locationUrl,
+            method: "POST",
+            data: JSON.stringify(lt_location),
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                "content-type": "application/json;odata=verbose",
+                "X-HTTP-Method": "MERGE",
+                "If-Match": "*"
+            },
+            success: function(data) {
+                SetStatus("SUCCESS", "The location has been saved.", "page");
+                window.location.href = lt_webUrl;
+            },
+            error: function(err) {
+                SetStatus("ERROR", "An error occurred while saving event. Please check inputs and try again.", "page")
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function SaveLocation() {
+        if (LocationInputValid()) {
+            if (lt_formMode == "NEW") {
+                AddLocation();
+            }
+            if (lt_formMode == "EDIT") {
+                EditLocation();
+            }
+        }
+    }
+
+    function DeleteLocation() {
+        var locationUrl = lt_location.__metadata.uri
+        jQuery.ajax({
+            url: locationUrl,
+            method: "POST",
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                "content-type": "application/json;odata=verbose",
+                "X-HTTP-Method": "DELETE",
+                "If-Match": "*"
+            },
+            success: function(data) {
+                SetStatus("SUCCESS", "The location has been deleted.", "page");
+                window.location.href = lt_webUrl;
+            },
+            error: function(err) {
+                SetStatus("ERROR", "Could not delete the event.", "page")
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+/* Functions for link management */
+    function LoadLinks() {
+        linkUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(lt_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Links')/items?$select=Title,Link,Private,LocationID&$top=100&$orderby=Title asc";
+        var links = [];
+        jQuery.ajax({
+            url: linkUrl,
+            method: "GET",
+            headers: {
+                "accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                jQuery.each(data.d.results, function(i, link) {
+                    if (!link.Private || (link.Private && link.LocationID == lt_locationId)) {
+                        var linkData = [];
+                        var privacyIcon = "";
+                        if (link.Private) {
+                            privacyIcon = "<i class='fa fa-user'></i>"
+                        }
+                        else {
+                            privacyIcon = "<i class='fa fa-users'></i>"
+                        }
+                        linkData.push(
+                            link.Title,
+                            link.Link.Url,
+                            privacyIcon,
+                            "<a href='javascript:{}'><i class='fa fa-trash del-link' value=\"" + link.__metadata.uri + "\"></i></a>",
+                            "<a href='javascript:{}'><i class='fa fa-edit edit-link' value=\"" + link.__metadata.uri + "\"></i></a>"
+                        );
+                        links.push(linkData);
+                    }
+                });
+                lt_linksTable = jQuery("#linksTable").DataTable({
+                    data: links,
+                    columns: [
+                        { title: "Link Text" },
+                        { title: "URL" },
+                        { title: "Private", orderable: false },
+                        { title: "Delete", orderable: false },
+                        { title: "Edit", orderable: false }
+                    ],
+                    paging: false,
+                    searching: false,
+                    info: false,
+                    ordering: true
+                });
+            }
+        });
+    }
+
+    function ValidateLinkInput() {
+        var valid = true;
+        if (!jQuery("#txtLinkText").val()) {
+            valid = false;
+            SetStatus("ERROR", "Link text is required", "link");
+        }
+        if (!jQuery("#txtLinkUrl").val()) {
+            valid = false;
+            SetStatus("ERROR", "Link URL is required.", "link");
+        }
+        return valid;
+    }
+
+    function SaveLink() {
+        if (ValidateLinkInput()) {
+            if (lt_linkFormMode == "NEW") {
+                AddLink();
+            }
+            if (lt_linkFormMode == "EDIT") {
+                UpdateLink();
+            }
+        }
+    }
+
+    function AddLink() {
+        linkUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(lt_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Links')/items";
+        var data = {
+                "__metadata": {
+                    "type": "SP.Data.LinksListItem"
+                },
+                "LinkID": GenerateId(),
+                "Title": jQuery("#txtLinkText").val(),
+                "Link": {
+                    "__metadata": {
+                        "type": "SP.FieldUrlValue"
+                    },
+                    "Description": jQuery("#txtLinkUrl").val(),
+                    "Url": jQuery("#txtLinkUrl").val()
+                },
+                "Private": jQuery("#chkLinkPrivate").is(":checked"),
+                "LocationID": jQuery("#chkLinkPrivate").is(":checked") ? lt_locationId : null
+            }
+        jQuery.ajax({
+            url: linkUrl,
+            method: "POST",
+            data: JSON.stringify(data),
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                "content-type": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var privacyIcon = jQuery("#chkLinkPrivate").prop("checked") ? "<i class='fa fa-user'></i>" : "<i class='fa fa-users'></i>";
+                lt_linksTable.row.add([
+                        jQuery("#txtLinkText").val(),
+                        jQuery("#txtLinkUrl").val(),
+                        privacyIcon,
+                        "<a href='javascript:{}'><i class='fa fa-trash del-link' value=\"" + data.d.__metadata.uri + "\"></i></a>",
+                        "<a href='javascript:{}'><i class='fa fa-edit edit-link' value=\"" + data.d.__metadata.uri + "\"></i></a>"
+                    ]).draw();
+                
+                ClearLinkForm();
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function UpdateLink() {
+        var linkUrl = lt_link.__metadata.uri;
+        lt_link.Title = jQuery("#txtLinkText").val();
+        lt_link.Link.Description = jQuery("#txtLinkUrl").val();
+        lt_link.Link.Url = jQuery("#txtLinkUrl").val();
+        lt_link.Private = jQuery("chkLinkPrivate").is(":checked");
+        if (jQuery("chkLinkPrivate").is(":checked")) {
+            lt_link.LocationID = lt_locationId;
+        }
+        else {
+            lt_link.LocationID = null;
+        }
+        jQuery.ajax({
+            url: linkUrl,
+            method: "POST",
+            data: JSON.stringify(lt_link),
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                "content-type": "application/json;odata=verbose",
+                "X-HTTP-Method": "MERGE",
+                "If-Match": "*"
+            },
+            success: function(data) {
+                if (lt_linkRow) {
+                    var privacyIcon = jQuery("#chkLinkPrivate").prop("checked") ? "<i class='fa fa-user'></i>" : "<i class='fa fa-users'></i>";
+                    lt_linksTable.row(lt_linkRow).data([
+                        jQuery("#txtLinkText").val(),
+                        jQuery("#txtLinkUrl").val(),
+                        privacyIcon,
+                        "<a href='javascript:{}'><i class='fa fa-trash del-link' value=\"" + lt_link.__metadata.uri + "\"></i></a>",
+                        "<a href='javascript:{}'><i class='fa fa-edit edit-link' value=\"" + lt_link.__metadata.uri + "\"></i></a>"
+                    ]).draw();
+                }
+                ClearLinkForm();
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function ClearLinkForm() {
+        jQuery('.link-zone').hide();
+        jQuery("#txtLinkText").val("");
+        jQuery("#txtLinkUrl").val("");
+        jQuery("chkLinkPrivate").prop("checked", false);
+    }
+
+    function DeleteLink(elem) {
+        var element = jQuery(elem);
+        element.removeClass("fa-trash");
+        element.addClass("fa-spinner").addClass("fa-spin").addClass("fa-fw");
+        var parentRow = jQuery(elem).parents("tr");
+        var linkUrl = element.attr("value");
+        jQuery.ajax({
+            url: linkUrl,
+            method: "POST",
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery('#__REQUESTDIGEST').val(),
+                "content-type": "application/json;odata=verbose",
+                "X-HTTP-Method": "DELETE",
+                "If-Match": "*"
+            },
+            success: function(data) {
+                lt_linksTable.row(parentRow).remove().draw();
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+/* Functions for image management */
+    function LoadLocationImages() {
+        imageUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(lt_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Location Images')/items?$select=Title,URL,LocationID&&$top=100&$filter=LocationID eq '" + lt_locationId + "'";
+        jQuery.ajax({
+            url: imageUrl,
+            method: "GET",
+            headers: {
+                "accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var images = [];
+                jQuery.each(data.d.results, function(i, image) {
+                    var imgUrl = image.URL.Url;
+                    var parts = imgUrl.split("/");
+                    var imgName = parts[parts.length - 1];
+                    var extension = imgName.substr(imgName.lastIndexOf(".") + 1);
+                    var imgIcon = GetDocIcon(extension);
+                    images.push([
+                        "<img src=\"" + imgIcon + "\">",
+                        "<a href=\"" + imgUrl + "\">" + imgName + "</a>",
+                        "<a href=\"javascript:{}\"><i class='fa fa-trash del-img' value=\"" + image.__metadata.uri + "\"></i></a>",
+                    ]);
+                });
+
+                // Set up the table
+                
+                lt_imgTable = jQuery("#imagesTable").DataTable({
+                    data: images,
+                    columns: [
+                        { title: "", orderable: false },
+                        { title: "Name" },
+                        { title: "Delete", orderable: false },
+                    ],
+                    paging: false,
+                    searching: false,
+                    info: false,
+                    ordering: true,
+                    order: [ 1, 'asc' ]
+                })
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function ValidateImageInput() {
+        var valid = true;
+        var imgUrl = jQuery("#imgLocationImage").attr("src");
+        if (!imgUrl || imgUrl == "/_catalogs/masterpage/Resources/img-upload.png") {
+            SetStatus("ERROR", "An image file needs to be selected", "image");
+            valid = false;
+        }
+        if (imgUrl) {
+            var parts = imgUrl.split("/");
+            var imgName = parts[parts.length - 1];
+            var extension = imgName.substr(imgName.lastIndexOf(".") + 1);
+            if (["png", "jpg", "jpeg"].indexOf(extension.toLowerCase()) == -1) {
+                SetStatus("ERROR", "The file type needs to be an image", "image");
+                valid = false;
+            }
+        }
+        return valid;
+    }
+
+    function AddImage() {
+        var imageUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(lt_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Location Images')/items";
+        var data = {
+                "__metadata": {
+                    "type": "SP.Data.Location_x0020_ImagesListItem"
+                },
+                "Title": "",
+                "URL": {
+                    "__metadata": {
+                        "type": "SP.FieldUrlValue"
+                    },
+                    "Description": jQuery("#imgLocationImage").attr("src").replace(_spPageContextInfo.siteAbsoluteUrl, ""),
+                    "Url": jQuery("#imgLocationImage").attr("src").replace(_spPageContextInfo.siteAbsoluteUrl, "")
+                },
+                "LocationID": lt_locationId
+            }
+        jQuery.ajax({
+            url: imageUrl,
+            method: "POST",
+            data: JSON.stringify(data),
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                "content-type": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var imgUrl = data.d.URL.Url;
+                var parts = imgUrl.split("/");
+                var imgName = parts[parts.length - 1];
+                var extension = imgName.substr(imgName.lastIndexOf(".") + 1);
+                var imgIcon = GetDocIcon(extension);
+                lt_imgTable.row.add([
+                    "<img src=\"" + imgIcon + "\">",
+                    "<a href=\"" + imgUrl + "\">" + imgName + "</a>",
+                    "<a href='javascript:{}'><i class='fa fa-trash del-link' value=\"" + data.d.__metadata.uri + "\"></i></a>",
+                ]).draw();
+                jQuery("#imgSaveSpinner").addClass("hidden");
+                jQuery("#btnImageSave").show();
+                ClearImageForm();
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function SaveImage() {
+        if (lt_imgFormMode == "NEW") {
+            if (ValidateImageInput()) {
+                jQuery("#btnImageSave").hide();
+                jQuery("#imgSaveSpinner").removeClass("hidden");
+                AddImage();
+            }
+        }
+        if (lt_imgFormMode == "EDIT") {
+            jQuery("#btnImageSave").hide();
+            jQuery("#imgSaveSpinner").removeClass("hidden");
+            UpdateImage();
+        }
+    }
+
+    function DeleteImage(elem) {
+        var element = jQuery(elem);
+        element.removeClass("fa-trash");
+        element.addClass("fa-spinner").addClass("fa-spin").addClass("fa-fw");
+        var parentRow = jQuery(elem).parents("tr");
+        var imgUrl = element.attr("value");
+        jQuery.ajax({
+            url: imgUrl,
+            method: "POST",
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery('#__REQUESTDIGEST').val(),
+                "content-type": "application/json;odata=verbose",
+                "X-HTTP-Method": "DELETE",
+                "If-Match": "*"
+            },
+            success: function(data) {
+                lt_imgTable.row(parentRow).remove().draw();
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function ClearImageForm() {
+        jQuery("#filLocationImage").val("");
+        jQuery("#lblLocationImage").html("<i class=\"fa fa-upload\"></i> Choose a file");
+        jQuery(".image-zone").hide();
+        ClearStatus("image");
+    }
+
+/* Functions to handle documents */
+
+    function LoadDocuments() {
+        var docsUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(lt_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Rackhouse Documents')/items?$select=File,Locations&$expand=File&$top=100";
+        jQuery.ajax({
+            url: docsUrl,
+            method: "GET",
+            headers: {
+                "accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var docName = "";
+                var extension = "";
+                var docUrl = "";
+                var docs = [];
+
+                // Initialize the document table
+                lt_docsTable = jQuery("#locationDocsTable").DataTable({
+                    data: docs,
+                    columns: [
+                        { title: "", orderable: false },
+                        { title: "Name" },
+                        { title: "Delete", orderable: false },
+                    ],
+                    paging: false,
+                    searching: false,
+                    info: false,
+                    ordering: true,
+                    order: [[1, "asc"]]
+                });
+
+                jQuery.each(data.d.results, function(i, doc) {
+                    // Add document if it is related to current location
+                    if (doc.Locations) {
+                        if (doc.Locations.indexOf(lt_locationId) != -1) {
+                            docName = doc.File.Name;
+                            extension = docName.substr(docName.lastIndexOf('.') + 1);
+
+                            if (IsOfficeDocument(extension)) {
+                                docUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(lt_webUrl, "/CONNECT/") + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + doc.File.ServerRelativeUrl;
+                            }
+                            else if (IsVideoFile(extension)) {
+                                docUrl = _spPageContextInfo.siteAbsoluteUrl + "/Pages/VideoPlayer.aspx?videopath=" + doc.File.ServerRelativeUrl;
+                            }
+                            else {
+                                docUrl = doc.File.ServerRelativeUrl;
+                            }
+
+                            lt_docsTable.row.add([
+                                "<img src=\"" + GetDocIcon(extension) + "\">",
+                                "<a href=\"" + docUrl + "\">" + docName + "</a>",
+                                "<a href='javascript:{}'><i class='fa fa-trash del-doc' value=\"" + doc.__metadata.uri + "\"></i></a>",
+                            ]).draw();
+                        }
+                    }
+                });
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+        
+    }
+
+    function ClearDocForm() {
+        lt_docFormMode = "NEW";
+        jQuery(".doc-zone").hide();
+        jQuery("#filLocationDocument").val("");
+        jQuery("#lblLocationDocument").html("<i class=\"fa fa-upload\"></i> Choose a file")
+        ClearStatus("doc");
+        jQuery("#docFileControls").show();
+        jQuery("#btnDocSave").show();
+        jQuery("#docSaveSpinner").addClass("hidden");
+    }
+
+    function ValidateDocInput() {
+        var valid = true;
+        if (!jQuery("#filLocationDocument").val()) {
+            SetStatus("ERROR", "A file needs to be selected", "doc");
+            valid = false;
+        }
+        return valid;
+    }
+
+    function SaveDocument() {
+        if (lt_docFormMode == "NEW") {
+            if (ValidateDocInput()) {
+                jQuery("#uploadLocationDocument").hide();
+                jQuery("#docSaveSpinner").removeClass("hidden");
+                AddDocument();
+            }
+        }
+    }
+
+    function AddDocument() {
+        UploadFile(jQuery("#filLocationDocument"), _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(lt_webUrl, "/CONNECT/"), "Rackhouse Documents");
+    }
+
+    function DeleteDocument(elem) {
+        var element = jQuery(elem);
+        var docUrl = element.attr("value");
+        element.removeClass("fa-trash");
+        element.addClass("fa-spinner").addClass("fa-spin").addClass("fa-fw");
+        var parentRow = jQuery(elem).parents("tr");
+
+        jQuery.ajax({
+            url: docUrl,
+            method: "GET",
+            headers: {
+                "accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var locations = data.d.Locations.split(",");
+                if (locations.length > 1) {
+                    // There is more than one location attached
+                    // Update Location ID field and remove current location
+                    locations.splice(locations.indexOf(lt_locationId), 1);
+                    var locnId = "";
+                    jQuery.each(locations, function(i, locn) {
+                        if (locnId) {
+                            locnId += "," + locn;
+                        }
+                        else {
+                            locnId = locn;
+                        }
+                    });
+                    var body = String.format("{{'__metadata':{{'type':'{0}'}},'Locations':'{1}'}}",
+                    data.d.__metadata.type, locnId);
+
+                    // Send the request and return the promise.
+                    // This call does not return response content from the server.
+                    jQuery.ajax({
+                        url: docUrl,
+                        type: "POST",
+                        data: body,
+                        headers: {
+                            "accept": "application/json;odata=verbose",
+                            "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                            "content-type": "application/json;odata=verbose",
+                            "X-HTTP-Method": "MERGE",
+                            "IF-MATCH": "*"
+                        },
+                        success: function(data) {
+                            lt_docsTable.row(parentRow).remove().draw();
+                        },
+                        error: function(err) {
+                            console.log(JSON.stringify(err));
+                        }
+                    });
+                }
+                else {
+                    // There is only one location attached
+                    // So the document can be deleted
+                    jQuery.ajax({
+                        url: docUrl,
+                        method: "POST",
+                        headers: {
+                            "accept": "application/json;odata=verbose",
+                            "X-RequestDigest": jQuery('#__REQUESTDIGEST').val(),
+                            "content-type": "application/json;odata=verbose",
+                            "X-HTTP-Method": "DELETE",
+                            "If-Match": "*"
+                        },
+                        success: function(data) {
+                            lt_docsTable.row(parentRow).remove().draw();
+                        },
+                        error: function(err) {
+                            console.log(JSON.stringify(err));
+                        }
+                    });
+                }
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+/* Functions to handle status displays */
+    function SetStatus(type, message, target) {
+        switch(type) {
+            case "SUCCESS":
+                if (jQuery("#" + target + "StatusIcon").hasClass("fa-remove")) {
+                    jQuery("#" + target + "StatusIcon").removeClass("fa-remove");
+                }
+                if (!jQuery("#" + target + "StatusIcon").hasClass("fa-check")) {
+                    jQuery("#" + target + "StatusIcon").addClass("fa-check");
+                }
+                jQuery("#" + target + "StatusIcon").show();
+                if (jQuery("." + target + "-status").hasClass("text-warning")) {
+                    jQuery("." + target + "-status").removeClass("text-warning");
+                }
+                if (!jQuery("." + target + "-status").hasClass("text-success")) {
+                    jQuery("." + target + "-status").addClass("text-success");
+                }
+                break;
+            case "ERROR":
+                if (jQuery("#" + target + "StatusIcon").hasClass("fa-check")) {
+                    jQuery("#" + target + "StatusIcon").removeClass("fa-check");
+                }
+                if (!jQuery("#" + target + "StatusIcon").hasClass("fa-remove")) {
+                    jQuery("#" + target + "StatusIcon").addClass("fa-remove");
+                }
+                jQuery("#" + target + "StatusIcon").show();
+                if (jQuery("." + target + "-status").hasClass("text-success")) {
+                    jQuery("." + target + "-status").removeClass("text-success");
+                }
+                if (!jQuery("." + target + "-status").hasClass("text-warning")) {
+                    jQuery("." + target + "-status").addClass("text-warning");
+                }
+                break;
+            default:
+                jQuery("#" + target + "StatusIcon").hide();
+        }
+
+        jQuery("#" + target + "StatusText").text(message);
+        jQuery("." + target + "-status").show();
+    }
+
+    function ClearStatus(target) {
+        jQuery("." + target + "-status").hide();
+    }
+/* Function to add handlers */
+    function AddHandlers() {
+
+        // Add event cancel button action
+        jQuery("#btnCancel").on("click", function() {
+            window.location.href = lt_webUrl;
+        });
+
+        // Add event handler for the event save button
+        jQuery("#btnSave").on("click", function() {
+            SaveHeaders();
+            SaveLocation();
+        });
+
+        // Add handler to delete event
+        jQuery("#btnDelete").on("click", function() {
+            if (confirm("Are you sure you want to delete " + lt_location.Title + "? This action cannot be reversed.")) {
+                DeleteLocation();
+            }
+        });
+
+        // Add handler to show link form when Add New link is clicked
+        jQuery(".add-link-link").on("click", function() {
+            lt_linkFormMode = "NEW";
+            jQuery("#txtLinkText").val("");
+            jQuery("#txtLinkUrl").val("");
+            jQuery("#chkLinkPrivate").prop("checked", false);
+            jQuery(".link-zone").show();
+        });
+
+        // Add handler to close link form when close button is clicked
+        jQuery("#btnCloseLinkForm").on("click", function(){
+            jQuery("#txtLinkText").val("");
+            jQuery("#txtLinkUrl").val("");
+            jQuery("#chkLinkPrivate").prop("checked", false);
+            jQuery(".link-zone").hide();
+        });
+
+        // Add handler to save link
+        jQuery("#btnSaveLink").on("click", function() {
+            SaveLink();
+        });
+
+        // Add handler to delete link
+        jQuery(document).on("click", ".del-link", function() {
+            DeleteLink(this);
+        });
+
+        // Add handler to edit link
+        jQuery(document).on("click", ".edit-link", function(e) {
+            lt_linkFormMode = "EDIT";
+            lt_linkRow = jQuery(e.target).parents("tr");
+            var linkUrl = jQuery(e.target).attr("value") + "?$select=Title,Link,Private";
+            jQuery.ajax({
+                url: linkUrl,
+                method: "GET",
+                headers: {
+                    "accept": "application/json;odata=verbose"
+                },
+                success: function(data) {
+                    lt_link = data.d;
+                    jQuery("#txtLinkText").val(lt_link.Title);
+                    jQuery("#txtLinkUrl").val(lt_link.Link.Url);
+                    jQuery("#chkLinkPrivate").prop("checked", lt_link.Private)
+                    jQuery(".link-zone").show();
+                },
+                error: function(err) {
+                    console.log(JSON.stringify(err));
+                }
+            });
+        });
+
+        jQuery(".add-link-image").on("click", function() {
+            lt_imgFormMode = "NEW";
+            jQuery("#filLocationImage").val("");
+            jQuery("#lblLocationImage").html("<i class=\"fa fa-upload\"></i> Choose a file");
+            jQuery("#txtImageTitle").val("");
+            jQuery(".image-zone").show();
+        });
+
+        // Handler to cancel addition of new image
+        jQuery("#btnImageCancel").on("click", function() {
+            ClearImageForm();
+        });
+
+        // Handler to upload program photo
+        jQuery("#uploadLocationImage").on("click", function() {
+            if (jQuery("#filLocationImage").val() != "") {
+                UploadImage(jQuery("#filLocationImage"), jQuery("#imgLocationImage"), "/SiteAssets/Location_Photos");
+            }
+        });
+
+        // Handler for program photo file input
+        jQuery("#filLocationImage").change(function() {
+            var text = jQuery("#filLocationImage").val();
+            if (text == "") {
+                jQuery("#uploadLocationImage").hide();
+            }
+            else {
+                jQuery("#uploadLocationImage").show();
+            }
+            var filename = text.substr(text.lastIndexOf("\\") + 1);
+            jQuery("#lblLocationImage").text(filename);
+        });
+
+        // Handler to apply existing photo
+        jQuery("#btnApplyPhoto").on("click", function() {
+            jQuery("#imgLocationImage").attr("src", jQuery("#photoImageUrl").val());
+        });
+
+        // Handler to save image
+        jQuery("#btnImageSave").on("click", function() {
+            SaveImage();
+        });
+
+        // Handler to delete image
+        jQuery(document).on("click", ".del-img", function() {
+            DeleteImage(this);
+        });
+
+        // Handler to edit document
+        jQuery(document).on("click", ".edit-doc", function() {
+            lt_imgFormMode = "EDIT";
+            lt_imgRow = jQuery(this).parents("tr");
+            var imgUrl = jQuery(this).attr("value") + "?$select=Title,File&$expand=File";
+            jQuery.ajax({
+                url: imgUrl,
+                method: "GET",
+                headers: {
+                    "accept": "application/json;odata=verbose"
+                },
+                success: function(data) {
+                    lt_img = data.d;
+                    jQuery("#txtImageTitle").val(lt_img.Title);
+                    jQuery("#imgLocationImage").hide();
+                    jQuery(".doc-zone").show();
+                },
+                error: function(err) {
+                    console.log(JSON.stringify(err));
+                }
+            });
+        });
+
+        // Add handler to show document form when Add new link is clicked
+        jQuery(".add-link-doc").on("click", function(){
+            lt_docFormMode = "NEW";
+            jQuery("#filLocationDocument").val("");
+            jQuery("#lblLocationDocument").html("<i class=\"fa fa-upload\"></i> Choose a file");
+            jQuery(".doc-zone").show();
+        });
+
+        // Add handler to close doc form and clear inputs
+        jQuery("#btnDocCancel").on("click", function() {
+            ClearDocForm();
+        });
+
+        // Handler for document file input change
+        jQuery("#filLocationDocument").change(function() {
+            var text = jQuery("#filLocationDocument").val();
+            if (text == "") {
+                jQuery("#uploadLocationDocument").hide();
+            }
+            else {
+                jQuery("#uploadLocationDocument").show();
+            }
+            var filename = text.substr(text.lastIndexOf("\\") + 1);
+            jQuery("#lblLocationDocument").text(filename);
+        });
+
+        // Handler to upload document and metadata
+        jQuery("#uploadLocationDocument").on("click", function() {
+            SaveDocument();
+        });
+
+        // Handler to delete document
+        jQuery(document).on("click", ".del-doc", function() {
+            DeleteDocument(this);
+        });
+
+        // Handler to edit document
+        jQuery(document).on("click", ".edit-doc", function() {
+            lt_docFormMode = "EDIT";
+            lt_docRow = jQuery(this).parents("tr");
+            var docUrl = jQuery(this).attr("value") + "?$select=Title,LocationID,File&$expand=File";
+            jQuery.ajax({
+                url: docUrl,
+                method: "GET",
+                headers: {
+                    "accept": "application/json;odata=verbose"
+                },
+                success: function(data) {
+                    lt_doc = data.d;
+                    jQuery("#docFileControls").hide();
+                    jQuery(".doc-zone").show();
+                },
+                error: function(err) {
+                    console.log(JSON.stringify(err));
+                }
+            });
+        });
+    }
+
+/* Start up functions */
+    jQuery(document).ready(function() {
+        SetWebUrl();
+        SetHeaders();
+        SetLocationId();
+        InitiateDescriptionBox();
+        LoadImagePicker();
+        AddHandlers();
+    });
+</script>

@@ -1,0 +1,52 @@
+<h3 id="volsHeader"></h3>
+<ul class="sidebar-list list-unstyled" id="volumeList">
+</ul>
+<script>
+    function GetArticleId(idList) {
+        for (i = 0; i < idList.length; i++) {
+            if (idList[i]) {
+                return idList[i];
+            }
+        }
+    }
+
+    function LoadPublicationVolumes(pub, vol) {
+        var volumes = {};
+        var liHtml = "";
+        var defaultHeader = "Other Volumes";
+        GetTranslation(defaultHeader, pi_language, function(header) {
+            jQuery("#volsHeader").text(header? header : defaultHeader);
+        });
+        jQuery.each(pi_allArticles, function(i, article) {
+            if (article.Publication.Label == pub && article.Volume != vol && article.ConnectLanguage == pi_language) {
+                if (!volumes.hasOwnProperty(article.Volume)) {
+                    volumes[article.Volume] = [];
+                }
+
+                if (article.Featured) {
+                    volumes[article.Volume].push(article.ArticleID);
+                }
+                else {
+                    volumes[article.Volume].push("");
+                }
+            }
+        });
+        
+        var volumesAdded = 0;
+        for (var key in volumes) {
+            if (volumes.hasOwnProperty(key)) {
+                volumesAdded++;
+                liHtml += "<li><a href=\"/Pages/Publication.aspx?articleid=" + GetArticleId(volumes[key]) + "&lang=" + pi_language + "\">" + key + " (" + volumes[key].length + " Articles)</a></li>";
+            }
+        }
+
+        if (volumesAdded > 0) {
+            jQuery("#volumeList").html(liHtml);
+        }
+        else {
+            jQuery("#volumeList").html("There are no other volumes to show");
+        }
+    }
+
+    
+</script>

@@ -1,0 +1,313 @@
+<div class="row">
+    <!-- Admin link to add new article -->
+    <div id="addNewPub" style="display: none"></div>
+    <!-- Language drop down -->
+    <div class="col-xs-12">
+        <div id="languageField">
+            <div class="dropdown-program">
+                <a class="dropdown-button" href="javascript:{}" id="ddbtnLanguage"><span>English</span><i class="icon-caret-down"></i></a>
+                <div class="dropdown-program-content" id="ddLanguage">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-5" id="photoContainer">
+        <img class="img-responsive" id="articlePhoto" src="/_catalogs/masterpage/Resources/img-upload.png"/>
+    </div>
+    <div class="col-sm-7">
+    <div class="no-data-message" id="noArticle" style="display: none"></div>
+    <!--<h2 class="pub-title" id="publication"></h2>-->
+    <h2 class="pub-issue" id="volume"></h2>
+    <h1 class="pub-name" id="articleTitle"></h1>
+    <span id="editButton"></span>
+    <h3 class="pub-date" id="publishDate"></h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="pub-content col-xs-12" id="articleBody">
+    </div>
+</div>
+<script>
+    var pi_articleId = "";
+    var pi_language = "";
+    var pi_userIsAdmin = false;
+    var pi_allArticles;
+    var pi_article = [];
+    var pi_volume;
+
+    // Check the users permissions and activate items required for admins
+    function CheckUserPermissions() {
+        SP.SOD.executeFunc('SP.Runtime.js', 'SP.ClientContext',
+            function() {
+            SP.SOD.executeFunc('SP.js', 'SP.ClientContext',
+                function() {
+                    var siteUrl = _spPageContextInfo.webAbsoluteUrl;
+                    var clientContext = new SP.ClientContext(siteUrl);
+                    web = clientContext.get_web();
+                    clientContext.load(web, 'Title', 'EffectiveBasePermissions');
+                    clientContext.executeQueryAsync(onSuccess, onError);
+                });
+            });
+    }
+
+    function onSuccess(){
+        var permissions = SP.PermissionKind.manageWeb;
+        if(web.get_effectiveBasePermissions().has(permissions)){
+            pi_userIsAdmin = true;
+            var newPubLink = '<a class="program-add-new" href="/Pages/Publication-Admin.aspx"><h3> <i class="icon-plus-sign"></i> <span id="addNewPublication"></span></h3></a>';
+            jQuery("#addNewPub").html(newPubLink);
+            jQuery("#addNewPub").show();
+            GetTranslation("Add New Article", pi_language, function(value) {
+                jQuery("#addNewPublication").text(value);
+            });
+        }
+        SetArticleContext();
+    }
+
+    function onError(sender, args) {
+        console.log(args.get_message() + '\n' + args.get_stackTrace());
+    }
+
+    // Get language for labels
+    function GetLanguageForLabel(label) {
+        switch (label.toLowerCase()) {
+            case "connect":
+                return "English";
+            case "zhhk":
+                return "Chinese (Hong Kong S.A.R.)";
+            case "zhcn":
+                return "Chinese (People's Republic of China)";
+            case "fr":
+                return "French (France)";
+            case "de":
+                return "German (Germany)";
+            case "ja":
+                return "Japanese (Japan)";
+            case "pl":
+                return "Polish (Poland)";
+            case "pt":
+                return "Portuguese (Brazil)";
+            case "ru":
+                return "Russian (Russia)";
+            case "es":
+                return "Spanish (Spain)";
+            default:
+                return "";
+        }
+    }
+
+    function getParameterByName(name, url) {
+        if (!url) {
+            url = window.location.href;
+        }
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    function SetTeaserPhoto(pub, vol) {
+        articleUrl = 
+            _spPageContextInfo.siteAbsoluteUrl + 
+            "/_api/web/lists/getbytitle('Publications')/GetItems(query=@v1)" + 
+            "?@v1={'ViewXml':'" + 
+            "<View>" + 
+                "<ViewFields>" + 
+                    "<FieldRef Name=\"Publication\"/>" + 
+                    "<FieldRef Name=\"Volume\"/>" + 
+                    "<FieldRef Name=\"Featured\"/>" + 
+                    "<FieldRef Name=\"ArticlePhoto\"/>" + 
+                "</ViewFields>" + 
+                "<Query>" + 
+                    "<Where>" + 
+                        "<And>" + 
+                            "<Eq>" + 
+                                "<FieldRef Name=\"Featured\"/>" + 
+                                "<Value Type=\"Boolean\">1</Value>" + 
+                            "</Eq>" + 
+                            "<And>" + 
+                                "<Eq>" + 
+                                    "<FieldRef Name=\"Publication\"/>" + 
+                                    "<Value Type=\"Text\">" + pub + "</Value>" + 
+                                "</Eq>" + 
+                                "<Eq>" + 
+                                    "<FieldRef Name=\"Volume\"/>" + 
+                                    "<Value Type=\"Text\">" + vol + "</Value>" + 
+                                "</Eq>" + 
+                            "</And>" + 
+                        "</And>" + 
+                    "</Where>" + 
+                    "<OrderBy>" + 
+                        "<FieldRef Name=\"PublishDate\" Ascending=\"FALSE\"/>" + 
+                    "</OrderBy>" + 
+                "</Query>" + 
+            "</View>" + 
+            "'}";
+        jQuery.ajax({
+            url: articleUrl,
+            method: "POST",
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val()
+            },
+            success: function(data) {
+                if (data.d.results.length > 0) {
+                    jQuery("#articlePhoto").attr("src", data.d.results[0].ArticlePhoto.Url);
+                }
+                else {
+                    jQuery("#articlePhoto").attr("src", "/_catalogs/masterpage/resources/img-upload.png");
+                }
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function SetArticleContext() {
+        pi_articleId = getParameterByName("articleid");
+        pi_language = getParameterByName("lang");
+
+        // If there is a valid Article ID, get article info
+        if (pi_articleId) {
+            if (!pi_language) {
+                pi_language = "CONNECT";
+            }
+            articleUrl = _spPageContextInfo.siteAbsoluteUrl + 
+                "/_api/web/lists/getbytitle('Publications')/GetItems(query=@v1)?" + 
+                "@v1={'ViewXml':'" + 
+                    "<View>" + 
+                        "<ViewFields>" + 
+                            "<FieldRef Name=\"Title\"/>" + 
+                            "<FieldRef Name=\"ArticleID\"/>" + 
+                            "<FieldRef Name=\"PublishDate\"/>" + 
+                            "<FieldRef Name=\"Publication\"/>" + 
+                            "<FieldRef Name=\"Volume\"/>" + 
+                            "<FieldRef Name=\"Featured\"/>" + 
+                            "<FieldRef Name=\"Copy\"/>" + 
+                            "<FieldRef Name=\"ConnectLanguage\"/>" + 
+                            "<FieldRef Name=\"ArticleBody\"/>" + 
+                            "<FieldRef Name=\"ArticlePhoto\"/>" + 
+                        "</ViewFields>" + 
+                        "<Query>" + 
+                            "<OrderBy>" + 
+                            "<FieldRef Name=\"PublishDate\" Ascending=\"FALSE\"/>" + 
+                            "</OrderBy>" + 
+                        "</Query>" + 
+                    "</View>" + 
+                "'}";
+            jQuery.ajax({
+                url: articleUrl,
+                method: "POST",
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val()
+                },
+                success: function(data) {
+                    pi_allArticles = data.d.results;
+                    var currentArticle;
+                    jQuery.each(data.d.results, function(i, article) {
+                        if (article.ArticleID == pi_articleId) {
+                            pi_article.push(article);
+                            if (article.ConnectLanguage == pi_language) {
+                                if (article.ArticlePhoto) {
+                                    if (article.ArticlePhoto.Url.endsWith("/_catalogs/masterpage/resources/img-upload.png") || article.ArticlePhoto.Url == "") {
+                                        SetTeaserPhoto(article.Publication.Label, article.Volume);
+                                    }
+                                    else {
+                                        jQuery("#articlePhoto").attr("src", article.ArticlePhoto.Url);
+                                    }
+                                }
+                                else {
+                                    SetTeaserPhoto(article.Publication.Label, article.Volume);
+                                }
+                                jQuery(".connectHeader").find("h1").text(article.Publication.Label);
+                                jQuery("#DeltaPlaceHolderMain > div.connectPage.productPage > div.connectBreadcrumb.ms-dialogHidden > div > span").find("a[href='/Pages/Publication.aspx']").text(article.Publication.Label);
+                                /*if (article.ArticlePhoto) {
+                                    jQuery("#articlePhoto").attr("src", article.ArticlePhoto.Url);
+                                    jQuery("#photoContainer").show();
+                                }*/
+                                //jQuery("#publication").text(article.Publication.Label);
+                                jQuery("#volume").text(article.Volume);
+                                jQuery("#articleTitle").text(article.Title);
+                                jQuery("#publishDate").text("Published: " + (new Date(article.PublishDate)).format("MM/dd/yyyy"));
+                                jQuery("#articleBody").html(article.ArticleBody);
+                                currentArticle = article;
+                                pi_volume = article.Volume;
+                            }
+                            // Add article language to available language selection
+                            jQuery("#ddLanguage").append(
+                                "<a value='" + article.ConnectLanguage + "' class='dropdown-program-link' href='javascript:{}'>" + GetLanguageForLabel(article.ConnectLanguage) + "</a>"
+                            );
+
+                            // Set current language in the dropdown
+                            jQuery("#ddbtnLanguage").find("span").text(GetLanguageForLabel(pi_language));
+                        } 
+
+                        
+                    });
+
+                    if (currentArticle) {
+                        // Trigger the list web part with the volume
+                        LoadVolumeArticles(currentArticle.Publication.Label, currentArticle.Volume);
+
+                        // Trigger the archive web part witht the publication
+                        LoadPublicationVolumes(currentArticle.Publication.Label, currentArticle.Volume);
+                    }
+                    else {
+                        jQuery("#noArticle").text("The article could not be found.");
+                        jQuery("#noArticle").show();
+                    }
+
+                    if (pi_userIsAdmin) {
+                        jQuery("#editButton").html("<a class=\"pub-edit\" href=\"/Pages/Publication-Admin.aspx?articleid=" + pi_articleId + "\">Edit</a>");
+                    }
+                }
+            });
+        }
+    }
+
+    function AddHandlers() {
+        // Add handler to open the choice panel when Language
+        // drop down button is clicked
+        jQuery("#ddbtnLanguage").on("click", function(e) {
+            jQuery("#ddLanguage").toggleClass("open");
+            e.stopPropagation();
+        });
+
+        // Add handler to close the Publication choice panel
+        // when any other location on document is clicked
+        jQuery(document).on("click", function(event)
+        {
+            jQuery(".dropdown-program-content").removeClass("open");
+        });
+
+        // Set language
+        jQuery("#ddLanguage").click(function(e) {
+            var choice = jQuery(e.target);
+            jQuery(this).parent().find("span").text(choice.text());
+            jQuery(this).find("a").removeClass("active-filter");
+            choice.addClass("active-filter");
+            pi_language = choice.attr("value");
+            
+            // Update article content
+            var article = (pi_article.filter(function(art) { return art.ConnectLanguage == pi_language }))[0];
+            jQuery("#ddbtnLanguage").find("span").text(GetLanguageForLabel(pi_language));
+            jQuery("#volume").text(article.Volume);
+            jQuery("#articleTitle").text(article.Title);
+            jQuery("#publishDate").text("Published: " + (new Date(article.PublishDate)).format("MM/dd/yyyy"));
+            jQuery("#articleBody").html(article.ArticleBody);
+        });
+    }
+
+    jQuery(document).ready(function() {
+        CheckUserPermissions();
+        AddHandlers();
+    });
+</script>

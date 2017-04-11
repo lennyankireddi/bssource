@@ -1,0 +1,227 @@
+<div id="publications">
+    <div class="ms-webpart-chrome-title">
+        <span class="js-webpart-titleCell">
+            <h2 class="ms-webpart-titleText" id="wpTitle">Publications</h2>
+            <a href="javascript:{}" class="article-next-btn" id="btnNextTeaser" style="display:none"></a>
+            <a href="javascript:{}" class="article-prev-btn" id="btnPrevTeaser" style="display:none"></a>
+        </span>
+    </div>
+    <div class="article-main">
+        <a href="javascript:{}" class="article-link" id="articleUrl">
+            <img id="articlePhoto" class="img-responsive" src="/_catalogs/masterpage/resources/img-upload.png">
+            <div class="article-main-content">
+                <div id="articleVolume" class="article-volume"></div>
+                <div class="article-main-headline">
+                    <h3 id="articleTitle"></h3>
+                    <p id="articleTeaser"></p>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div id="additionalContent" class="article-sub-headline">
+    </div>
+    <div id="addNewPub" style="display: none"></div>
+</div>
+
+<script>
+    var pub_userIsAdmin = false;
+    var pub_language = "CONNECT";
+    var pub_teasers = [];
+    var pub_currentIndex = 0;
+    var pub_allowedPubs = [];
+
+    function SetLanguage() {
+        // Start with URL
+        var url = window.location.href;
+        // Remove FQDN
+        url = url.replace(_spPageContextInfo.siteAbsoluteUrl, "");
+        // Check for and remove leading / 
+        if (url.indexOf("/") == 0) {
+            url = url.substr(1);
+        }
+        // Check if there are any other slashes
+        if (url.indexOf("/") != -1) {
+            // If there are, trim upto the point
+            url = url.substr(0, url.indexOf("/"));
+        }
+        // Trim trailing # if any
+        url = url.replace("#", "");
+        pub_language = url;
+    }
+
+    function AddPubLink() {
+        var newPubLink = '<a class="program-add-new" href="/Pages/Publication-Admin.aspx"><h3> <i class="icon-plus-sign"></i> <span id="addNewPublication"></span></h3></a>';
+        jQuery("#addNewPub").html(newPubLink);
+        jQuery("#addNewPub").show();
+        GetTranslation("Add New Article", pub_language, function(value) {
+            jQuery("#addNewPublication").text(value);
+        });
+    }
+
+    function RenderTeaser(index) {
+        // Hide navigators to start with
+        jQuery("#btnPrevTeaser").hide();
+        jQuery("#btnNextTeaser").hide();
+        
+        if (pub_teasers[index]) {
+            var article = pub_teasers[index];
+            GetTranslation(article.Publication.Label, pub_language, function(value) {
+                jQuery("#wpTitle").text(value);
+            });
+            jQuery("#articleVolume").text(article.Volume);
+            jQuery("#articleTitle").text(article.Title);
+            jQuery("#articleTeaser").html(article.Teaser);
+            if (article.RichDescription) {
+                jQuery("#additionalContent").html(article.RichDescription);
+                jQuery("#additionalContent").show();
+            }
+            else {
+                jQuery("#additionalContent").hide();
+            }
+            jQuery("#articlePhoto").attr("src", article.ArticlePhoto.Url);
+            jQuery("#articleUrl").attr("href", "/Pages/Publication.aspx?articleid=" + article.ArticleID + "&lang=" + pub_language);
+        }
+
+        // Render prev button if required
+        if (index > 0) {
+            if (pub_teasers[index - 1]) {
+                var prevArticle = pub_teasers[index - 1];
+                GetTranslation(prevArticle.Publication.Label, pub_language, function(value) {
+                    jQuery("#btnPrevTeaser").text(value);
+                });
+                jQuery("#btnPrevTeaser").show();
+            }
+        }
+
+        // Render next button if required
+        if (index < pub_teasers.length - 1) {
+            if (pub_teasers[index + 1]) {
+                var nextArticle = pub_teasers[index + 1];
+                GetTranslation(nextArticle.Publication.Label, pub_language, function(value) {
+                    jQuery("#btnNextTeaser").text(value);
+                });
+                jQuery("#btnNextTeaser").show();
+            }
+        }
+    }
+
+    function GetPublicationsForUser() {
+        var filterPath = _spPageContextInfo.siteAbsoluteUrl + "/Lists/PublicationMaster";
+        pubsUrl = _spPageContextInfo.siteAbsoluteUrl + "/_api/search/query?querytext='Path:" + filterPath + "'&selectproperties='Title'";
+        jQuery.ajax({
+            url: pubsUrl,
+            method: "GET",
+            headers: {
+                "accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                jQuery.each(data.d.query.PrimaryQueryResult.RelevantResults.Table.Rows.results, function(d, row) {
+                    jQuery.each(row.Cells.results, function(x, y) {
+                        if (y.Key == "Title") {
+                            pub_allowedPubs.push(y.Value);
+                        }
+                    });
+                });
+                ShowTeaser();
+            }
+        });
+    }
+
+    function ShowTeaser() {
+        articleUrl = 
+            _spPageContextInfo.siteAbsoluteUrl + 
+            "/_api/web/lists/getbytitle('Publications')/GetItems(query=@v1)" + 
+            "?@v1={'ViewXml':'" + 
+            "<View>" + 
+                "<ViewFields>" + 
+                    "<FieldRef Name=\"Title\"/>" + 
+                    "<FieldRef Name=\"ArticleID\"/>" + 
+                    "<FieldRef Name=\"PublishDate\"/>" + 
+                    "<FieldRef Name=\"Publication\"/>" + 
+                    "<FieldRef Name=\"Volume\"/>" + 
+                    "<FieldRef Name=\"Featured\"/>" + 
+                    "<FieldRef Name=\"Copy\"/>" + 
+                    "<FieldRef Name=\"ConnectLanguage\"/>" + 
+                    "<FieldRef Name=\"ArticleBody\"/>" + 
+                    "<FieldRef Name=\"ArticlePhoto\"/>" + 
+                    "<FieldRef Name=\"Teaser\"/>" + 
+                    "<FieldRef Name=\"RichDescription\"/>" + 
+                "</ViewFields>" + 
+                "<Query>" + 
+                    "<Where>" + 
+                        /*"<And>" + 
+                            "<Le>" + 
+                                "<FieldRef Name=\"PublishDate\"/>" + 
+                                "<Value Type=\"\">[Today]</Value>" + 
+                            "</Le>" + */
+                            "<And>" + 
+                                "<Eq>" + 
+                                    "<FieldRef Name=\"Featured\"/>" + 
+                                    "<Value Type=\"Boolean\">1</Value>" + 
+                                "</Eq>" + 
+                                "<Eq>" + 
+                                    "<FieldRef Name=\"ConnectLanguage\"/>" + 
+                                    "<Value Type=\"Text\">" + pub_language + "</Value>" + 
+                                "</Eq>" + 
+                            "</And>" + 
+                        /*"</And>" + */
+                    "</Where>" + 
+                    "<OrderBy>" + 
+                        "<FieldRef Name=\"PublishDate\" Ascending=\"FALSE\"/>" + 
+                    "</OrderBy>" + 
+                "</Query>" + 
+            "</View>" + 
+            "'}";
+        jQuery.ajax({
+            url: articleUrl,
+            method: "POST",
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val()
+            },
+            success: function(data) {
+                var pubs = [];
+                
+                jQuery.each(data.d.results, function(i, teaser) {
+                    // Remove disallowed publications
+                    if (pub_allowedPubs.indexOf(teaser.Publication.Label) != -1) {
+                        // Remove duplicate (older volumes of) publications
+                        if (pubs.indexOf(teaser.Publication.Label) == -1) {
+                            pubs.push(teaser.Publication.Label);
+                            pub_teasers.push(teaser);
+                        }
+                    }
+                });
+
+                if (pub_teasers.length > 0) {
+                    pub_currentIndex = 0;
+                    RenderTeaser(pub_currentIndex);
+                }
+                else {
+                    jQuery("#publications").hide();
+                }
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function AddPubHandlers() {
+        jQuery(document).off("click", "#btnPrevTeaser").on("click", "#btnPrevTeaser", function(){
+            pub_currentIndex--;
+            RenderTeaser(pub_currentIndex);
+        });
+
+        jQuery(document).off("click", "#btnNextTeaser").on("click", "#btnNextTeaser", function(){
+            pub_currentIndex++;
+            RenderTeaser(pub_currentIndex);
+        });
+    }
+
+    jQuery(document).ready(function() {
+        SetLanguage();
+        GetPublicationsForUser();
+        AddPubHandlers();
+    });
+</script>

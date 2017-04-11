@@ -1,0 +1,726 @@
+<a href="/Pages/Location-Admin.aspx" id="addNewLink" class="add-person-link" type="button">
+    <h2 class="addNew-doc-link"><i aria-hidden="true" class="fa fa-plus" ></i> Add Location</h2>
+</a>
+<div class="row row-map">
+    <div class="col-md-7 col-xs-12 map-column">
+        <div id="map" style="height: 540px; margin-bottom:30px;"></div>
+        <div class="map-mobile-nav">
+            <i class="fa fa-map"></i>
+        </div>
+    </div>
+    <div class="col-md-5 col-xs-12">
+        <div class="location-message" id="locationMessage">
+            Select a pin on the map to view location details.
+        </div>
+        <div class="row marker-info">
+            <div class="col-xs-12">
+                <h1 id="locatName"></h1>
+                <div id="editButton" style="display:none"></div>
+                <h2 id="locatLocation"></h2>
+                <div id="location-carousel" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators" id="carouselIndicators">
+                    </ol>
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" role="listbox" id="carouselImages">
+                        <div class="item active">
+                            <img src="">
+                            <div class="carousel-caption">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <p id="locatDesc"></p>
+                <div id="locatAction">
+                    <h3 id="linksHeader"></h3>
+                    <div class="btn-container" id="linksContainer">
+                    </div>
+                    <div class="btn-container" id="privateLinksContainer">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div  id="locatDocs">
+                    <h3 id="assetsHeader"></h3>
+                    <ul class="list-unstyled" id="docsContainer">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var rkhs_favoriteItems;
+    var lt_map;
+    var lt_styles = [
+        {
+            "featureType": "administrative",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "visibility": "on"
+                },
+                {
+                    "lightness": 33
+                }
+            ]
+        },
+        {
+            "featureType": "landscape",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "color": "#f2e5d4"
+                }
+            ]
+        },
+        {
+            "featureType": "poi.park",
+            "elementType": "geometry",
+            "stylers": [
+                {
+                    "color": "#c5dac6"
+                }
+            ]
+        },
+        {
+            "featureType": "poi.park",
+            "elementType": "labels",
+            "stylers": [
+                {
+                    "visibility": "on"
+                },
+                {
+                    "lightness": 20
+                }
+            ]
+        },
+        {
+            "featureType": "road",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "lightness": 20
+                }
+            ]
+        },
+        {
+            "featureType": "road.highway",
+            "elementType": "geometry",
+            "stylers": [
+                {
+                    "color": "#c5c6c6"
+                }
+            ]
+        },
+        {
+            "featureType": "road.highway",
+            "elementType": "geometry.fill",
+            "stylers": [
+                {
+                    "saturation": "76"
+                },
+                {
+                    "lightness": "13"
+                },
+                {
+                    "hue": "#ff9300"
+                }
+            ]
+        },
+        {
+            "featureType": "road.highway",
+            "elementType": "labels.icon",
+            "stylers": [
+                {
+                    "visibility": "simplified"
+                },
+                {
+                    "lightness": "16"
+                },
+                {
+                    "saturation": "-37"
+                }
+            ]
+        },
+        {
+            "featureType": "road.arterial",
+            "elementType": "geometry",
+            "stylers": [
+                {
+                    "color": "#e4d7c6"
+                }
+            ]
+        },
+        {
+            "featureType": "road.local",
+            "elementType": "geometry",
+            "stylers": [
+                {
+                    "color": "#fbfaf7"
+                }
+            ]
+        },
+        {
+            "featureType": "water",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "visibility": "on"
+                },
+                {
+                    "color": "#acbcc9"
+                }
+            ]
+        }
+    ];
+
+    var lt_markers = [];   // Array for all markers
+    var lt_locations = []; // Array for all locations
+    var lt_userIsAdmin = false;
+
+    function GetFavoritesForUser()
+    {
+        jQuery.ajax({
+            url:"/_api/web/lists/GetByTitle('Favorites')/items?$select=ID,URL,Order,Author/Id&$expand=Author&$filter=(Author/Id eq " + _spPageContextInfo.userId + ")&$orderby=Order asc",
+            type:"GET",
+            headers:{Accept:"application/json;odata=verbose"},
+            success:function(data)
+            {
+                rkhs_favoriteItems = data.d.results;
+            },
+            error:function(data) {
+                console.log(JSON.stringify(data));
+            }
+        });
+    }
+
+    function GetFavoriteId(docUrl) {
+        for (index = 0; index < rkhs_favoriteItems.length; index++) {
+            if (rkhs_favoriteItems[index].URL.Url.endsWith(docUrl)) {
+                return rkhs_favoriteItems[index].Id;
+            }
+        }
+        return -1;
+    }
+
+    function AddFavorite(url, title,element)
+    {
+        var d = {
+                    '__metadata':
+                    {
+                        'type':'SP.Data.FavoritesListItem'
+                    },
+                    'URL':{
+                        '__metadata':{'type':'SP.FieldUrlValue'},
+                        'Description':title,
+                        'Url':url
+                    }
+                };
+        jQuery.ajax({
+            url:"/_api/web/lists/GetByTitle('Favorites')/items",
+            type:"POST",
+            headers:{
+                "accept":"application/json;odata=verbose",
+                "X-RequestDigest":jQuery("#__REQUESTDIGEST").val(),
+                "content-type":"application/json;odata=verbose"
+            },
+            data: JSON.stringify(d),
+            success:function(data) {
+                if(typeof(element) != 'undefined') {
+                    jQuery(element).removeClass('fa-star-o').addClass('fa-star');
+                }
+                rkhs_favoriteItems.push(data.d);
+            },
+            error:function(e)
+            {
+                console.log(JSON.stringify(e));
+            }
+        });
+    }
+
+    function RemoveFavorite(id, element)
+    {
+        jQuery.ajax({
+            url:"/_api/web/lists/GetByTitle('Favorites')/items(" + id + ")",
+            type:"POST",
+            headers:{
+                "accept":"application/json;odata=verbose",
+                "X-HTTP-Method":"DELETE",
+                "X-RequestDigest":jQuery("#__REQUESTDIGEST").val(),
+                "IF-MATCH":"*"
+            },
+            success:function(e) {
+                if(typeof(element) != undefined) {
+                    jQuery(element).removeClass('fa-star').addClass('fa-star-o');
+                }
+                rkhs_favoriteItems = rkhs_favoriteItems.filter(function(n) {
+                    return n.Id != id
+                });
+            },
+            error:function(e)
+            {
+                console.log(JSON.stringify(e));
+            }
+        });
+    }
+
+    function ToggleFavorite(element, url, title) {
+        if (jQuery(element).hasClass("fa-star-o")) {
+            AddFavorite(url, title, element);
+        }
+        else if (jQuery(element).hasClass("fa-star")) {
+            var favoriteId = GetFavoriteId(url);
+            if (favoriteId != -1) {
+                RemoveFavorite(favoriteId, element);
+            }
+        }
+    }
+
+    function PrepURLs(body) {
+        while (body.indexOf("<") != -1) {
+            start = body.indexOf("<");
+            end = body.indexOf(">");
+            bracedUrl = body.substr(start, end - start + 1);
+            url = body.substr(start + 1, end - start - 1);
+            body = body.replace(bracedUrl, encodeURI(url));
+        }
+        return body;
+    }
+
+    function CheckUserPermissions() {
+        SP.SOD.executeFunc('SP.Runtime.js', 'SP.ClientContext',
+            function() {
+            SP.SOD.executeFunc('SP.js', 'SP.ClientContext',
+                function() {
+                    var siteUrl = _spPageContextInfo.webAbsoluteUrl;
+                    var clientContext = new SP.ClientContext(siteUrl);
+                    web = clientContext.get_web();
+                    clientContext.load(web, 'Title', 'EffectiveBasePermissions');
+                    clientContext.executeQueryAsync(onSuccess, onError);
+                });
+            });
+    }
+
+    function onSuccess(){
+        var permissions = SP.PermissionKind.manageWeb;
+        if(web.get_effectiveBasePermissions().has(permissions)){
+            lt_userIsAdmin = true;
+            jQuery("#addNewLink").attr("href", "/Pages/Location-Admin.aspx?weburl=" + ReplaceLanguageInUrl(_spPageContextInfo.webServerRelativeUrl, "/CONNECT/"));
+            jQuery("#addNewLink").show();
+        }
+    }
+
+    function onError(sender, args) {
+        console.log(args.get_message() + '\n' + args.get_stackTrace());
+    }
+
+    function ReplaceLanguageInUrl(url, lang) {
+        var newUrl =  url.replace("/zhcn/", lang).replace("/zhhk/", lang).replace("/de/", lang).replace("/es/", lang).replace("/fr/", lang).replace("/ja/", lang).replace("/pl/", lang).replace("/pt/", lang).replace("/ru/", lang);
+        return newUrl;
+    }
+
+    function PrepURLs(body) {
+        while (body.indexOf("<") != -1) {
+            start = body.indexOf("<");
+            end = body.indexOf(">");
+            bracedUrl = body.substr(start, end - start + 1);
+            url = body.substr(start + 1, end - start - 1);
+            body = body.replace(bracedUrl, encodeURI(url));
+        }
+        return body;
+    }
+
+    function initMap() {
+
+        // Prep popup, bounds and icons
+        var largeInfowindow = new google.maps.InfoWindow();
+        var bounds = new google.maps.LatLngBounds();
+        var defaultIcon = makeMarkerIcon('CC0A0A');
+        var highlightedIcon = makeMarkerIcon('ea5757');
+
+        // Constructor creates a new map - only center and zoom are required.
+        lt_map = new google.maps.Map(
+            document.getElementById('map'),
+            {
+                styles: lt_styles,
+                streetViewControl: false
+            }
+        );
+
+        // Get locations from list and load into array
+        locationsUrl = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Locations')/items?$select=LocationID,Title,Location,Latitude,Longitude,RichDescription&$top=500";
+        jQuery.ajax({
+            url: locationsUrl,
+            method: "GET",
+            headers: {
+                "accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                jQuery.each(data.d.results, function(i, location) {
+                    lt_locations.push({
+                        id: location.LocationID,
+                        title: location.Title,
+                        location: location.Location,
+                        position: {
+                            lat: parseFloat(location.Latitude),
+                            lng: parseFloat(location.Longitude)
+                        },
+                        description: location.RichDescription
+                    });
+                });
+
+                // The following group uses the location array to create an array of markers on initialize.
+                for (var i = 0; i < lt_locations.length; i++) {
+                    // Create a marker per location, and put into markers array.
+                    var marker = new google.maps.Marker({
+                        map: lt_map,
+                        position: lt_locations[i].position,
+                        title: lt_locations[i].title,
+                        animation: google.maps.Animation.DROP,
+                        icon: defaultIcon,
+                        id: lt_locations[i].id
+                    });
+
+                    // Push the marker to our array of markers.
+                    lt_markers.push(marker);
+                    
+                    // Create an onclick event to open an infowindow at each marker.
+                    marker.addListener('click', function() {
+                        // Hide the map
+                        jQuery(".map-column").toggleClass("map-close");
+                        jQuery(".map-column").addClass("map-clicked");
+
+                        if (!jQuery(".map-clicked").hasClass(".map-close")) {
+                            jQuery(".marker-info").hide();
+                        }
+
+                        // HIde the default location message
+                        jQuery("#locationMessage").hide();
+
+                        // Show the bottom row with location information
+                        jQuery(".marker-info").show(500);
+
+                        populateInfoWindow(this, largeInfowindow);
+                        // TODO: Fix highlighting the icon
+                        this.icon = highlightedIcon;
+                        
+                        // Load information for current location
+                        LoadLocationInfo(this);
+
+                        // Load image carousel
+                        LoadLocationImages(this);
+
+                        // Load private links
+                        LoadPrivateLinks(this);
+
+                        // Load assets
+                        LoadLocationAssets(this);
+                    });
+
+                    // Expand bounds to fit current marker
+                    bounds.extend(lt_markers[i].position);
+                }
+
+                var markerCluster = new MarkerClusterer(
+                    lt_map,
+                    lt_markers,
+                    { 
+                        imagePath: '/_catalogs/masterpage/resources/m',
+                        averageCenter: true,
+                    }
+                );
+
+                // Extend the boundaries of the map for all markers
+                lt_map.fitBounds(bounds);
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    // This function populates the infowindow when the marker is clicked. We'll only allow
+    // one infowindow which will open at the marker that is clicked, and populate based
+    // on that markers position.
+    function populateInfoWindow(marker, infowindow) {
+        // Check to make sure the infowindow is not already opened on this marker.
+        if (infowindow.marker != marker) {
+            infowindow.marker = marker;
+        }
+        infowindow.setContent('<div>' + marker.title + '</div>');
+        infowindow.open(lt_map, marker);
+
+        // Make sure the marker property is cleared if the infowindow is closed.
+        infowindow.addListener('closeclick', function() {
+            infowindow.setMarker = null;
+        });
+    }
+
+    function makeMarkerIcon(markerColor) {
+        var markerImage = new google.maps.MarkerImage(
+            'https://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor + '|40|_|%E2%80%A2',
+            new google.maps.Size(21, 34),
+            new google.maps.Point(0, 0),
+            new google.maps.Point(10, 34),
+            new google.maps.Size(21,34)
+        );
+        return markerImage;
+    }
+
+    function GetLocationForMarker(marker) {
+        for (i = 0; i < lt_locations.length; i++) {
+            if (lt_locations[i].id == marker.id) {
+                return lt_locations[i];
+            }
+        }
+    }
+
+    function LoadLocationInfo(marker) {
+        var location = GetLocationForMarker(marker);
+        jQuery("#locatName").text(location.title);
+        jQuery("#locatLocation").text(location.location);
+        jQuery("#locatDesc").html(location.description);
+        if (lt_userIsAdmin) {
+            jQuery("#editButton").html(
+                "<a href='/Pages/Location-Admin.aspx?weburl=" + _spPageContextInfo.webServerRelativeUrl + "&locationid=" + marker.id + "'>Edit</a><br/>"
+            ).show();
+        }
+    }
+
+    function LoadLocationImages(marker) {
+        imagesUrl = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Location Images')/items?$select=Title,URL,LocationID&$top=20&$filter=LocationID eq '" + marker.id + "'";
+        jQuery.ajax({
+            url: imagesUrl,
+            method: "GET",
+            headers: {
+                "accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var indicatorsHtml = "";
+                var imagesHtml = "";
+                if (data.d.results.length == 0) {
+                    jQuery("#location-carousel").hide();
+                }
+                else {
+                    jQuery("#location-carousel").show();
+                }
+                jQuery.each(data.d.results, function(i, image) {
+                    // Set up the indicator html
+                    indicatorsHtml += 
+                        "<li data-target=\"#location-carousel\" data-slide-to=\"" + i.toString() + "\"";
+
+                    if (i == 0) {
+                        indicatorsHtml += 
+                        " class=\"active\"";
+                    }
+                    indicatorsHtml += 
+                        "></li>";
+
+                    // Add to image html
+                    if (i == 0) {
+                        imagesHtml += 
+                        "<div class=\"item active\">";
+                    }
+                    else {
+                        imagesHtml += 
+                        "<div class=\"item\">";
+                    }
+
+                    imagesHtml += 
+                            "<img src=\"" + image.URL.Url + "\">" + 
+                        "</div>";
+                });
+                jQuery("#carouselIndicators").html(indicatorsHtml);
+                jQuery("#carouselImages").html(imagesHtml);
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function LoadPrivateLinks(marker) {
+        jQuery("#privateLinksContainer").html("");
+        linkUrl = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Links')/items?$select=Title,Link&$top=5&$filter=LocationID eq '" + marker.id + "'";
+        jQuery.ajax({
+            url: linkUrl,
+            method: "GET",
+            headers: {
+                "accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var linkHtml = "";
+                jQuery.each(data.d.results, function(i, link) {
+                    linkHtml += 
+                        "<a class=\"btn btn-primary action-link\" target=\"_blank\" href=\"" + link.Link.Url + "\">" + link.Title + "</a>";
+                });
+                jQuery("#privateLinksContainer").html(linkHtml);
+                CheckLinksHeader();
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function LoadLocationAssets(marker) {
+        docsUrl = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Rackhouse Documents')/items?$select=File,Locations&$expand=File&$top=100";
+        jQuery.ajax({
+            url: docsUrl,
+            method: "GET",
+            headers: {
+                "accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var docsAdded = 0;
+                var docsHtml = "";
+                jQuery.each(data.d.results, function(i, doc) {
+                    var docIcon = "";
+                    var docName = "";
+                    var docUrl = "";
+                    var extension = "";
+                    var emailBody = "";
+                    var mobileEmailBody = "";
+                    var newLine = "%0D%0A";
+
+                    // Add document if location is contained in ID list
+                    if (doc.Locations.indexOf(marker.id) != -1) {
+                        docName = doc.File.Name;
+                        extension = docName.substr(docName.lastIndexOf(".") + 1);
+                        docIcon = GetDocIcon(extension);
+                        if (IsOfficeDocument(extension)) {
+                            docUrl = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT") + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + doc.File.ServerRelativeUrl;
+                        }
+                        else if (IsVideoFile(extension)) {
+                            docUrl = _spPageContextInfo.siteAbsoluteUrl + "/Pages/VideoPlayer.aspx?videopath=" + doc.File.ServerRelativeUrl;
+                        }
+                        else {
+                            docUrl = doc.File.ServerRelativeUrl;
+                        }
+
+                        // Prepare email body for mailto tag
+                        emailBody = "Open:" + newLine + "<" + encodeURI(doc.File.ServerRelativeUrl) + ">";
+                        mobileEmailBody = "<a href='" + doc.File.ServerRelativeUrl + "'>Open</a>";
+                        if (IsOfficeDocument(extension)) {
+                            emailBody += newLine + "Open in Web:" + newLine + "<" + encodeURI(docUrl) + ">";
+                            mobileEmailBody += "<br/><br/><a href='" + docUrl + "'>Open in web</a>";
+                        }
+                        
+                        docsHtml += 
+                            "<li>" + 
+                                "<span class=\"docIcon\"><img src=\"" + docIcon + "\"></span>" + 
+                                "&nbsp;<span class=\"docUrl\">" + 
+                                    "<a href=\"" + docUrl + "\">" + docName + "</a>" + 
+                                    "&nbsp;<a href=\"" + doc.File.ServerRelativeUrl + "\" class=\"download-link\" download><i class=\"fa icon-download-alt\" aria-hidden=\"true\"></i></a>";
+                        if (GetFavoriteId(doc.File.ServerRelativeUrl) != -1) {
+                            docsHtml += 
+                                    "&nbsp;&nbsp;<a href=\"javascript:{}\" class=\"favorite-link\"><i class=\"fa fa-star\" aria-hidden=\"true\" onclick=\"ToggleFavorite(this, '" + doc.File.ServerRelativeUrl + "', '" + doc.File.ServerRelativeUrl + "')\"></i></a>";
+                        }
+                        else {
+                            docsHtml += 
+                                    "&nbsp;&nbsp;<a href=\"javascript:{}\" class=\"favorite-link\"><i class=\"fa fa-star-o\" aria-hidden=\"true\" onclick=\"ToggleFavorite(this, '" + doc.File.ServerRelativeUrl + "', '" + doc.File.ServerRelativeUrl + "')\"></i></a>";
+                        }
+                        docsHtml += 
+                                    "&nbsp;<a class=\"share-link hidden-xs hidden-sm\" href=\"mailto:?subject=" + docName + "&body=" + PrepURLs(emailBody) + "\"><i class=\"fa icon-envelope\" aria-hidden=\"true\"></i></a>";
+                                    "&nbsp;<a class=\"share-link hidden-md hidden-lg\" href=\"mailto:?subject=" + docName + "&body=" + mobileEmailBody + "\"><i class=\"fa icon-envelope\" aria-hidden=\"true\"></i></a>";
+                                "</span>" + 
+                            "</li>";
+                        docsAdded++;
+                    }
+                });
+                jQuery("#docsContainer").html(docsHtml);
+                if (docsAdded > 0) {
+                    jQuery("#assetsHeader").show();
+                }
+                else {
+                    jQuery("#assetsHeader").hide();
+                }
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        })
+    }
+
+    function LoadHeaders() {
+        configUrl = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Configuration')/items?$select=Title,Value&$top=100";
+        jQuery.ajax({
+            url: configUrl,
+            method: "GET",
+            headers: {
+                "accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                jQuery.each(data.d.results, function(i, config) {
+                    if (config.Title == "LinksHeader") {
+                        jQuery("#linksHeader").text(config.Value);
+                    }
+                    if (config.Title == "AssetsHeader") {
+                        jQuery("#assetsHeader").text(config.Value);
+                    }
+                });
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function CheckLinksHeader() {
+        if (jQuery("#linksContainer").html() || jQuery("#privateLinksContainer").html()) {
+            jQuery("#linksHeader").show();
+        }
+        else {
+            jQuery("#linksHeader").hide();
+        }
+    }
+
+    function LoadPublicLinks() {
+        linkUrl = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Links')/items?$select=Title,Link&$top=5&$filter=Private eq false";
+        jQuery.ajax({
+            url: linkUrl,
+            method: "GET",
+            headers: {
+                "accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var linkHtml = "";
+                jQuery.each(data.d.results, function(i, link) {
+                    linkHtml += 
+                        "<a class=\"btn btn-primary btn-xl action-link\" target=\"_blank\" href=\"" + link.Link.Url + "\">" + link.Title + "</a>";
+                });
+                jQuery("#linksContainer").html(linkHtml);
+                CheckLinksHeader();
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    jQuery(document).ready(function() {
+        
+        // Set add new link href
+        jQuery("#addNewLink").attr("href", "/Pages/Location-Admin.aspx?weburl=" + ReplaceLanguageInUrl(_spPageContextInfo.webServerRelativeUrl, "/CONNECT/"));
+        // Get favorites for user
+        GetFavoritesForUser();
+        // Check user permissions
+        CheckUserPermissions();
+        // Load the headers
+        LoadHeaders();
+        // Load public links
+        LoadPublicLinks();
+        // Add handler to toggle map map-mobile-nav
+        jQuery(".map-mobile-nav").on("click", function() {
+            jQuery(".map-column").toggleClass("map-close");
+        });
+    });
+</script>
+
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0wAUgW8Zz3bPSY0ZvsrYxTpa5Gg8-b6Q&v=3&callback=initMap"
+async defer>
+</script>

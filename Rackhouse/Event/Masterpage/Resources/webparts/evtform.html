@@ -1,0 +1,1657 @@
+<script type="text/javascript" charset="utf8" src="/_catalogs/masterpage/resources/jquery.easyeditor.js"></script>
+<script type="text/javascript" charset="utf8" src="/_catalogs/masterpage/resources/bootstrap-multiselect.js"></script>
+<script type="text/javascript" charset="utf8" src="/_catalogs/masterpage/resources/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/_catalogs/masterpage/resources/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="/_catalogs/masterpage/resources/easyeditor.css">
+<link rel="stylesheet" type="text/css" href="/_catalogs/masterpage/resources/bootstrap-multiselect.css">
+<div class="container-fluid beam">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-horizontal">
+                <div>
+                    <fieldset>
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <h3><label class="col-md-2 control-label" for="txtTitle">Event Name</label></h3>
+                            <div class="col-md-4">
+                                <input class="form-control input-md" id="txtTitle" placeholder="Event Name" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <h3><label class="col-md-2 control-label" for="txtLocation">Location</label></h3>
+                            <div class="col-md-4">
+                                <input class="form-control input-md" id="txtLocation" placeholder="Location" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div>
+                                <h3><label class="col-md-2 control-label">Event Dates</label></h3>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-calendar">
+                                    <div class="form-group calendar-inner-addon col-sm-6">
+                                        <label for="datepicker-start">Start Date:</label>
+                                        <div class="input-calendar"><input class="form-control input-sm" id="datepicker-start" type="text"></div>
+                                    </div>
+                                    <div class="form-group calendar-inner-addon col-sm-6">
+                                        <label for="datepicker-end">End Date:</label>
+                                        <div class="input-calendar"><input class="form-control input-sm" id="datepicker-end" type="text"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                            <!-- Textarea -->
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="rtbDescription">
+                                <h3>Description</h3>
+                            </label>
+                            <div class="col-md-8">
+                                <div id="rtbDescription">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Links area -->
+                        <div class="form-group">
+                            <h3><label class="col-md-2  control-label" for="radios">Links</label></h3>
+                            <div class="col-md-8">
+                                <div class="document-table">
+                                    <table class="table" id="linksTable">
+                                    </table>
+                                </div><!--End Doc Table-->
+                                <div class="form-group-double form-group-add-Link">
+                                    <div class="form-group col-sm-8">
+                                        <label for="txtLinkText">Link Text</label>
+                                        <div>
+                                            <input class="form-control input-sm" id="txtLinkText" type="text">
+                                        </div>
+                                        <label for="txtLinkUrl">URL</label>
+                                        <div>
+                                            <input class="form-control input-sm" id="txtLinkUrl" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <div class="btn-container pull-right">
+                                            <a href="javascript:{}" class="action-link btn btn-default" id="btnCloseLinkForm">Close</a>
+                                            <a href="javascript:{}" class="action-link btn btn-primary" id="btnLinkSave">Save</a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <div class="pull-right">
+                                            <div class="link-status"><h3><i id="linkStatusIcon" class="fa fa-check" aria-hidden="true"></i>&nbsp;<span id="linkStatusText"></span></h3></div>
+                                        </div>
+                                    </div>
+                                </div>                                   
+                                <a class="add-link add-link-link" href="#"><i class="icon-plus"></i> Add New Link</a>
+                            </div>
+                        </div>	
+                        
+                        <!-- People Area -->
+                        <div class="form-group" id="peopleArea">
+                            <div class="col-md-2">
+                                <input class="form-control input-md" id="txtPeopleHeader" placeholder="People" type="text">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="people-grid-event-admin" id="slider-thumbs">
+                                    <!-- People grid items -->
+                                    <ul class="people-grid-list ui-sortable" id="peopleGridList">
+                                    </ul>
+                                </div>
+                                <div class="person-zone">
+                                    <div class="form-group-double">
+                                        <div class="form-group col-sm-6">
+                                            <label for="person-name">Name</label>
+                                            <div>
+                                                <input id="person-name" placeholder="Enter Name" class="form-control input-md" type="text">
+                                            </div>
+                                            <label for="person-byline">Byline</label>
+                                            <div>
+                                                <input id="person-byline" placeholder="Enter Byline" class="form-control input-md" type="text">
+                                            </div>
+                                            <label for="person-role">Title</label>
+                                            <div>
+                                                <input id="person-role" placeholder="Enter Title" class="form-control input-md" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 social-form">
+                                            <i class="fa fa-twitter pull-left"></i><input class="form-control input-md" id="twitterHandle" name="textinput" placeholder="Twitter handle" type="text"><br>
+                                            <i class="fa fa-facebook pull-left"></i><input class="form-control input-md" id="facebookLink" name="textinput" placeholder="Facebook URL" type="text"><br>
+                                            <i class="fa fa-instagram pull-left"></i><input class="form-control input-md" id="instagramLink" name="textinput" placeholder="Instagram URL" type="text"><br>
+                                            <i class="fa fa-linkedin pull-left"></i><input class="form-control input-md" id="linkedInLink" name="textinput" placeholder="LinkedIn URL" type="text">
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="form-group col-sm-12">
+                                            <div class="col-md-12">
+                                                <label class="control-label" for="rtbPersonDescription">Description</label>
+                                                <div id="rtbPersonDescription">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <div class="col-md-6">
+                                                <img id="personPhotoImage" class="img-responsive" src="/_catalogs/masterpage/Resources/person-icon.png">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>
+                                                    <input type="file" id="personPhotoFile" class="program-logo">
+                                                    <label class="program-logo-label" id="lblPersonPhoto" for="personPhotoFile"><i class="fa fa-upload"></i> Choose a file</label>
+                                                    <a href="javascript:{}" class="upload-button btn btn-primary" id="uploadPersonPhoto" style="display: none;">Upload</a>
+                                                </p>
+                                                <a href="javascript:{}" type="button" data-toggle="modal" data-target="#photo-modal">Use Existing Photo</a>
+                                            </div>
+                                        </div>                    
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="btn-container pull-right">
+                                            <a href="javascript:{}" id="btnPersonCancel" class="action-link btn btn-default" type="button">Cancel</a> 
+                                            <a href="javascript:{}" class="action-link btn btn-primary" id="btnPersonSave">Save</a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <div class="pull-right">
+                                            <div class="person-status"><h3><i id="personStatusIcon" class="fa fa-check" aria-hidden="true"></i>&nbsp;<span id="personStatusText"></span></h3></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="add-link add-link-person" href="#"><i class="icon-plus"></i> Add New</a>
+                            </div>
+                        </div>	
+
+                        <!-- Documents area -->
+                        <div class="form-group" id="docsArea">
+                            <div class="col-md-2">
+                                <input class="form-control input-md" id="txtDocumentsHeader" placeholder="Documents" type="text">
+                            </div>
+                        
+                            <div class="col-md-8">
+                                <div class="document-table">
+                                    <div class="dataTables_wrapper no-footer" id="">
+                                        <table class="table" id="eventDocsTable">
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="doc-zone">
+                                    <div class="form-group-double">
+                                        <div class="form-group col-sm-8">
+                                            <p id="docFileControls">
+                                                <input type="file" id="filEventDocument" class="program-logo">
+                                                <label class="program-logo-label" id="lblEventDocument" for="filEventDocument"><i class="fa fa-upload"></i> Choose a file</label>
+                                            </p>
+                                            <label for="txtDocSubject">Subject</label>
+                                            <div>
+                                                <input type="text" id="txtDocSubject" class="form-control input-md" placeholder="Enter subject" value="">
+                                            </div>
+                                            <label>People</label>
+                                            <div>
+                                                <select id="selPersonChoices" multiple="multiple">
+                                                </select>
+                                                <ul class="dropdown-menu" aria-labelledby="ddlPersonChoice" id="personChoiceList">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="btn-container pull-right">
+                                            <a href="javascript:{}" id="btnDocCancel" class="action-link btn btn-default">Cancel</a> 
+                                            <a href="javascript:{}" class="action-link btn btn-primary" id="btnDocSave">Save</a>
+                                            <i class="fa fa-spinner fa-spin fa-fw hidden" id="docSaveSpinner"></i>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <div class="pull-right">
+                                            <div class="doc-status"><h3><i id="docStatusIcon" class="fa fa-check" aria-hidden="true"></i>&nbsp;<span id="docStatusText"></span></h3></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="add-link add-link-doc" href="javascript:{}"><i class="icon-plus"></i> Add New</a>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="btn-container pull-right">
+                <button id="btnCancel" class="btn btn-default" type="button">Cancel</button> 
+                <button id="btnSave" class="btn btn-primary btn-save" type="button">Save</button> 
+                <div class="page-status"><h3><i id="pageStatusIcon" class="fa fa-check" aria-hidden="true"></i>&nbsp;<span id="pageStatusText"></span></h3></div>
+            </div>
+        </div><!--End Row-->
+    </div>
+</div><!-- End Beam/bootstrap Container  -->
+
+<!-- Picture Modal -->
+<div class="modal fade event-photo-modal" id="photo-modal" tabindex="-1" role="dialog" aria-labelledby="photo-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content  modal-simple ">
+      <div class="modal-body">
+         <div id="photoImageList" class="image-list">
+         </div>
+         <div>
+            <input type="text" value="" id="photoImageUrl" class="image-url" />
+            <input type="button" value="Apply" id="btnApplyPhoto" class="btn btn-primary" data-dismiss="modal" />
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    // Global Variables
+    var ea_webUrl = "";
+    var ea_formMode = "NEW";
+    var ea_event;
+    var ea_person;
+    var ea_personId = "";
+    var ea_personFormMode = "NEW";
+    var ea_peopleLookup = {};
+    var ea_editedPersonElement;
+    var ea_linksTable;
+    var ea_link;
+    var ea_linkFormMode = "NEW";
+    var ea_linkRow;
+    var ea_docsTable;
+    var ea_docFormMode = "NEW";
+    var ea_docRow;
+    var ea_doc;
+
+    function getParameterByName(name, url) {
+        if (!url) {
+            url = window.location.href;
+        }
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    function ReplaceLanguageInUrl(url, lang) {
+        var newUrl =  url.replace("/zhcn/", lang).replace("/zhhk/", lang).replace("/de/", lang).replace("/es/", lang).replace("/fr/", lang).replace("/ja/", lang).replace("/pl/", lang).replace("/pt/", lang).replace("/ru/", lang);
+        return newUrl;
+    }
+
+    // Set the referring web Url
+    function SetWebUrl() {
+        var webUrl = getParameterByName("weburl");
+        if (webUrl) {
+            ea_webUrl = webUrl;
+        }
+        else {
+            ea_webUrl = "";
+        }
+    }
+
+    // Generate new program ID
+    function GeneratePersonId() {
+        return (new Date()).format("MMddyyyyhhmmss");
+    }
+
+    // Upload file procedure
+    function UploadFile(fileInput, webUrl, folderName) {
+
+        // Initiate method calls using jQuery promises.
+        // Get the local file as an array buffer.
+        var getFile = getFileBuffer();
+        getFile.done(function (arrayBuffer) {
+            // Add the file to the SharePoint folder.
+            var addFile = addFileToFolder(arrayBuffer);
+            addFile.done(function (file, status, xhr) {
+                var getItem = getListItem(file.d.ListItemAllFields.__deferred.uri);
+                getItem.done(function (listItem, status, xhr) {
+                    // Update metadata on item
+                    var peopleIds;
+                    if (jQuery("#selPersonChoices").val()) {
+                        peopleIds = jQuery("#selPersonChoices").val().toString();
+                    }
+                    var updateItem = updateListItem(listItem.d.__metadata, jQuery("#txtDocSubject").val(), peopleIds)
+                    updateItem.done(function() {
+                        var parts = fileInput[0].value.split("\\");
+                        var fileName = parts[parts.length - 1];
+                        var extension = fileName.substr(fileName.lastIndexOf(".") + 1);
+                        var docUrl = "";
+                        if (IsOfficeDocument(extension)) {
+                            docUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(ea_webUrl, "/CONNECT") + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + listItem.d.File.ServerRelativeUrl;
+                        }
+                        else if (IsVideoFile(extension)) {
+                            docUrl = _spPageContextInfo.siteAbsoluteUrl + "/Pages/VideoPlayer.aspx?videopath=" + listItem.d.File.ServerRelativeUrl;
+                        }
+                        else {
+                            docUrl = listItem.d.ServerRelativeUrl;
+                        }
+                        var people = "";
+                        if (jQuery("#selPersonChoices").val()) {
+                            people = GetPeopleString(jQuery("#selPersonChoices").val());
+                        }
+                        ea_docsTable.row.add([
+                            "<img src=\"" + GetDocIcon(extension) + "\">",
+                            "<a href=\"" + docUrl + "\">" + fileName + "</a>",
+                            jQuery("#txtDocSubject").val(),
+                            people,
+                            "<a href='javascript:{}'><i class='fa fa-trash del-doc' value=\"" + listItem.d.__metadata.uri + "\"></i></a>",
+                            "<a href='javascript:{}'><i class='fa fa-edit edit-doc' value=\"" + listItem.d.__metadata.uri + "\"></i></a>"
+                        ]).draw();
+                        ClearDocForm();
+                    });
+                    updateItem.fail(function(err) {
+                        console.log(JSON.stringify(err));
+                    });
+                });
+                getItem.fail(function(err) {
+                    console.log(JSON.stringify(err))
+                });
+            });
+            addFile.fail(function(err) {
+                console.log(JSON.stringify(err))
+            });
+        });
+        getFile.fail(function(err) {
+            console.log(JSON.stringify(err))
+        });
+
+        // Get the local file as an array buffer.
+        function getFileBuffer() {
+            var deferred = jQuery.Deferred();
+            var reader = new FileReader();
+            reader.onloadend = function (e) {
+                deferred.resolve(e.target.result);
+            }
+            reader.onerror = function (e) {
+                deferred.reject(e.target.error);
+            }
+            reader.readAsArrayBuffer(fileInput[0].files[0]);
+            return deferred.promise();
+        }
+
+        // Add the file to the file collection in the given folder.
+        function addFileToFolder(arrayBuffer) {
+
+            // Get the file name from the file input control on the page.
+            var parts = fileInput[0].value.split('\\');
+            var fileName = parts[parts.length - 1];
+
+            // Construct the endpoint.
+            var fileCollectionEndpoint = String.format(
+                "{0}/_api/web/getfolderbyserverrelativeurl('{1}')/files" +
+                "/add(overwrite=true, url='{2}')",
+                webUrl, folderName, fileName);
+
+            // Send the request and return the response.
+            // This call returns the SharePoint file.
+            return jQuery.ajax({
+                url: fileCollectionEndpoint,
+                type: "POST",
+                data: arrayBuffer,
+                processData: false,
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val()
+                }
+            });
+        }
+
+        // Get the list item that corresponds to the file by calling the file's ListItemAllFields property.
+        function getListItem(fileListItemUri) {
+            return jQuery.ajax({
+                url: fileListItemUri + "?$expand=File",
+                type: "GET",
+                headers: { "accept": "application/json;odata=verbose" }
+            });
+        }
+
+        function updateListItem(itemMetadata, subject, people) {
+            var body = {
+                "__metadata": {
+                    "type": itemMetadata.type
+                },
+                "Subject": subject,
+                "People": people
+            };
+
+            // Send the request and return the promise.
+            // This call does not return response content from the server.
+            return jQuery.ajax({
+                url: itemMetadata.uri,
+                type: "POST",
+                data: JSON.stringify(body),
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                    "content-type": "application/json;odata=verbose",
+                    "X-HTTP-Method": "MERGE",
+                    "IF-MATCH": "*"
+                }
+            });
+        }
+    }
+
+    // Upload image procedure
+    function UploadImage(fileInput, img, serverRelativeUrlToFolder) {
+
+        // Initiate method calls using jQuery promises.
+        // Get the local file as an array buffer.
+        var getFile = getFileBuffer();
+        getFile.done(function (arrayBuffer) {
+
+            // Add the file to the SharePoint folder.
+            var addFile = addFileToFolder(arrayBuffer);
+            addFile.done(function (file, status, xhr) {
+                var getItem = getListItem(file.d.ListItemAllFields.__deferred.uri);
+                getItem.done(function (listItem, status, xhr) {
+                    img.attr("src", listItem.d.ServerRelativeUrl);
+                    fileInput.val("");
+                });
+                getItem.fail(UploadError);
+            });
+            addFile.fail(UploadError);
+        });
+        getFile.fail(UploadError);
+
+        // Get the local file as an array buffer.
+        function getFileBuffer() {
+            var deferred = jQuery.Deferred();
+            var reader = new FileReader();
+            reader.onloadend = function (e) {
+                deferred.resolve(e.target.result);
+            }
+            reader.onerror = function (e) {
+                deferred.reject(e.target.error);
+            }
+            reader.readAsArrayBuffer(fileInput[0].files[0]);
+            return deferred.promise();
+        }
+
+        // Add the file to the file collection in the given folder.
+        function addFileToFolder(arrayBuffer) {
+
+            // Get the file name from the file input control on the page.
+            var parts = fileInput[0].value.split('\\');
+            var fileName = parts[parts.length - 1];
+
+            // Construct the endpoint.
+            var fileCollectionEndpoint = String.format(
+                "{0}/_api/web/getfolderbyserverrelativeurl('{1}')/files" +
+                "/add(overwrite=true, url='{2}')",
+                _spPageContextInfo.siteAbsoluteUrl, serverRelativeUrlToFolder, fileName);
+
+            // Send the request and return the response.
+            // This call returns the SharePoint file.
+            return jQuery.ajax({
+                url: fileCollectionEndpoint,
+                type: "POST",
+                data: arrayBuffer,
+                processData: false,
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val()
+                }
+            });
+        }
+
+        // Get the list item that corresponds to the file by calling the file's ListItemAllFields property.
+        function getListItem(fileListItemUri) {
+            // Send the request and return the response.
+            fileListItemUri = fileListItemUri.replace("/ListItemAllFields","");
+            return jQuery.ajax({
+                url: fileListItemUri,
+                type: "GET",
+                headers: { "accept": "application/json;odata=verbose" }
+            });
+        }
+    }
+
+    function UploadError(error) {
+        console.log(error.responseText);
+    }
+
+    function LoadImages(sourceUri, container, image) {
+        jQuery.ajax({
+            url: sourceUri,
+            type: "GET",
+            headers: { "accept": "application/json;odata=verbose" },
+            success: function(data) {
+                var html = "";
+                html += "<ul class='image-listing'>";
+                for (i = 0; i < data.d.results.length; i++) {
+                    html +=
+                        "<li class='image-tile'>" +
+                            "<img class='tile-picture " + image + "-picture' src='" + data.d.results[i].ServerRelativeUrl + "' onclick='pa_programPhotoUrl = jQuery(this).attr(\"src\"); jQuery(\"#" + image + "ImageUrl\").val(jQuery(this).attr(\"src\"))'>" +
+                            "<div class='tile-caption'>" + data.d.results[i].Name + "</div>" +
+                        "</li>";
+                }
+                html += "</ul>";
+                container.html(html);
+            },
+            error: function(error) {
+                console.log(JSON.stringify(error));
+            }
+        });
+    }
+
+    // Load the image picker dialogs with images availabe in assets folders
+    function LoadImagePicker() {
+        photoSource = "/SiteAssets/People_Photos";
+
+        var photoUri = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/getfolderbyserverrelativeurl('" + photoSource + "')/files";
+        LoadImages(photoUri, jQuery("#photoImageList"), "photo");
+    }
+
+    function InitializeForm() {
+        // Check if form has input weburl in querystring
+        if (ea_webUrl) {
+            // Set form mode to edit
+            ea_formMode = "EDIT";
+
+            LoadEventData();
+            LoadLinks();
+            PrintPeopleGrid();
+            LoadDocuments();
+        }
+    }
+
+    function LoadEventData() {
+        var eventUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(ea_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Events')/items?$top=1&$select=Title,StartDate,OData__EndDate,Location,RichDescription,PeopleHeader,DocumentsHeader";
+        jQuery.ajax({
+            url: eventUrl,
+            method: "GET",
+            headers: {
+                accept: "application/json;odata=verbose"
+            },
+            success: function(data) {
+                ea_event = data.d.results[0];
+                jQuery("#txtTitle").val(ea_event.Title);
+                jQuery("#txtLocation").val(ea_event.Location);
+                jQuery("#datepicker-start").val((new Date(ea_event.StartDate)).format("MM/dd/yyyy"));
+                jQuery("#datepicker-end").val((new Date(ea_event.OData__EndDate)).format("MM/dd/yyyy"));
+                jQuery("#rtbDescription").html(ea_event.RichDescription);
+                jQuery("#txtPeopleHeader").val(ea_event.PeopleHeader);
+                jQuery("#txtDocumentsHeader").val(ea_event.DocumentsHeader);
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function EventInputValid() {
+        var valid = true;
+        if (!jQuery("#txtTitle").val()) {
+            SetStatus("ERROR", "Event title is required.", "page");
+            valid = false;
+        }
+        if (!jQuery("#datepicker-start").val()) {
+            SetStatus("ERROR", "Event start date is required.", "page");
+            valid = false;
+        }
+        if (jQuery("#datepicker-end").val()) {
+            if ((new Date(jQuery("#datepicker-end"))) < (new Date(jQuery("#datepicker-start")))) {
+                SetStatus("ERROR", "Event end date cannot be before start date.", "page");
+                valid = false;
+            }
+        }
+        if (!jQuery("#txtPeopleHeader").val()) {
+            SetStatus("ERROR", "The people display header text is required.", "page");
+            valid = false;
+        }
+        if (!jQuery("#txtDocumentsHeader").val()) {
+            SetStatus("ERROR", "The documents listing header text is required.", "page");
+            valid = false;
+        }
+        return valid;
+    }
+
+    function UpdateEvent() {
+        ea_event.Title = jQuery("#txtTitle").val();
+        ea_event.Location = jQuery("#txtLocation").val();
+        ea_event.StartDate = (new Date(jQuery("#datepicker-start").val())).format("yyyy-MM-ddT06:00:00Z");
+        ea_event.OData__EndDate = (new Date(jQuery("#datepicker-end").val())).format("yyyy-MM-ddT06:00:00Z");
+        ea_event.RichDescription = jQuery("#rtbDescription").html();
+        ea_event.PeopleHeader = jQuery("#txtPeopleHeader").val();
+        ea_event.DocumentsHeader = jQuery("#txtDocumentsHeader").val();
+    }
+
+    function SaveEvent() {
+        if (EventInputValid()) {
+            UpdateEvent();
+            var eventUrl = ea_event.__metadata.uri;
+            jQuery.ajax({
+                url: eventUrl,
+                method: "POST",
+                data: JSON.stringify(ea_event),
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                    "content-type": "application/json;odata=verbose",
+                    "X-HTTP-Method": "MERGE",
+                    "If-Match": "*"
+                },
+                success: function(data) {
+                    SetStatus("SUCCESS", "The event has been saved.", "page");
+                    window.location.href = ea_webUrl;
+                },
+                error: function(err) {
+                    SetStatus("ERROR", "An error occurred while saving event. Please check inputs and try again.", "page")
+                    console.log(JSON.stringify(err));
+                }
+            });
+        }
+    }
+
+    function LoadLinks() {
+        linkUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(ea_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Links')/items?$select=Title,Link&$top=100&$orderby=Title asc";
+        var links = [];
+        jQuery.ajax({
+            url: linkUrl,
+            method: "GET",
+            headers: {
+                "accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                jQuery.each(data.d.results, function(i, link) {
+                    var linkData = [];
+                    linkData.push(
+                        link.Title,
+                        link.Link.Url,
+                        "<a href='javascript:{}'><i class='fa fa-trash del-link' value=\"" + link.__metadata.uri + "\"></i></a>",
+                        "<a href='javascript:{}'><i class='fa fa-edit edit-link' value=\"" + link.__metadata.uri + "\"></i></a>"
+                    );
+                    links.push(linkData);
+                });
+                ea_linksTable = jQuery("#linksTable").DataTable({
+                    data: links,
+                    columns: [
+                        { title: "Link Text" },
+                        { title: "URL" },
+                        { title: "Delete", orderable: false },
+                        { title: "Edit", orderable: false }
+                    ],
+                    paging: false,
+                    searching: false,
+                    info: false,
+                    ordering: true
+                });
+            }
+        });
+    }
+
+    function ValidateLinkInput() {
+        var valid = true;
+        if (!jQuery("#txtLinkText").val()) {
+            valid = false;
+            SetStatus("ERROR", "Link text is required", "link");
+        }
+        if (!jQuery("#txtLinkUrl").val()) {
+            valid = false;
+            SetStatus("ERROR", "Link URL is required.", "link");
+        }
+        return valid;
+    }
+
+    function SaveLink() {
+        if (ValidateLinkInput()) {
+            if (ea_linkFormMode == "NEW") {
+                AddLink();
+            }
+            if (ea_linkFormMode == "EDIT") {
+                UpdateLink();
+            }
+        }
+    }
+
+    function AddLink() {
+        linkUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(ea_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Links')/items";
+        var data = {
+                "__metadata": {
+                    "type": "SP.Data.LinksListItem"
+                },
+                "Title": jQuery("#txtLinkText").val(),
+                "Link": {
+                    "__metadata": {
+                        "type": "SP.FieldUrlValue"
+                    },
+                    "Description": jQuery("#txtLinkUrl").val(),
+                    "Url": jQuery("#txtLinkUrl").val()
+                }
+            }
+        jQuery.ajax({
+            url: linkUrl,
+            method: "POST",
+            data: JSON.stringify(data),
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                "content-type": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                ea_linksTable.row.add([
+                        jQuery("#txtLinkText").val(),
+                        jQuery("#txtLinkUrl").val(),
+                        "<a href='javascript:{}'><i class='fa fa-trash del-link' value=\"" + data.d.__metadata.uri + "\"></i></a>",
+                        "<a href='javascript:{}'><i class='fa fa-edit edit-link' value=\"" + data.d.__metadata.uri + "\"></i></a>"
+                    ]).draw();
+                
+                ClearLinkForm();
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function UpdateLink() {
+        var linkUrl = ea_link.__metadata.uri;
+        ea_link.Title = jQuery("#txtLinkText").val();
+        ea_link.Link.Description = jQuery("#txtLinkUrl").val();
+        ea_link.Link.Url = jQuery("#txtLinkUrl").val();
+        jQuery.ajax({
+            url: linkUrl,
+            method: "POST",
+            data: JSON.stringify(ea_link),
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                "content-type": "application/json;odata=verbose",
+                "X-HTTP-Method": "MERGE",
+                "If-Match": "*"
+            },
+            success: function(data) {
+                if (ea_linkRow) {
+                    ea_linksTable.row(ea_linkRow).data([
+                        jQuery("#txtLinkText").val(),
+                        jQuery("#txtLinkUrl").val(),
+                        "<a href='javascript:{}'><i class='fa fa-trash del-link' value=\"" + ea_link.__metadata.uri + "\"></i></a>",
+                        "<a href='javascript:{}'><i class='fa fa-edit edit-link' value=\"" + ea_link.__metadata.uri + "\"></i></a>"
+                    ]).draw();
+                }
+                ClearLinkForm();
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function ClearLinkForm() {
+        jQuery('.form-group-add-Link').hide();
+        jQuery("#txtLinkText").val("");
+        jQuery("#txtLinkUrl").val("");
+        ClearStatus("link");
+    }
+
+    function DeleteLink(elem) {
+        var element = jQuery(elem);
+        element.removeClass("fa-trash");
+        element.addClass("fa-spinner").addClass("fa-spin").addClass("fa-fw");
+        var parentRow = jQuery(elem).parents("tr");
+        var linkUrl = element.attr("value");
+        jQuery.ajax({
+            url: linkUrl,
+            method: "POST",
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery('#__REQUESTDIGEST').val(),
+                "content-type": "application/json;odata=verbose",
+                "X-HTTP-Method": "DELETE",
+                "If-Match": "*"
+            },
+            success: function(data) {
+                ea_linksTable.row(parentRow).remove().draw();
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function SetStatus(type, message, target) {
+        switch(type) {
+            case "SUCCESS":
+                if (jQuery("#" + target + "StatusIcon").hasClass("fa-remove")) {
+                    jQuery("#" + target + "StatusIcon").removeClass("fa-remove");
+                }
+                if (!jQuery("#" + target + "StatusIcon").hasClass("fa-check")) {
+                    jQuery("#" + target + "StatusIcon").addClass("fa-check");
+                }
+                jQuery("#" + target + "StatusIcon").show();
+                if (jQuery("." + target + "-status").hasClass("text-warning")) {
+                    jQuery("." + target + "-status").removeClass("text-warning");
+                }
+                if (!jQuery("." + target + "-status").hasClass("text-success")) {
+                    jQuery("." + target + "-status").addClass("text-success");
+                }
+                break;
+            case "ERROR":
+                if (jQuery("#" + target + "StatusIcon").hasClass("fa-check")) {
+                    jQuery("#" + target + "StatusIcon").removeClass("fa-check");
+                }
+                if (!jQuery("#" + target + "StatusIcon").hasClass("fa-remove")) {
+                    jQuery("#" + target + "StatusIcon").addClass("fa-remove");
+                }
+                jQuery("#" + target + "StatusIcon").show();
+                if (jQuery("." + target + "-status").hasClass("text-success")) {
+                    jQuery("." + target + "-status").removeClass("text-success");
+                }
+                if (!jQuery("." + target + "-status").hasClass("text-warning")) {
+                    jQuery("." + target + "-status").addClass("text-warning");
+                }
+                break;
+            default:
+                jQuery("#" + target + "StatusIcon").hide();
+        }
+
+        jQuery("#" + target + "StatusText").text(message);
+        jQuery("." + target + "-status").show();
+    }
+
+    function ClearStatus(target) {
+        jQuery("." + target + "-status").hide();
+    }
+
+    function InitiateDescriptionBox() {
+        jQuery("#rtbDescription").easyEditor({
+            buttons: ['bold', 'italic', 'link', 'h2', 'h3', 'h4', 'alignleft', 'aligncenter', 'alignright', 'quote', 'code', 'image', 'youtube', 'x'],
+            buttonsHtml: {
+                'bold': '<i class="fa fa-bold"></i>',
+                'italic': '<i class="fa fa-italic"></i>',
+                'link': '<i class="fa fa-link"></i>',
+                'header-2': '<i class="fa fa-header"></i>2',
+                'header-3': '<i class="fa fa-header"></i>3',
+                'header-4': '<i class="fa fa-header"></i>4',
+                'align-left': '<i class="fa fa-align-left"></i>',
+                'align-center': '<i class="fa fa-align-center"></i>',
+                'align-right': '<i class="fa fa-align-right"></i>',
+                'quote': '<i class="fa fa-quote-left"></i>',
+                'code': '<i class="fa fa-code"></i>',
+                'insert-image': '<i class="fa fa-picture-o"></i>',
+                'insert-youtube-video': '<i class="fa fa-youtube"></i>',
+                'remove-formatting': '<i class="fa fa-ban"></i>'
+            }
+        });
+    }
+
+    function InitiatePersonDescriptionBox() {
+        jQuery("#rtbPersonDescription").easyEditor({
+            buttons: ['bold', 'italic', 'link', 'h2', 'h3', 'h4', 'alignleft', 'aligncenter', 'alignright', 'quote', 'code', 'image', 'youtube', 'x'],
+            buttonsHtml: {
+                'bold': '<i class="fa fa-bold"></i>',
+                'italic': '<i class="fa fa-italic"></i>',
+                'link': '<i class="fa fa-link"></i>',
+                'header-2': '<i class="fa fa-header"></i>2',
+                'header-3': '<i class="fa fa-header"></i>3',
+                'header-4': '<i class="fa fa-header"></i>4',
+                'align-left': '<i class="fa fa-align-left"></i>',
+                'align-center': '<i class="fa fa-align-center"></i>',
+                'align-right': '<i class="fa fa-align-right"></i>',
+                'quote': '<i class="fa fa-quote-left"></i>',
+                'code': '<i class="fa fa-code"></i>',
+                'insert-image': '<i class="fa fa-picture-o"></i>',
+                'insert-youtube-video': '<i class="fa fa-youtube"></i>',
+                'remove-formatting': '<i class="fa fa-ban"></i>'
+            }
+        });
+    }
+
+    function PrintPeopleGrid() {
+        var url = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(ea_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('People')/items?$select=Title,PersonID,ArticleByLine,Role,RichDescription,PersonPhoto,TwitterHandle,FacebookLink,InstagramLink,LinkedInLink&$top=100&$orderby=Order1 asc";
+        jQuery.ajax({
+            url: url,
+            type:"GET",
+            headers: {
+                Accept: "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var personId = "";
+                var name = "";
+                var byline = "";
+                var role = "";
+                var description = "";
+                var photoUrl = "";
+                var twitterHandle = "";
+                var facebookLink = "";
+                var instagramLink = "";
+                var linkedInLink = "";
+                var roleArray = [];
+
+                var primaryHTML = "";
+                var modalHTML = "";
+
+                jQuery.each(data.d.results, function(i, n) {
+                    personId = n.PersonID;
+                    name = n.Title;
+                    byline = n.ArticleByLine;
+                    role = n.Role; 
+                    description = n.RichDescription; 
+                    photoUrl = n.PersonPhoto.Url;
+                    twitterHandle = n.TwitterHandle;
+                    facebookLink = n.FacebookLink;
+                    instagramLink = n.InstagramLink;
+                    linkedInLink = n.LinkedInLink;
+
+                    primaryHTML +=
+                    "<li class=\"people-grid-person ui-state-default\">" + 
+                        "<input type=\"hidden\" value=\"" + n.__metadata.uri + "\" />" + 
+                        "<a href=\"javascript:{}\" class=\"person-modal-launcher\" id=\"" + personId + "\" data-toggle=\"modal\" data-target=\"#personModal\">" +
+                            "<img src=\"" + photoUrl + "\" class=\"img-responsive\"/>" +
+                            "<div class=\"people-grid-overlay\">" + 
+                                "<h2 class=\"people-name\">" + name + "</h2>" + 
+                                "<a href=\"javascript:{}\" class=\"del-person\" value=\"" + n.__metadata.uri + "\" onclick=\"DeletePerson(this);\">Delete</a>";
+                    if (byline) {
+                        primaryHTML += 
+                                "<span class=\"people-byline\">" + byline + "</span>";
+                    }
+                    if (role) {
+                        primaryHTML += 
+                                "<span class=\"people-description\">" + role + "</span>";
+                    }
+                    primaryHTML += 
+                            "</div>" + 
+                            "<div class=\"person-move\"><i class=\"icon-move\"></i></div>" + 
+                        "</a>" + 
+                    "</li>";
+                });
+                jQuery("#peopleGridList").html(primaryHTML);
+
+                // Add handler to show the person form loaded when a person is selected
+                jQuery(".people-grid-person").on("click", function() {
+                    ea_editedPersonElement = this;
+                    jQuery(".people-grid-person").removeClass("person-selected");
+                    jQuery(this).addClass("person-selected");
+                    var personUrl = jQuery(this).find("input[type=hidden]").val() + "?$select=Title,PersonID,Role,ArticleByLine,RichDescription,PersonPhoto,TwitterHandle,FacebookLink,InstagramLink,LinkedInLink";
+                    jQuery.ajax({
+                        url: personUrl,
+                        method: "GET",
+                        headers: {
+                            "accept": "application/json;odata=verbose"
+                        },
+                        success: function(data) {
+                            ea_personFormMode = "EDIT";
+                            ea_person = data.d;
+                            jQuery("#person-name").val(data.d.Title);
+                            jQuery("#person-role").val(data.d.Role);
+                            jQuery("#person-byline").val(data.d.ArticleByLine);
+                            jQuery("#rtbPersonDescription").html(data.d.RichDescription);
+                            jQuery("#twitterHandle").val(data.d.TwitterHandle);
+                            jQuery("#facebookLink").val(data.d.FacebookLink);
+                            jQuery("#instagramLink").val(data.d.InstagramLink);
+                            jQuery("#linkedInLink").val(data.d.LinkedInLink);
+                            jQuery("#personPhotoImage").attr("src", data.d.PersonPhoto.Url);
+                            jQuery('.person-zone').show();
+                        },
+                        error: function(err) {
+                            console.log(JSON.stringify(err));
+                        }
+                    });
+                });
+            },
+            error:function(d) {
+                console.log(JSON.stringify(d));
+            }
+        });
+    }
+
+    function ValidatePersonInput() {
+        var valid = true;
+        if (!jQuery("#person-name").val()) {
+            SetStatus("ERROR", "Name is required", "person");
+            valid = false;
+        }
+        if (!jQuery("#personPhotoImage").attr("src") == "/_catalogs/masterpage/Resources/person-icon.png") {
+            SetStatus("ERROR", "A user photo needs to be picked", "person");
+            valid = false;
+        }
+        return valid;
+    }
+
+    function SavePerson() {
+        if (ValidatePersonInput()) {
+            if (ea_personFormMode == "NEW") {
+                AddPerson();
+            }
+            if (ea_personFormMode == "EDIT") {
+                EditPerson();
+            }
+        }
+    }
+
+    function GetFormData() {
+        var data = {
+            "__metadata": {
+                "type": "SP.Data.PeopleListItem"
+            },
+            "Title": jQuery("#person-name").val(),
+            "PersonID": ea_personId,
+            "Role": jQuery("#person-role").val(),
+            "ArticleByLine": jQuery("#person-byline").val(),
+            "RichDescription": jQuery("#rtbPersonDescription").html(),
+            "PersonPhoto": {
+                "__metadata": {
+                    "type": "SP.FieldUrlValue"
+                },
+                "Description": jQuery("#personPhotoImage").attr("src").replace(_spPageContextInfo.siteAbsoluteUrl, ""),
+                "Url": jQuery("#personPhotoImage").attr("src").replace(_spPageContextInfo.siteAbsoluteUrl, "")
+            },
+            "TwitterHandle": jQuery("#twitterHandle").val(),
+            "FacebookLink": jQuery("#facebookLink").val(),
+            "InstagramLink": jQuery("#instagramLink").val(),
+            "LinkedInLink": jQuery("#linkedInLink").val()
+        }
+        return data;
+    }
+
+    //Save Function for New Person
+    function AddPerson() {
+        var requestUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(ea_webUrl, "/CONNECT") + "/_api/web/lists/GetByTitle('People')/items";
+        jQuery.ajax({
+            url: requestUrl,
+            method: "POST",
+            data: JSON.stringify(GetFormData()),
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                "content-type": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                SetStatus("SUCCESS", "The person has been added.", "person");
+                ClearPersonForm();
+
+                // Add a new tile for the user
+                var personHtml =
+                "<li class=\"people-grid-person ui-state-default\">" + 
+                    "<input type=\"hidden\" value=\"" + data.d.__metadata.uri + "\" />" + 
+                    "<a href=\"javascript:{}\" class=\"person-modal-launcher\" id=\"" + data.d.PersonID + "\" data-toggle=\"modal\" data-target=\"#personModal\">" +
+                        "<img src=\"" + data.d.PersonPhoto.Url + "\" class=\"img-responsive\"/>" +
+                        "<div class=\"people-grid-overlay\">" + 
+                            "<h2 class=\"people-name\">" + data.d.Title + "</h2>" + 
+                            "<a href=\"javascript:{}\" class=\"del-person\" value=\"" + data.d.__metadata.uri + "\" onclick=\"DeletePerson(this);\">Delete</a>";
+                if (data.d.ArticleByLine) {
+                    personHtml += 
+                            "<span class=\"people-byline\">" + data.d.ArticleByLine + "</span>";
+                }
+                if (data.d.Role) {
+                    personHtml += 
+                            "<span class=\"people-description\">" + data.d.Role + "</span>";
+                }
+                personHtml += 
+                        "</div>" + 
+                        "<div class=\"person-move\"><i class=\"icon-move\"></i></div>" + 
+                    "</a>" + 
+                "</li>";
+
+                jQuery("#peopleGridList").append(personHtml);
+
+                // Add the person to the local people lookup
+                ea_peopleLookup[data.d.PersonID] = data.d.Title;
+
+                // Add the person to the people choices in document form
+                jQuery("#selPersonChoices").append(
+                    "<option class=\"person-choice\" value=\"" + data.d.PersonID + "\">" + data.d.Title + "</option>"
+                );
+                jQuery("#selPersonChoices").multiselect("rebuild");
+            },
+            error: function(err) {
+                SetStatus("ERROR", "An error occurred while adding the person. Please check the inputs and retry.", "person");
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    // Update the person object with values from the form
+    function UpdatePerson() {
+        ea_person.Title = jQuery("#person-name").val();
+        ea_person.Role = jQuery("#person-role").val();
+        ea_person.ArticleByLine = jQuery("#person-byline").val();
+        ea_person.RichDescription = jQuery("#rtbPersonDescription").html();
+        ea_person.PersonPhoto.Description = jQuery("#personPhotoImage").attr("src").replace(_spPageContextInfo.siteAbsoluteUrl, "");
+        ea_person.PersonPhoto.Url = jQuery("#personPhotoImage").attr("src").replace(_spPageContextInfo.siteAbsoluteUrl, "");
+        ea_person.TwitterHandle = jQuery("#twitterHandle").val();
+        ea_person.FacebookLink = jQuery("#facebookLink").val();
+        ea_person.InstagramLink = jQuery("#instagramLink").val();
+        ea_person.LinkedInLink = jQuery("#linkedInLink").val();
+    }
+
+    //Edit function for an exisitng Person
+    function EditPerson() {
+        UpdatePerson();
+        jQuery.ajax({
+            url: ea_person.__metadata.uri,
+            method: "POST",
+            data: JSON.stringify(ea_person),
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                "content-type": "application/json;odata=verbose",
+                "X-HTTP-Method": "MERGE",
+                "If-Match": "*"
+            },
+            success: function(data) {
+                SetStatus("SUCCESS", "Changes to the person have been saved.", "person");
+                
+                var element = ea_editedPersonElement;
+
+                // Change the tile to reflect changes to primary properties
+                jQuery(element).find(".people-name").text(jQuery("#person-name").val());
+                jQuery(element).find(".people-description").text(jQuery("#person-role").val());
+                if (jQuery("#person-byline").val()) {
+                    jQuery(element).find(".people-byline").text(jQuery("#person-byline").val());
+                }
+                jQuery(element).find("img").attr("src", jQuery("#personPhotoImage").attr("src").replace(_spPageContextInfo.siteAbsoluteUrl, ""));
+
+                // Update person's name in local lookup
+                ea_peopleLookup[ea_person.PersonID] = jQuery("#person-name").val();
+
+                // Update person's name in the person choice field in document form
+                jQuery("option[value=\"" + ea_person.PersonID + "\"]", jQuery("#selPersonChoices")).text(jQuery("#person-name").val());
+                jQuery("#selPersonChoices").multiselect("rebuild");
+
+                ClearPersonForm();
+            },
+            error: function(err) {
+                SetStatus("ERROR", "An error occurred while saving the person. Please check the inputs and retry.", "person");
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function DeletePerson(elem) {
+        var element = jQuery(elem);
+        var personName = element.prev().find("h2").text();
+        var personId = element.prev().attr("id");
+        if (confirm("Are you sure you want to delete " + personName + "?")) {
+            var personUrl = element.attr("value");
+            var parentItem = element.parents("li");
+            jQuery.ajax({
+                url: personUrl,
+                method: "POST",
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery('#__REQUESTDIGEST').val(),
+                    "content-type": "application/json;odata=verbose",
+                    "X-HTTP-Method": "DELETE",
+                    "If-Match": "*"
+                },
+                success: function(data) {
+                    parentItem.remove();
+                    
+                    // Remove person from local lookup
+                    delete ea_peopleLookup[personId];
+
+                    // Remove person from people choices in document form
+                    jQuery("option[value=\"" + personId + "\"]", jQuery("#selPersonChoices")).remove();
+                    jQuery("#selPersonChoices").multiselect("rebuild");
+                },
+                error: function(err) {
+                    console.log(JSON.stringify(err));
+                }
+            });
+        }
+    }
+
+    function ClearPersonForm() {
+        jQuery('.person-zone').hide();
+        jQuery(".people-grid-person").removeClass("person-selected");
+        jQuery("#person-name").val("");
+        jQuery("#person-role").val("");
+        jQuery("#person-byline").val("");
+        jQuery("#rtbPersonDescription").html("");
+        jQuery("#twitterHandle").val("");
+        jQuery("#facebookLink").val("");
+        jQuery("#instagramLink").val("");
+        jQuery("#linkedInLink").val("");
+        jQuery("#personPhotoImage").attr("src", "/_catalogs/masterpage/Resources/person-icon.png");
+        ClearStatus("person");
+    }
+
+    function LoadDocuments() {
+        var peopleUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(ea_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('People')/items?$select=Title,PersonID&$top=100";
+        jQuery.ajax({
+            url: peopleUrl,
+            method: "GET",
+            headers: {
+                "accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                // Create lookup hash table with person ID as key and name as value
+                jQuery.each(data.d.results, function(i, person) {
+                    ea_peopleLookup[person.PersonID] = person.Title;
+                });
+
+                // Now get the list of documents and add to table
+                var docsUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(ea_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Rackhouse Documents')/items?$select=File,Brand,Subject,People&$expand=File&$top=500";
+                jQuery.ajax({
+                    url: docsUrl,
+                    method: "GET",
+                    headers: { 
+                        "Accept": "application/json; odata=verbose",
+                    },
+                    success: function (data) {
+                        var docName = "";
+                        var extension = "";
+                        var docUrl = "";
+                        var personName = "";
+                        var itemUri = "";
+                        var docs = [];
+
+                        // Initialize the document table
+                        ea_docsTable = jQuery("#eventDocsTable").DataTable({
+                            data: docs,
+                            columns: [
+                                { title: "", orderable: false },
+                                { title: "Name" },
+                                { title: "Subject" },
+                                { title: "People" },
+                                { title: "Delete", orderable: false },
+                                { title: "Edit", orderable: false }
+                            ],
+                            paging: true,
+                            searching: true,
+                            info: true,
+                            ordering: true,
+                            order: [[1, "asc"]]
+                        });  
+
+                        jQuery.each(data.d.results, function(i, doc) {
+                            docName = doc.File.Name;
+                            extension = docName.substr(docName.lastIndexOf('.') + 1);
+                            personName = "";
+                            itemUri = doc.__metadata.uri;
+
+                            if (IsOfficeDocument(extension)) {
+                                docUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(ea_webUrl, "/CONNECT/") + "/_layouts/15/WopiFrame.aspx?sourcedoc=" + doc.File.ServerRelativeUrl;
+                            }
+                            else if (IsVideoFile(extension)) {
+                                docUrl = _spPageContextInfo.siteAbsoluteUrl + "/Pages/VideoPlayer.aspx?videopath=" + doc.File.ServerRelativeUrl;
+                            }
+                            else {
+                                docUrl = doc.File.ServerRelativeUrl;
+                            }
+
+                            if (doc.People) {
+                                var persons = doc.People.split(",");
+                                personName = GetPeopleString(persons);
+                            }
+
+                            ea_docsTable.row.add([
+                                "<img src=\"" + GetDocIcon(extension) + "\">",
+                                "<a href=\"" + docUrl + "\">" + docName + "</a>",
+                                doc.Subject,
+                                personName,
+                                "<a href='javascript:{}'><i class='fa fa-trash del-doc' value=\"" + doc.__metadata.uri + "\"></i></a>",
+                                "<a href='javascript:{}'><i class='fa fa-edit edit-doc' value=\"" + doc.__metadata.uri + "\"></i></a>"
+                            ]).draw();
+                        });              
+                    },
+                    error: function(err) {
+                        console.log(JSON.stringify(err));
+                    }
+                });
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+        
+    }
+
+    function GetPeopleString(persons) {
+        var people = "";
+        jQuery.each(persons, function(i, p) {
+            if (ea_peopleLookup[p]) {
+                if (people) {
+                    people += ", " + ea_peopleLookup[p];
+                }
+                else {
+                    people = ea_peopleLookup[p];
+                }
+            }
+        });
+        return people;
+    }
+
+    function ClearDocForm() {
+        jQuery(".doc-zone").hide();
+        jQuery("#filEventDocument").val("");
+        jQuery("#imgEventDocument").attr("src", "/_catalogs/masterpage/resources/person-icon.png");
+        jQuery("#selPersonChoices").multiselect("deselectAll", false);
+        jQuery("#selPersonChoices").multiselect("updateButtonText");
+        ClearStatus("doc");
+        ea_docFormMode = "NEW";
+        jQuery("#docFileControls").show();
+        jQuery("#btnDocSave").show();
+        jQuery("#docSaveSpinner").addClass("hidden");
+    }
+
+    function LoadPersonChoices() {
+        var peopleUrl = _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(ea_webUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('People')/items?$select=Title,PersonID&$top=500";
+        jQuery.ajax({
+            url: peopleUrl,
+            method: "GET",
+            headers: {
+                "accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var choicesHtml = "";
+                jQuery.each(data.d.results, function(i, person) {
+                    choicesHtml += 
+                        "<option class=\"person-choice\" value=\"" + person.PersonID + "\">" + person.Title + "</option>";
+                });
+                jQuery("#selPersonChoices").html(choicesHtml);
+
+                jQuery("#selPersonChoices").multiselect();
+
+                /*jQuery(".person-choice").on("click", function(e) {
+                    jQuery("#chosenPerson").text(jQuery(this).text());
+                    jQuery("#chosenPerson").attr("value", jQuery(this).attr("value"));
+                    jQuery(".person-choice").removeClass("active-filter");
+                    jQuery(this).addClass("active-filter");
+                });*/
+            }
+        });
+    }
+
+    function ValidateDocInput() {
+        var valid = true;
+        if (!jQuery("#filEventDocument").val()) {
+            SetStatus("ERROR", "A file needs to be selected", "doc");
+            valid = false;
+        }
+        return valid;
+    }
+
+    function SaveDocument() {
+        if (ea_docFormMode == "NEW") {
+            if (ValidateDocInput()) {
+                jQuery("#btnDocSave").hide();
+                jQuery("#docSaveSpinner").removeClass("hidden");
+                AddDocument();
+            }
+        }
+        if (ea_docFormMode == "EDIT") {
+            jQuery("#btnDocSave").hide();
+            jQuery("#docSaveSpinner").removeClass("hidden");
+            UpdateDocument();
+        }
+    }
+
+    function AddDocument() {
+        UploadFile(jQuery("#filEventDocument"), _spPageContextInfo.siteAbsoluteUrl + ReplaceLanguageInUrl(ea_webUrl, "/CONNECT/"), "Rackhouse Documents");
+    }
+
+    function UpdateDocument() {
+        var docUrl = ea_doc.__metadata.uri;
+        var people;
+        if (jQuery("#selPersonChoices").val()) {
+            people = jQuery("#selPersonChoices").val().toString();
+        }
+        var body = {
+            "__metadata": {
+                "type": "SP.Data.Rackhouse_x0020_DocumentsItem"
+            },
+            "Subject": jQuery("#txtDocSubject").val(),
+            "People": people
+        };
+        jQuery.ajax({
+            url: docUrl,
+            method: "POST",
+            data: JSON.stringify(body),
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                "content-type": "application/json;odata=verbose",
+                "X-HTTP-Method": "MERGE",
+                "If-Match": "*"
+            },
+            success: function(data) {
+                if (ea_docRow) {
+                    var index = ea_docsTable.row(ea_docRow).index();
+                    ea_docsTable.cell(index, 2).data(jQuery("#txtDocSubject").val()).draw();
+                    ea_docsTable.cell(index, 3).data(GetPeopleString(jQuery("#selPersonChoices").val())).draw();
+                }
+                ClearDocForm();
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function DeleteDocument(elem) {
+        var element = jQuery(elem);
+        element.removeClass("fa-trash");
+        element.addClass("fa-spinner").addClass("fa-spin").addClass("fa-fw");
+        var parentRow = jQuery(elem).parents("tr");
+        var docUrl = element.attr("value");
+        jQuery.ajax({
+            url: docUrl,
+            method: "POST",
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery('#__REQUESTDIGEST').val(),
+                "content-type": "application/json;odata=verbose",
+                "X-HTTP-Method": "DELETE",
+                "If-Match": "*"
+            },
+            success: function(data) {
+                ea_docsTable.row(parentRow).remove().draw();
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function AddHandlers() {
+
+        // Set date pickers
+        jQuery("#datepicker-start").datepicker();
+        jQuery("#datepicker-end").datepicker();
+        jQuery("#anim").on("change", function() {
+            jQuery("#datepicker-end").datepicker("option", "showAnim", jQuery(this).val());
+            jQuery("#datepicker-start").datepicker("option", "showAnim", jQuery(this).val());
+        });
+
+        // Handler to upload program photo
+        jQuery("#uploadPersonPhoto").on("click", function() {
+            if (jQuery("#personPhotoFile").val() != "") {
+                UploadImage(jQuery("#personPhotoFile"), jQuery("#personPhotoImage"), "/SiteAssets/People_Photos");
+            }
+        });
+
+        // Handler for program photo file input
+        jQuery("#personPhotoFile").change(function() {
+            var text = jQuery("#personPhotoFile").val();
+            if (text == "") {
+                jQuery("#uploadPersonPhoto").hide();
+            }
+            else {
+                jQuery("#uploadPersonPhoto").show();
+            }
+            var filename = text.substr(text.lastIndexOf("\\") + 1);
+            jQuery("#lblPersonPhoto").text(filename);
+        });
+
+        // Handler to apply existing photo
+        jQuery("#btnApplyPhoto").on("click", function() {
+            jQuery("#personPhotoImage").attr("src", jQuery("#photoImageUrl").val());
+        });
+
+        // Add event cancel button action
+        jQuery("#btnCancel").on("click", function() {
+            window.location.href = ea_webUrl;
+        });
+
+        // Add event handler for the event save button
+        jQuery("#btnSave").on("click", function() {
+            SaveEvent();
+        });
+
+        // Add handler to show link form when Add New link is clicked
+        jQuery(document).on("click", ".add-link-link", function() {
+            jQuery("#txtLinkText").val("");
+            jQuery("#txtLinkUrl").val("");
+            jQuery(".form-group-add-Link").show();
+        });
+
+        // Add handler to close link form when close button is clicked
+        jQuery("#btnCloseLinkForm").on("click", function(){
+            ClearLinkForm();
+        });
+
+        // Add handler to save link
+        jQuery("#btnLinkSave").on("click", function() {
+            SaveLink();
+        });
+
+        // Add handler to delete link
+        jQuery(document).on("click", ".del-link", function() {
+            DeleteLink(this);
+        });
+
+        // Add handler to edit link
+        jQuery(document).on("click", ".edit-link", function(e) {
+            ea_linkFormMode = "EDIT";
+            ea_linkRow = jQuery(e.target).parents("tr");
+            var linkUrl = jQuery(e.target).attr("value") + "?$select=Title,Link";
+            jQuery.ajax({
+                url: linkUrl,
+                method: "GET",
+                headers: {
+                    "accept": "application/json;odata=verbose"
+                },
+                success: function(data) {
+                    ea_link = data.d;
+                    jQuery("#txtLinkText").val(ea_link.Title);
+                    jQuery("#txtLinkUrl").val(ea_link.Link.Url);
+                    jQuery(".form-group-add-Link").show();
+                },
+                error: function(err) {
+                    console.log(JSON.stringify(err));
+                }
+            });
+        });
+
+        // Set the people grid to be sortable
+        jQuery("#peopleGridList").sortable({
+            update: function(event, ui) {
+                var items = jQuery(this).children("li");
+                items.each(function(index, element) {
+                    var item = jQuery(this);
+                    var newOrder = item.index() + 1;
+                    var reqUrl = item.find("input[type=hidden]").val();
+                    jQuery.ajax({
+                        url: reqUrl,
+                        method: "POST",
+                        data: JSON.stringify({
+                            "__metadata": {
+                                "type": "SP.Data.PeopleListItem"
+                            },
+                            "Order1": newOrder.toString()
+                        }),
+                        headers: {
+                            "accept": "application/json;odata=verbose",
+                            "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                            "content-type": "application/json;odata=verbose",
+                            "X-HTTP-Method": "MERGE",
+                            "If-Match": "*"
+                        },
+                        error: function(err) {
+                            console.log(JSON.stringify(err));
+                        }
+                    });
+                });
+            }
+        });
+        jQuery("#peopleGridList").disableSelection();
+
+        // Add handler to the add link for a new person
+        jQuery(".add-link-person").on("click", function() {
+            ea_personFormMode = "NEW";
+            ea_personId = GeneratePersonId();
+            jQuery('.person-zone').show();
+        });
+
+        // Add handler to person form cancel button
+        jQuery("#btnPersonCancel").on("click", function() {
+            ClearPersonForm();
+        });
+
+        // Add handler to save button on person form
+        jQuery("#btnPersonSave").on("click", function() {
+            SavePerson();
+        });
+
+        // Add handler to show document form when Add new link is clicked
+        jQuery(".add-link-doc").on("click", function(){
+            jQuery("#filEventDocument").val("");
+            jQuery("#lblEventDocument").html("<i class=\"fa fa-upload\"></i> Choose a file");
+            jQuery("#txtDocSubject").val("");
+            jQuery("#selPersonChoices").multiselect("deselectAll", false);
+            jQuery("#selPersonChoices").multiselect("updateButtonText");
+            jQuery(".doc-zone").show();
+            ea_docFormMode = "NEW";
+        });
+
+        // Add handler to close doc form and clear inputs
+        jQuery("#btnDocCancel").on("click", function() {
+            ClearDocForm();
+        });
+
+        // Handler for document file input change
+        jQuery("#filEventDocument").change(function() {
+            var text = jQuery("#filEventDocument").val();
+            var filename = text.substr(text.lastIndexOf("\\") + 1);
+            jQuery("#lblEventDocument").text(filename);
+        });
+
+        // Handler to upload document and metadata
+        jQuery("#btnDocSave").on("click", function() {
+            SaveDocument();
+        });
+
+        // Handler to delete document
+        jQuery(document).on("click", ".del-doc", function() {
+            DeleteDocument(this);
+        });
+
+        // Handler to edit document
+        jQuery(document).on("click", ".edit-doc", function() {
+            ea_docFormMode = "EDIT";
+            ea_docRow = jQuery(this).parents("tr");
+            var docUrl = jQuery(this).attr("value") + "?$select=Subject,People,File&$expand=File";
+            jQuery.ajax({
+                url: docUrl,
+                method: "GET",
+                headers: {
+                    "accept": "application/json;odata=verbose"
+                },
+                success: function(data) {
+                    ea_doc = data.d;
+                    jQuery("#txtDocSubject").val(ea_doc.Subject);
+                    jQuery("#selPersonChoices").multiselect("deselectAll", false);
+                    jQuery("#selPersonChoices").multiselect("updateButtonText");
+                    if (ea_doc.People) {
+                        jQuery("#selPersonChoices").multiselect("select", ea_doc.People.split(","));
+                        jQuery("#selPersonChoices").multiselect("updateButtonText");
+                    }
+                    jQuery("#docFileControls").hide();
+                    jQuery(".doc-zone").show();
+                },
+                error: function(err) {
+                    console.log(JSON.stringify(err));
+                }
+            });
+        });
+    }
+
+    jQuery(document).ready(function() {
+        SetWebUrl();
+        InitiateDescriptionBox();
+        InitiatePersonDescriptionBox();
+        InitializeForm();
+        LoadImagePicker();
+        LoadPersonChoices();
+        AddHandlers();
+    });
+</script><head><title></title></head>

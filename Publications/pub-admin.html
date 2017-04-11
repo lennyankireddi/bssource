@@ -1,0 +1,114 @@
+	<div class="form-horizontal">
+		<div>
+			<fieldset>
+				<!-- Pub ID -->
+				<input id="publicationIdField" type="hidden"> <!-- Pub Title -->
+				<!-- Publication drop down -->
+				<div class="form-group">
+					<div class="col-md-2">
+						<h3><label class="control-label" for="program-name">* Publication</label></h3>
+					</div>
+					<div class="col-md-4">
+						<div class="program-filter language-filter" id="programFilter">
+							<div class="dropdown-program">
+								<a class="dropdown-button" href="javascript:{}" id="ddbtnLanguage"><span>Digestif</span><i class="icon-caret-down"></i></a>
+								<div class="dropdown-program-content" id="ddLanguage">
+									<a class="dropdown-program-link" href="javascript:{}">Digestif</a>
+                                    <a class="dropdown-program-link" href="javascript:{}">International Life</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+                <div class="form-group">
+					<div class="col-md-2">
+						<h3><label class="control-label" for="program-name">* Volume</label></h3>
+					</div>
+					<div class="col-md-8">
+						<input class="form-control input-md" id="program-name" name="textinput" placeholder="Volume Name" type="text">
+					</div>
+				</div>
+                
+                <div class="form-group">
+					<div class="col-md-2">
+						<label class="control-label" for="textarea"></label>
+						<h3><label class="control-label" for="textarea">Article Title</label></h3>
+						<div id="textarea_feedback">
+							0 /150
+						</div>
+					</div>
+					<div class="col-md-8">
+						<textarea class="form-control textarea-teaser-box" id="textarea" maxlength="150" name="textarea" placeholder="Article Title" rows="3"></textarea>
+					</div>
+				</div>
+                
+                
+                <!-- Multiple Radios (inline) -->
+				<div class="form-group">
+					<div class="col-md-2">
+						<h3><label class="control-label" for="run-time">* Featured</label></h3>
+					</div>
+					<div class="col-md-8">
+						<label class="radio-inline" for="radio-fixed"><input checked="checked" id="radio-fixed" name="featured" type="radio" value="Featured"> Make Featured</label> 
+                        <label class="radio-inline" for="radio-open"><input id="radio-open" name="not-featured" type="radio" value="Not Featured"> Do Not Feature</label>
+					</div>
+				</div>
+				<!-- File Button -->
+				<div class="form-group">
+					<div class="col-md-2">
+						<h3><label class="control-label" for="filebutton">* Article Photo</label></h3>
+					</div>
+					<div class="col-md-3"><img class="img-responsive" id="programPhotoImage" src="/_catalogs/masterpage/resources/img-upload.png"></div>
+					<div class="col-md-4">
+						<p><input class="program-photo" id="programPhotoFile" type="file"> <label class="program-logo-label" for="programPhotoFile" id="lblProgramPhoto"><i class="fa fa-upload"></i> Choose a file</label> <a class="upload-button btn btn-primary" href="javascript:{}" id="uploadProgramPhoto" style="display: none;">Upload</a></p><a data-target="#photo-modal" data-toggle="modal" href="#" type="button">Use Existing Photo</a>
+					</div>
+				</div><!-- File Button -->
+
+
+
+				<div class="form-group">
+					<div class="col-md-2">
+						<h3><label class="control-label" for="textarea">Teaser</label></h3>
+					</div>
+					<div class="col-md-8">
+						<textarea class="form-control textarea-teaser-box" id="textarea" maxlength="150" name="textarea" placeholder="Article Teaser" rows="3"></textarea>
+					</div>
+				</div>
+
+                <div class="form-group">
+					<div class="col-md-2">
+						<h3><label class="control-label" for="textarea">Additional Content</label></h3>
+					</div>
+					<div class="col-md-8">
+						<textarea class="form-control textarea-teaser-box" id="textarea" maxlength="150" name="textarea" placeholder="Add Additional Content " rows="3"></textarea>
+					</div>
+				</div>
+
+                <div class="form-group">
+                    <div class="col-md-push-2 col-md-8">
+                        <button id="btnCancel" class="btn btn-default" type="button">Preview</button> 
+                    </div>
+                </div>
+
+                <div class="form-group">
+					<div class="col-md-2">
+						<h3><label class="control-label" for="textarea">Article Contents</label></h3>
+					</div>
+					<div class="col-md-8">
+						<textarea class="form-control textarea-teaser-box" id="textarea" maxlength="150" name="textarea" placeholder="Full Article Content " rows="5"></textarea>
+					</div>
+				</div>
+
+                <div class="btn-container pull-right">
+                    <button id="btnCancel" class="btn btn-default" type="button">Cancel</button> 
+                    <button id="btnSave" class="btn btn-primary btn-save" type="button">Save</button> 
+                    <div class="page-status"><h3><i id="pageStatusIcon" class="fa fa-check" aria-hidden="true"></i>&nbsp;<span id="pageStatusText"></span></h3></div>
+                </div>
+
+
+			</fieldset>
+		</div>
+        
+	</div>
+
+    

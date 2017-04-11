@@ -86,7 +86,8 @@
                 <div class="col-md-4">
                     <p>
                         <input type="file" id="programPhotoFile" class="program-photo" />
-                        <a href="javascript:{}" class="upload-button" id="uploadProgramPhoto">Upload</a>
+                        <label class="program-logo-label" id="lblProgramPhoto" for="programPhotoFile"><i class="fa fa-upload"></i> Choose a file</label>
+                        <a href="javascript:{}" class="upload-button btn btn-primary" id="uploadProgramPhoto" style="display: none;">Upload</a>
                     </p>
                     <a href="#" type="button" data-toggle="modal" data-target="#photo-modal">Use Existing Photo</a>
                 </div>
@@ -101,7 +102,8 @@
                 <div class="col-md-4">
                     <p>
                         <input type="file" id="programLogoFile" class="program-logo" />
-                        <a href="javascript:{}" class="upload-button" id="uploadProgramLogo">Upload</a>
+                        <label class="program-logo-label" id="lblProgramLogo" for="programLogoFile"><i class="fa fa-upload"></i> Choose a file</label>
+                        <a href="javascript:{}" class="upload-button btn btn-primary" id="uploadProgramLogo" style="display: none;">Upload</a>
                     </p>
                     <a href="#" type="button" data-toggle="modal" data-target="#logo-modal">Use Existing Logo</a>
                 </div>
@@ -117,8 +119,10 @@
     <button id="btnCancel" class="btn btn-default" type="button">Cancel</button> 
     <button id="btnSave" class="btn btn-default btn-save" type="button">Save</button> 
     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#publish-modal">Publish</button>
-
-    <div class="page-status"><h3><i id="pageStatusIcon" class="fa fa-check" aria-hidden="true"></i><span id="pageStatusText"></span></h3></div>
+</div>
+<div style="clear:both"></div>
+<div class="page-status pull-right">
+    <h3><i id="pageStatusIcon" class="fa fa-check" aria-hidden="true"></i>&nbsp;<span id="pageStatusText"></span></h3>
 </div>
 
 <div style="clear:both"></div>

@@ -1,0 +1,113 @@
+
+<div id="eventNav" class="event-nav">
+    <ul class="nav" id="linksList"> 
+    </ul>
+</div>
+<div class="event-info-container" id="eventInfoContainer">
+</div>
+
+<script>
+    var userIsAdmin = false;
+
+    function CheckUserPermissions() {
+        SP.SOD.executeFunc('SP.Runtime.js', 'SP.ClientContext',
+            function() {
+            SP.SOD.executeFunc('SP.js', 'SP.ClientContext',
+                function() {
+                    var siteUrl = _spPageContextInfo.webAbsoluteUrl;
+                    var clientContext = new SP.ClientContext(siteUrl);
+                    web = clientContext.get_web();
+                    clientContext.load(web, 'Title', 'EffectiveBasePermissions');
+                    clientContext.executeQueryAsync(onSuccess, onError);
+                });
+            });
+    }
+
+    function onSuccess(){
+        var permissions = SP.PermissionKind.manageWeb;
+        if(web.get_effectiveBasePermissions().has(permissions)){
+            userIsAdmin = true;
+        }
+        RenderNavLinks();
+        RenderEventInfo();
+    }
+
+    function onError(sender, args) {
+        console.log(args.get_message() + '\n' + args.get_stackTrace());
+        RenderNavLinks();
+        RenderEventInfo();
+    }
+
+    function ReplaceLanguageInUrl(url, lang) {
+        var newUrl =  url.replace("/zhcn/", lang).replace("/zhhk/", lang).replace("/de/", lang).replace("/es/", lang).replace("/fr/", lang).replace("/ja/", lang).replace("/pl/", lang).replace("/pt/", lang).replace("/ru/", lang);
+        return newUrl;
+    }
+
+    function RenderNavLinks() {
+        var linkUrl = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Links')/items?$select=Title,Link&$top=10";
+        var linkHtml = "";
+        jQuery.ajax({
+            url: linkUrl,
+            method: "GET",
+            headers: {
+                accept: "application/json;odata=verbose"
+            },
+            success: function(data) {
+                jQuery.each(data.d.results, function(i, link) {
+                    linkHtml += 
+                        "<li><a href='" + link.Link.Url + "'><h1>" + link.Title + "</h1></a></li>";
+                });
+                jQuery("#linksList").html(linkHtml);
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function RenderEventInfo() {
+        var eventUrl = ReplaceLanguageInUrl(_spPageContextInfo.webAbsoluteUrl, "/CONNECT/") + "/_api/web/lists/getbytitle('Events')/items?$select=Title,StartDate,OData__EndDate,Location,RichDescription&$top=1";
+        var eventHtml = "";
+        jQuery.ajax({
+            url: eventUrl,
+            method: "GET",
+            headers: {
+                accept: "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var evt = data.d.results[0];
+                eventHtml += 
+                    "<div class='event-title'>" + evt.Title + "</div>";
+                if (userIsAdmin) {
+                    eventHtml += 
+                    "<a href='/Pages/Event-Admin.aspx?weburl=" + _spPageContextInfo.webServerRelativeUrl + "'>Edit</a><br/>";
+                }
+                eventHtml += 
+                    "<div class='event-start'>" + (new Date(evt.StartDate)).format("MMMM d, yyyy") + "</div>";
+                if ((new Date(evt.StartDate)).getTime() != (new Date(evt.OData__EndDate)).getTime()) {
+                    eventHtml += 
+                    "<div class='event-end'> - " + (new Date(evt.OData__EndDate)).format("MMMM d, yyyy") + "</div>";
+                }
+                if (evt.Location) {
+                    eventHtml += 
+                    "<div class='event-location'>" + evt.Location + "</div>";
+                }
+                if (evt.RichDescription) {
+                    eventHtml +=
+                    "<div class='center-block event-description' id='eventDescrption'>" + 
+                        "<h3>" + evt.RichDescription + "</h3>" + 
+                    "</div>";
+                }
+                    
+                jQuery("#eventInfoContainer").html(eventHtml);
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    jQuery(document).ready(function() {
+        CheckUserPermissions();
+    });
+</script>

@@ -1,0 +1,1176 @@
+<script type="text/javascript" charset="utf8" src="/_catalogs/masterpage/resources/jquery.easyeditor.js"></script>
+<link rel="stylesheet" type="text/css" href="/_catalogs/masterpage/resources/easyeditor.css">
+<div class="form-horizontal">
+    <div>
+        <fieldset>
+            <!-- Language drop down -->
+            <div class="form-group">
+                <div class="col-md-2">
+                    <h3><label class="control-label">Language</label></h3>
+                </div>
+                <div class="col-md-4">
+                    <div class="language-filter" id="languageField">
+                        <div class="dropdown-program">
+                            <a class="dropdown-button" href="javascript:{}" id="ddbtnLanguage"><span>English</span><i class="icon-caret-down"></i></a>
+                            <div class="dropdown-program-content" id="ddLanguage">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert-container">
+                <div class="alert alert-warning" id="langAlert" style="display: none"></div>
+            </div>
+            <!-- Publication drop down -->
+            <div class="form-group">
+                <div class="col-md-2">
+                    <h3><label class="control-label">* Publication</label></h3>
+                </div>
+                <div class="col-md-4">
+                    <div class="language-filter" id="publicationField">
+                        <div class="dropdown-program">
+                            <a class="dropdown-button" href="javascript:{}" id="ddbtnPublication"><span>Pick Publication...</span><i class="icon-caret-down"></i></a>
+                            <div class="dropdown-program-content" id="ddPublication">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <h3><label class="control-label" for="txtVolume">* Volume</label></h3>
+                </div>
+                <div class="col-md-8">
+                    <input class="form-control input-md" id="txtVolume" name="textinput" placeholder="Volume Name" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <h3><label class="control-label" for="textarea">* Article Title</label></h3>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" id="txtTitle" class="form-control input-md" placeholder="Article Title">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <h3><label class="control-label" for="txtPublishDate">Publish Date</label></h3>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-calendar">
+                        <div class="form-group calendar-inner-addon col-sm-6">
+                            <label for="txtPublishDate">Enter Publish Date</label>
+                            <div class="input-calendar"><input class="form-control input-sm" id="txtPublishDate" type="text"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <h3><label class="control-label">* Article Photo</label></h3>
+                </div>
+                <div class="col-md-3"><img class="img-responsive" id="publicationPhotoImage" src="/_catalogs/masterpage/resources/img-upload.png"></div>
+                <div class="col-md-4">
+                    <p>
+                        <input type="file" class="program-photo" id="filPublicationPhoto">
+                        <label class="program-logo-label" for="filPublicationPhoto" id="lblPublicationPhoto"><i class="fa fa-upload"></i> Choose a file</label>
+                        <a class="upload-button btn btn-primary" href="javascript:{}" id="uploadPublicationPhoto" style="display: none;">Upload</a>
+                    </p>
+                    <a data-target="#photo-modal" data-toggle="modal" href="javascript:{}" type="button">Use Existing Photo</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <h3><label class="control-label" for="run-time">* Featured</label></h3>
+                </div>
+                <div class="col-md-8">
+                    <label class="radio-inline" for="rdoFeatured">
+                    <input checked="checked" id="rdoFeatured" name="featured" type="radio" value="Featured"> Make Featured</label>
+
+                    <label class="radio-inline" for="rdoNotFeatured">
+                    <input id="rdoNotFeatured" name="featured" type="radio" value="Not Featured"> Do Not Feature</label>
+                </div>
+            </div>
+            <div id="featuredArticleForm" style="display: none">
+                <div id="featuredAlert">
+                </div>
+                
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <h3><label class="control-label" for="textarea">Teaser</label></h3>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="rich-text-box" id="rtbTeaser"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <h3><label class="control-label" for="textarea">Additional Content</label></h3>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="rich-text-box" id="rtbAdditionalContent"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-push-2 col-md-8">
+                        <a data-target="#preview-modal" data-toggle="modal" href="javascript:{}" id="btnPreview" class="action-link btn btn-default" type="button">Preview</a> 
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <h3><label class="control-label" for="textarea">Article Body</label></h3>
+                </div>
+                <div class="col-md-8">
+                    <div class="rich-text-box" id="rtbArticleBody"></div>
+                </div>
+            </div>
+            <div class="alert-container">
+            </div>
+            <div class="btn-container pull-right">
+                <button id="btnCancel" class="btn btn-default" type="button">Cancel</button> 
+                <button id="btnSave" class="btn btn-primary btn-save" type="button">Save</button> 
+                <div class="page-status"><h3><i id="pageStatusIcon" class="fa fa-check" aria-hidden="true"></i>&nbsp;<span id="pageStatusText"></span></h3></div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+<!-- Picture Modal -->
+<div class="modal fade event-photo-modal" id="photo-modal" tabindex="-1" role="dialog" aria-labelledby="photo-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  modal-simple ">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div id="photoImageList" class="image-list">
+                </div>
+                <div>
+                    <input type="text" value="" id="photoImageUrl" class="image-url" />
+                    <input type="button" value="Apply" id="btnApplyPhoto" class="btn btn-primary" data-dismiss="modal" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Preview modal -->
+<div class="modal fade event-photo-modal" id="preview-modal" tabindex="-1" role="dialog" aria-labelledby="preview-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  modal-simple ">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="article-main">
+                    <img id="pvwPhoto" class="img-responsive" src="/_catalogs/masterpage/resources/img-upload.png">
+                    <div class="article-main-content">
+                        <div id="pvwVolume" class="article-volume"></div>
+                        <div class="article-main-headline">
+                            <h3 id="pvwTitle"></h3>
+                            <p id="pvwTeaser"></p>
+                        </div>
+                    </div>
+                </div>
+                <div id="pvwAddContent" class="article-sub-headline">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var pi_termStoreName = "Managed Metadata Service - Connect";
+    var pi_publicationTermSetGuid = "9713920e-0b18-45f4-94fe-cc27168502a2";
+    var pi_publicationChoices = {};
+    var pi_publicationChoicesById = {};
+    var pi_publication;
+    var pi_volume;
+    var pi_language;
+    var pi_languages = [];
+    var pi_formMode = "NEW";
+    var pi_articleId;
+    var pi_article = [];
+    var pi_featuredArticle;
+
+    function getParameterByName(name, url) {
+        if (!url) {
+            url = window.location.href;
+        }
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    // Generate new ID string
+    function GenerateId() {
+        return (new Date()).format("MMddyyyyhhmmss");
+    }
+
+    // Get language for labels
+    function GetLanguageForLabel(label) {
+        switch (label.toLowerCase()) {
+            case "connect":
+                return "English";
+            case "zhhk":
+                return "Chinese (Hong Kong S.A.R.)";
+            case "zhcn":
+                return "Chinese (People's Republic of China)";
+            case "fr":
+                return "French (France)";
+            case "de":
+                return "German (Germany)";
+            case "ja":
+                return "Japanese (Japan)";
+            case "pl":
+                return "Polish (Poland)";
+            case "pt":
+                return "Portuguese (Brazil)";
+            case "ru":
+                return "Russian (Russia)";
+            case "es":
+                return "Spanish (Spain)";
+            default:
+                return "";
+        }
+    }
+
+    function SetStatus(type, message, target) {
+        switch(type) {
+            case "SUCCESS":
+                if (jQuery("#" + target + "StatusIcon").hasClass("fa-remove")) {
+                    jQuery("#" + target + "StatusIcon").removeClass("fa-remove");
+                }
+                if (!jQuery("#" + target + "StatusIcon").hasClass("fa-check")) {
+                    jQuery("#" + target + "StatusIcon").addClass("fa-check");
+                }
+                jQuery("#" + target + "StatusIcon").show();
+                if (jQuery("." + target + "-status").hasClass("text-warning")) {
+                    jQuery("." + target + "-status").removeClass("text-warning");
+                }
+                if (!jQuery("." + target + "-status").hasClass("text-success")) {
+                    jQuery("." + target + "-status").addClass("text-success");
+                }
+                break;
+            case "ERROR":
+                if (jQuery("#" + target + "StatusIcon").hasClass("fa-check")) {
+                    jQuery("#" + target + "StatusIcon").removeClass("fa-check");
+                }
+                if (!jQuery("#" + target + "StatusIcon").hasClass("fa-remove")) {
+                    jQuery("#" + target + "StatusIcon").addClass("fa-remove");
+                }
+                jQuery("#" + target + "StatusIcon").show();
+                if (jQuery("." + target + "-status").hasClass("text-success")) {
+                    jQuery("." + target + "-status").removeClass("text-success");
+                }
+                if (!jQuery("." + target + "-status").hasClass("text-warning")) {
+                    jQuery("." + target + "-status").addClass("text-warning");
+                }
+                break;
+            default:
+                jQuery("#" + target + "StatusIcon").hide();
+        }
+
+        jQuery("#" + target + "StatusText").text(message);
+        jQuery("." + target + "-status").show();
+    }
+
+    function ClearStatus(target) {
+        jQuery("." + target + "-status").hide();
+    }
+
+    // Add options to the Publication drop down
+    function LoadPublicationTerms() {
+        var context = SP.ClientContext.get_current();
+        var taxSession = SP.Taxonomy.TaxonomySession.getTaxonomySession(context);
+        var termStores = taxSession.get_termStores();
+
+        // Get the Connect site collection term store
+        var termStore = termStores.getByName(pi_termStoreName);
+        // Retrieve the "Publication" term set
+        var termSet = termStore.getTermSet(pi_publicationTermSetGuid);
+        // Get all the terms
+        var terms = termSet.getAllTerms();
+        context.load(terms);
+        context.executeQueryAsync(
+            function() {
+                // Enumerate through the terms and add
+                var termEnumerator = terms.getEnumerator();
+                var currentTerm;
+                var name;
+                var label;
+                var guid;
+                var pubChoice = "";
+                while(termEnumerator.moveNext()) {
+                    currentTerm = termEnumerator.get_current();
+                    // Add the term name and ID to a hash for easy access later
+                    pi_publicationChoices[currentTerm.get_name()] = currentTerm.get_id();
+                    pi_publicationChoicesById[currentTerm.get_id()] = currentTerm.get_name();
+                    // Construct a choice html for the scope
+                    pubChoice =
+                        '<a value="' + currentTerm.get_name() + '" class="dropdown-program-link" href="javascript:{}">' + currentTerm.get_name() + '</a>';
+                    jQuery("#ddPublication").append(pubChoice);
+                }
+            },
+            function(sender,args) {                  // If the call fails
+                console.log(args.get_message());
+            }
+        );
+    }
+
+    // Upload image procedure
+    function UploadImage(fileInput, img, serverRelativeUrlToFolder) {
+
+        // Initiate method calls using jQuery promises.
+        // Get the local file as an array buffer.
+        var getFile = getFileBuffer();
+        getFile.done(function (arrayBuffer) {
+
+            // Add the file to the SharePoint folder.
+            var addFile = addFileToFolder(arrayBuffer);
+            addFile.done(function (file, status, xhr) {
+                var getItem = getListItem(file.d.ListItemAllFields.__deferred.uri);
+                getItem.done(function (listItem, status, xhr) {
+                    img.attr("src", listItem.d.ServerRelativeUrl);
+                    fileInput.val("");
+                });
+                getItem.fail(UploadError);
+            });
+            addFile.fail(UploadError);
+        });
+        getFile.fail(UploadError);
+
+        // Get the local file as an array buffer.
+        function getFileBuffer() {
+            var deferred = jQuery.Deferred();
+            var reader = new FileReader();
+            reader.onloadend = function (e) {
+                deferred.resolve(e.target.result);
+            }
+            reader.onerror = function (e) {
+                deferred.reject(e.target.error);
+            }
+            reader.readAsArrayBuffer(fileInput[0].files[0]);
+            return deferred.promise();
+        }
+
+        // Add the file to the file collection in the given folder.
+        function addFileToFolder(arrayBuffer) {
+
+            // Get the file name from the file input control on the page.
+            var parts = fileInput[0].value.split('\\');
+            var fileName = parts[parts.length - 1];
+
+            // Construct the endpoint.
+            var fileCollectionEndpoint = String.format(
+                "{0}/_api/web/getfolderbyserverrelativeurl('{1}')/files" +
+                "/add(overwrite=true, url='{2}')",
+                _spPageContextInfo.siteAbsoluteUrl, serverRelativeUrlToFolder, fileName);
+
+            // Send the request and return the response.
+            // This call returns the SharePoint file.
+            return jQuery.ajax({
+                url: fileCollectionEndpoint,
+                type: "POST",
+                data: arrayBuffer,
+                processData: false,
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val()
+                }
+            });
+        }
+
+        // Get the list item that corresponds to the file by calling the file's ListItemAllFields property.
+        function getListItem(fileListItemUri) {
+            // Send the request and return the response.
+            fileListItemUri = fileListItemUri.replace("/ListItemAllFields","");
+            return jQuery.ajax({
+                url: fileListItemUri,
+                type: "GET",
+                headers: { "accept": "application/json;odata=verbose" }
+            });
+        }
+    }
+
+    function UploadError(error) {
+        console.log(error.responseText);
+    }
+
+    function LoadImages(sourceUri, container, image) {
+        jQuery.ajax({
+            url: sourceUri,
+            type: "GET",
+            headers: { "accept": "application/json;odata=verbose" },
+            success: function(data) {
+                var html = "";
+                html += "<ul class='image-listing'>";
+                for (i = 0; i < data.d.results.length; i++) {
+                    html +=
+                        "<li class='image-tile'>" +
+                            "<img class='tile-picture " + image + "-picture' src='" + data.d.results[i].ServerRelativeUrl + "' onclick='lt_locationPhotoUrl = jQuery(this).attr(\"src\"); jQuery(\"#" + image + "ImageUrl\").val(jQuery(this).attr(\"src\"))'>" +
+                            "<div class='tile-caption'>" + data.d.results[i].Name + "</div>" +
+                        "</li>";
+                }
+                html += "</ul>";
+                container.html(html);
+            },
+            error: function(error) {
+                console.log(JSON.stringify(error));
+            }
+        });
+    }
+
+    function LoadImagePicker() {
+        photoSource = "/SiteAssets/Publication_Photos";
+
+        var photoUri = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/getfolderbyserverrelativeurl('" + photoSource + "')/files";
+        LoadImages(photoUri, jQuery("#photoImageList"), "photo");
+    }
+
+    // Add allowed values to the Languages drop down
+    function SetAvailableLanguages() {
+        var fallbacks = ["English", "Chinese (Hong Kong S.A.R.)", "Chinese (People's Republic of China)", "French (France)", "German (Germany)", "Japanese (Japan)", "Polish (Poland)", "Portuguese (Brazil)", "Russian (Russia)", "Spanish (Spain)"];
+        url = "/_api/web/lists/getbytitle('Variation Labels')/items?$select=Title";
+        // Get available variation labels
+        jQuery.ajax({
+            url: url,
+            method: "GET",
+            headers: { 
+                "Accept": "application/json;odata=verbose"
+            },
+            success: function(data) {
+                var result;
+                for (i = 0; i < data.d.results.length; i++) {
+                    result = data.d.results[i];
+                    pi_languages.push(result.Title);
+                    jQuery("#ddLanguage").append(
+                        "<a value='" + result.Title + "' class='dropdown-program-link' href='javascript:{}'>" + GetLanguageForLabel(result.Title) + "</a>"
+                    );
+                }
+            },
+            error: function(err) {
+                LoadLanguages(fallbacks);
+                console.log(JSON.stringify(err))
+            }
+        });
+    }
+
+    function SetArticleId() {
+        var articleId = getParameterByName("articleid");
+        if (articleId) {
+            pi_articleId = articleId;
+            pi_formMode = "EDIT";
+            LoadFormData();
+        }
+        else {
+            pi_articleId = GenerateId();
+            pi_formMode = "NEW";
+            
+            // Set article not to feature by default
+            jQuery("#rdoNotFeatured").prop("checked", "checked");
+        }
+    }
+
+    function InitializeForm() {
+        // Set language to English
+        pi_language = "CONNECT";
+
+        // Prepare language drop down
+        SetAvailableLanguages();
+
+        // Prepare the publication drop down
+        LoadPublicationTerms();
+
+        // Set the form mode and get form data if required
+        SetArticleId();
+
+        // Set up all the rich text boxes.
+        jQuery(".rich-text-box").easyEditor({
+            buttons: ['bold', 'italic', 'link', 'h2', 'h3', 'h4', 'alignleft', 'aligncenter', 'alignright', 'quote', 'code', 'image', 'youtube', 'x'],
+            buttonsHtml: {
+                'bold': '<i class="fa fa-bold"></i>',
+                'italic': '<i class="fa fa-italic"></i>',
+                'link': '<i class="fa fa-link"></i>',
+                'header-2': '<i class="fa fa-header"></i>2',
+                'header-3': '<i class="fa fa-header"></i>3',
+                'header-4': '<i class="fa fa-header"></i>4',
+                'align-left': '<i class="fa fa-align-left"></i>',
+                'align-center': '<i class="fa fa-align-center"></i>',
+                'align-right': '<i class="fa fa-align-right"></i>',
+                'quote': '<i class="fa fa-quote-left"></i>',
+                'code': '<i class="fa fa-code"></i>',
+                'insert-image': '<i class="fa fa-picture-o"></i>',
+                'insert-youtube-video': '<i class="fa fa-youtube"></i>',
+                'remove-formatting': '<i class="fa fa-ban"></i>'
+            }
+        });
+    }
+
+    function PrepareArticle(article) {
+        var propertiesToKeep = [
+            "__metadata",
+            "Title",
+            "ArticleID",
+            "PublishDate",
+            "Publication",
+            "Volume",
+            "Featured",
+            "Copy",
+            "ConnectLanguage",
+            "ArticleBody",
+            "ArticlePhoto",
+            "Teaser",
+            "RichDescription"
+        ];
+        for (var property in article) {
+            if (article.hasOwnProperty(property)) {
+                if (propertiesToKeep.indexOf(property) == -1) {
+                    delete article[property];
+                }
+            }
+        }
+        return article;
+    }
+
+    function LoadArticleCache(articles) {
+        // Retreive English version
+        var englishArticle;
+        jQuery.each(articles, function(n, art) {
+            if (art.ConnectLanguage == "CONNECT") {
+                englishArticle = art;
+            }
+        });
+
+        var found = false;
+        jQuery.each(pi_languages, function(i, lang) {
+            found = false;
+            jQuery.each(articles, function(j, article) {
+                if (article.ConnectLanguage == lang) {
+                    found = true;
+                    pi_article.push(PrepareArticle(article));
+                }
+            });
+            if (!found) {
+                var standIn = JSON.parse(JSON.stringify(englishArticle));
+                standIn.ConnectLanguage = lang;
+                pi_article.push(PrepareArticle(standIn));
+            }
+        });
+    }
+
+    function LoadFormData() {
+        articleUrl = 
+            _spPageContextInfo.siteAbsoluteUrl + 
+            "/_api/web/lists/getbytitle('Publications')/GetItems(query=@v1)" + 
+            "?@v1={'ViewXml':'" + 
+            "<View>" + 
+                "<ViewFields>" + 
+                    "<FieldRef Name=\"Title\"/>" + 
+                    "<FieldRef Name=\"ArticleID\"/>" + 
+                    "<FieldRef Name=\"PublishDate\"/>" + 
+                    "<FieldRef Name=\"Publication\"/>" + 
+                    "<FieldRef Name=\"Volume\"/>" + 
+                    "<FieldRef Name=\"Featured\"/>" + 
+                    "<FieldRef Name=\"Copy\"/>" + 
+                    "<FieldRef Name=\"ConnectLanguage\"/>" + 
+                    "<FieldRef Name=\"ArticleBody\"/>" + 
+                    "<FieldRef Name=\"ArticlePhoto\"/>" + 
+                    "<FieldRef Name=\"Teaser\"/>" + 
+                    "<FieldRef Name=\"RichDescription\"/>" + 
+                "</ViewFields>" + 
+                "<Query>" + 
+                    "<Where>" + 
+                        "<Eq>" + 
+                            "<FieldRef Name=\"ArticleID\"/>" + 
+                            "<Value Type=\"Text\">" + pi_articleId + "</Value>" + 
+                        "</Eq>" + 
+                    "</Where>" + 
+                    "<OrderBy>" + 
+                        "<FieldRef Name=\"PublishDate\" Ascending=\"FALSE\"/>" + 
+                    "</OrderBy>" + 
+                "</Query>" + 
+            "</View>" + 
+            "'}";
+
+        jQuery.ajax({
+            url: articleUrl,
+            method: "POST",
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val()
+            },
+            success: function(data) {
+                LoadArticleCache(data.d.results);
+                LoadFormForLanguage("CONNECT");
+                LoadLanguageAlerts("CONNECT");
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function RestoreEnglishContent(article) {
+        var englishArticle = (pi_article.filter(function(art) { return art.ConnectLanguage == "CONNECT" }))[0];
+        if (englishArticle) {
+            article.Volume = englishArticle.Volume;
+            article.Title = englishArticle.Title;
+            article.Featured = englishArticle.Featured;
+            article.PublishDate = englishArticle.PublishDate;
+            article.ArticlePhoto = englishArticle.ArticlePhoto;
+            article.Teaser = englishArticle.Teaser;
+            article.RichDescription = englishArticle.RichDescription;
+            article.ArticleBody = englishArticle.ArticleBody;
+        }
+    }
+
+    function LinkLanguage(lang, link) {
+        var proceed = true;
+        if (link) {
+            proceed = confirm("You are linking this version back to English. Any changes you made to this language version will be irrecoverably lost. Do you want to proceed?");
+        }
+        if (proceed) {
+            if (pi_article) {
+                jQuery.each(pi_article, function(i, article) {
+                    if (lang == article.ConnectLanguage) {
+                        article.Copy = link;
+                        if (link) {
+                            RestoreEnglishContent(article);
+                        }
+                        LoadFormForLanguage(article.ConnectLanguage);
+                        LoadLanguageAlerts(article.ConnectLanguage);
+                    }
+                });
+            }
+        }
+    }
+
+    function LoadFormForLanguage(lang) {
+        jQuery.each(pi_article, function(i, article) {
+            if (article.ConnectLanguage == lang) {
+                pi_publication = article.Publication.Label;                
+                jQuery("#ddbtnPublication").find("span").text(article.Publication.Label);
+                pi_volume = article.Volume;
+                jQuery("#txtVolume").val(article.Volume);
+                jQuery("#txtTitle").val(article.Title);
+                jQuery("#txtPublishDate").val(GetShortDateString(article.PublishDate));
+                if (article.Featured) {
+                    jQuery("#rdoFeatured").attr("checked", "checked");
+                    jQuery("#publicationPhotoImage").attr("src", article.ArticlePhoto.Url);
+                    jQuery("#rtbTeaser").html(article.Teaser);
+                    jQuery("#rtbAdditionalContent").html(article.RichDescription);
+                    jQuery("#featuredArticleForm").show();
+                }
+                else {
+                    jQuery("#rdoNotFeatured").attr("checked", "checked");
+                }
+                jQuery("#rtbArticleBody").html(article.ArticleBody);
+            }
+        });
+    }
+
+    function LoadLanguageAlerts(lang) {
+        if (lang == "CONNECT") {
+            jQuery(".alert-container").html("");
+        }
+        else {
+            // Add alerts for language if required
+            var languageAlert = 
+                "<div class=\"alert alert-warning\">" + 
+                    "<h3><i class=\"fa fa-lock\"></i> Linked to English</h3>" + 
+                    "The article in this language - <strong>" + 
+                    GetLanguageForLabel(lang) + 
+                    "</strong> is linked to the English version. If you unlink the article, the content from" + 
+                    " English will no longer be copied to this version." + 
+                    "<div>" + 
+                        "<a href=\"javascript:{}\" class=\"action-link btn btn-default\" id=\"btnUnlink\" onclick=\"LinkLanguage(pi_language, false);\"><i class=\"fa fa-unlock-alt\"></i> Unlink</a>" + 
+                    "</div>" + 
+                "</div>";
+
+            // Change the message if the article is not being copied
+            var article = (pi_article.filter(function(art) { return art.ConnectLanguage == lang }))[0];
+            if (article) {
+                if (!article.Copy) {
+                    languageAlert = 
+                        "<div class=\"alert alert-info\">" + 
+                            "<h3><i class=\"fa fa-unlock-alt\"></i> Unlinked</h3>" + 
+                            "The article in this language - <strong>" + 
+                            GetLanguageForLabel(lang) + 
+                            "</strong> is NOT linked to the English version. If you link the article again, changes " + 
+                            "this language version will be lost and English content will be copied to this version." + 
+                            "<div>" + 
+                                "<a href=\"javascript:{}\" class=\"action-link btn btn-default\" id=\"btnLink\" onclick=\"LinkLanguage(pi_language, true);\"><i class=\"fa fa-lock\"></i> Link</a>" + 
+                            "</div>" + 
+                        "</div>";
+                }
+            }
+
+            if (lang != "CONNECT") {
+                jQuery(".alert-container").html(languageAlert);
+            }
+        }
+    }
+
+    function LoadFeaturedArticleForm() {
+        var articleUrl = _spPageContextInfo.siteAbsoluteUrl + 
+            "/_api/web/lists/getbytitle('Publications')/GetItems(query=@v1)" + 
+            "?@v1={'ViewXml':'" + 
+            "<View>" + 
+                "<ViewFields>" + 
+                    "<FieldRef Name=\"ArticleID\"/>" + 
+                    "<FieldRef Name=\"ArticlePhoto\"/>" + 
+                    "<FieldRef Name=\"Teaser\"/>" + 
+                    "<FieldRef Name=\"RichDescription\"/>" + 
+                "</ViewFields>" + 
+                "<Query>" + 
+                    "<Where>" + 
+                        "<And>" + 
+                            "<And>" + 
+                                "<Eq>" + 
+                                    "<FieldRef Name=\"Publication\"/>" + 
+                                    "<Value Type=\"Text\">" + pi_publication + "</Value>" + 
+                                "</Eq>" + 
+                                "<Eq>" + 
+                                    "<FieldRef Name=\"Volume\"/>" + 
+                                    "<Value Type=\"Text\">" + pi_volume + "</Value>" + 
+                                "</Eq>" + 
+                            "</And>" + 
+                            "<Eq>" + 
+                                "<FieldRef Name=\"Featured\"/>" + 
+                                "<Value Type=\"Boolean\">1</Value>" + 
+                            "</Eq>" + 
+                        "</And>" +
+                    "</Where>" + 
+                    "<OrderBy>" + 
+                        "<FieldRef Name=\"PublishDate\" Ascending=\"FALSE\"/>" + 
+                    "</OrderBy>" + 
+                "</Query>" + 
+            "</View>" + 
+            "'}";
+        
+        jQuery.ajax({
+            url: articleUrl,
+            method: "POST",
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val()
+            },
+            success: function(data) {
+                var pi_featuredArticle = data.d.results[0];
+                if (pi_featuredArticle) {
+                    jQuery("#publicationPhotoImage").attr("src", pi_featuredArticle.ArticlePhoto.Url);
+                    jQuery("#rtbTeaser").html(pi_featuredArticle.Teaser);
+                    jQuery("#rtbAdditionalContent").html(pi_featuredArticle.RichDescription);
+                    if (pi_featuredArticle.ArticleID != pi_articleId) {
+                        jQuery("#featuredAlert").html(
+                            "<div class=\"alert alert-warning\">" + 
+                            "<strong>WARNING:</strong> Another article is designated featured for this volume." + 
+                            " If this article is featured, the other (see below) will be un-featured." + 
+                            "</div>"
+                        );
+                    }
+                }
+                jQuery("#featuredArticleForm").show();
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    }
+
+    function ClearFeaturedArticleForm() {
+        jQuery("#publicationPhotoImage").attr("src", "/_catalogs/masterpage/resources/img-upload.png");
+        jQuery("#rtbTeaser").html("");
+        jQuery("#rtbAdditionalContent").html("");
+        jQuery("#featuredArticleForm").hide();
+    }
+
+    function VolumeExists(pub, vol, callback) {
+        var articleUrl = _spPageContextInfo.siteAbsoluteUrl + 
+            "/_api/web/lists/getbytitle('Publications')/GetItems(query=@v1)?@v1={'ViewXml':'" + 
+                "<View>" + 
+                    "<ViewFields>" + 
+                        "<FieldRef Name=\"Publication\"/>" + 
+                        "<FieldRef Name=\"Volume\"/>" + 
+                    "</ViewFields>" + 
+                    "<Query>" + 
+                        "<Where>" + 
+                            "<And>" + 
+                                "<Eq>" + 
+                                    "<FieldRef Name=\"Publication\"/>" + 
+                                    "<Value Type=\"Text\">" + pub + "</Value>" + 
+                                "</Eq>" + 
+                                "<Eq>" + 
+                                    "<FieldRef Name=\"Volume\"/>" + 
+                                    "<Value Type=\"Text\">" + vol + "</Value>" + 
+                                "</Eq>" + 
+                            "</And>" +
+                        "</Where>" +
+                    "</Query>" +
+                "</View>" + 
+            "'}";
+        jQuery.ajax({
+            url: articleUrl,
+            method: "POST",
+            headers: {
+                "accept": "application/json;odata=verbose",
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val()
+            },
+            success: function(data) {
+                if (data.d.results.length > 0) {
+                    callback(true);
+                }
+                else {
+                    callback(false);
+                }
+            },
+            error: function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function ValidateInputs() {
+        var valid = true;
+        if (jQuery("#ddbtnPublication").find("span").text() == "Pick Publication..." || jQuery("#ddbtnPublication").find("span").text() == "") {
+            valid = false;
+            SetStatus("ERROR", "A publication needs to be selected.", "page");
+        }
+        else {
+            if (!jQuery("#txtVolume").val()) {
+                valid = false;
+                SetStatus("ERROR", "A volume name needs to be specified.", "page");
+            }
+            else {
+                if (!jQuery("#txtTitle").val()) {
+                    valid = false;
+                    SetStatus("ERROR", "Article title is required.", "page");
+                }
+                else {
+                    if (!jQuery("#txtPublishDate").val()) {
+                        valid = false;
+                        SetStatus("ERROR", "Publish date is required.", "page");
+                    }
+                    else {
+                        if (jQuery("input:radio[name='featured']:checked").val() == "Featured") {
+                            if (jQuery("#publicationPhotoImage").attr("src") == "/_catalogs/masterpage/resources/img-upload.png") {
+                                valid = false;
+                                SetStatus("ERROR", "A featured article requires a teaser picture.", "page");
+                            }
+                        }
+                        else {
+                            VolumeExists(jQuery("#ddbtnPublication").find("span").text(), jQuery("#txtVolume").val(), function(volumeExists) {
+                                if (!volumeExists) {
+                                    valid = false;
+                                    SetStatus("ERROR", "First article in a new volume needs to be featured.", "page");
+                                    jQuery("#rdoFeatured").prop("checked", true);
+                                    jQuery("#featuredArticleForm").show();
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        }
+        return valid;
+    }
+
+    function GetUTCDate(date) {
+        var now = new Date(date);
+        return (new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getUTCHours(), now.getMinutes(), now.getSeconds())).format("yyyy-MM-ddThh:mm:ssZ");
+    }
+
+    function GetShortDateString(utc) {
+        var date = new Date(utc);
+        return date.format("MM/dd/yyyy");
+    }
+
+    function GetNewArticleData() {
+        var articleBase = {
+            "__metadata": {
+                "type": "SP.Data.PublicationsListItem"
+            },
+            "Title": jQuery("#txtTitle").val(),
+            "ArticleID": pi_articleId,
+            "PublishDate": GetUTCDate(jQuery("#txtPublishDate").val()),
+            "Publication": {
+                "__metadata": {
+                    "type":"SP.Taxonomy.TaxonomyFieldValue"
+                }, 
+                "Label": jQuery("#ddbtnPublication").find("span").text(),
+                "TermGuid": pi_publicationChoices[jQuery("#ddbtnPublication").find("span").text()]._m_guidString$p$0,
+                "WssId": -1
+            },
+            "Volume": jQuery("#txtVolume").val(),
+            "Featured": jQuery("input:radio[name='featured']:checked").val() == "Featured" ? true : false,
+            "Copy": true,
+            "ConnectLanguage": "CONNECT",
+            "ArticleBody": jQuery("#rtbArticleBody").html(),
+            "ArticlePhoto": {
+                "__metadata": {
+                    "type":"SP.FieldUrlValue"
+                },
+                "Description": jQuery("#publicationPhotoImage").attr("src").replace(_spPageContextInfo.siteAbsoluteUrl, ""),
+                "Url": jQuery("#publicationPhotoImage").attr("src").replace(_spPageContextInfo.siteAbsoluteUrl, "")
+            }
+        }
+
+        if (jQuery("input:radio[name='featured']:checked").val() == "Featured") {
+            
+            articleBase.Teaser = jQuery("#rtbTeaser").html();
+            articleBase.RichDescription = jQuery("#rtbAdditionalContent").html();
+        }
+
+        // Clear article array and reinitialize
+        jQuery.each(pi_languages, function(i, lang) {
+            articleBase.ConnectLanguage = lang;
+            pi_article.push(JSON.parse(JSON.stringify(articleBase)));
+        });
+    }
+
+    function AddArticle() {
+        var articleUrl = _spPageContextInfo.siteAbsoluteUrl + "/_api/web/lists/getbytitle('Publications')/Items";
+        jQuery.each(pi_article, function(i, article) {
+            jQuery.ajax({
+                url: articleUrl,
+                method: "POST",
+                data: JSON.stringify(article),
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                    "content-type": "application/json;odata=verbose"
+                },
+                success: function(err) {
+                    window.location.href = "/Pages/Publication.aspx?articleid=" + pi_articleId + "&lang=CONNECT";
+                },
+                error: function(err) {
+                    console.log(JSON.stringify(err));
+                }
+            });
+        });
+    }
+
+    function ResetArticleProperty(prop, value) {
+        switch(prop) {
+            case "Volume": jQuery("#txtVolume").val(value);
+                break;
+            case "Title": jQuery("#txtTitle").val(value);
+                break;
+            case "ArticleBody": jQuery("#rtbArticleBody").html(value);
+                break;
+            case "Teaser": jQuery("#rtbTeaser").html(value);
+                break;
+            case "RichDescription": jQuery("#rtbAdditionalContent").html(value);
+                break;
+        }
+    }
+
+    function UpdateArticle() {
+        jQuery.each(pi_article, function(i, article) {
+            if (article.ConnectLanguage == pi_language || (pi_language == "CONNECT" && article.Copy)) {
+                // Update publication
+                article.Publication.Label = jQuery("#ddbtnPublication").find("span").text();
+                article.Publication.TermGuid = pi_publicationChoices[jQuery("#ddbtnPublication").find("span").text()]._m_guidString$p$0;
+                article.Publication.WssId = -1;
+
+                // Update volume
+                article.Volume = jQuery("#txtVolume").val();
+
+                // Update title
+                article.Title = jQuery("#txtTitle").val();
+
+                // Update Publish date
+                article.PublishDate = GetUTCDate(jQuery("#txtPublishDate").val());
+
+                // Update article photo
+                article.ArticlePhoto = {
+                    __metadata: {
+                        type: "SP.FieldUrlValue"
+                    },
+                    Description: jQuery("#publicationPhotoImage").attr("src").replace(_spPageContextInfo.siteAbsoluteUrl, ""),
+                    Url: jQuery("#publicationPhotoImage").attr("src").replace(_spPageContextInfo.siteAbsoluteUrl, "")
+                };
+
+                // Update featured article inputs
+                if (jQuery("input:radio[name='featured']:checked").val() == "Featured") {
+                    article.Featured = true;
+                    
+                    article.Teaser = jQuery("#rtbTeaser").html();
+                    article.RichDescription = jQuery("#rtbAdditionalContent").html();
+                }
+                else {
+                    article.Featured = false;
+                    article.Teaser = "";
+                    article.RichDescription = "";
+                }
+
+                // Update article body
+                article.ArticleBody = jQuery("#rtbArticleBody").html();
+            }
+            
+            jQuery.ajax({
+                url: article.__metadata.uri,
+                method: "POST",
+                data: JSON.stringify(article),
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                    "content-type": "application/json;odata=verbose",
+                    "X-HTTP-Method": "MERGE",
+                    "If-Match": "*"
+                },
+                success: function(data) {
+                    window.location.href = "/Pages/Publication.aspx?articleid=" + pi_articleId + "&lang=CONNECT";
+                },
+                error: function(err) {
+                    console.log(JSON.stringify(err));
+                }
+            });
+        });
+    }
+
+    function SaveArticle() {
+        ClearStatus("page");
+        if (ValidateInputs()) {
+            if (pi_formMode == "NEW") {
+                GetNewArticleData();
+                AddArticle();
+            }
+
+            if (pi_formMode == "EDIT") {
+                UpdateArticle();
+            }
+
+            console.log(pi_article);
+        }
+    }
+
+    function AddHandlers() {
+        // Set date pickers
+        jQuery("#txtPublishDate").datepicker();
+        jQuery("#anim").on("change", function() {
+            jQuery("#txtPublishDate").datepicker("option", "showAnim", jQuery(this).val());
+        });
+
+        // Add handler to open the choice panel when Language
+        // drop down button is clicked
+        jQuery("#ddbtnLanguage").on("click", function(e) {
+            jQuery("#ddLanguage").toggleClass("open");
+            e.stopPropagation();
+        });
+
+        // Add handler to open the choice panel when Publication
+        // drop down button is clicked
+        jQuery("#ddbtnPublication").on("click", function(e) {
+            jQuery("#ddPublication").toggleClass("open");
+            e.stopPropagation();
+        });
+
+        // Add handler to close the Publication choice panel
+        // when any other location on document is clicked
+        jQuery(document).on("click", function(event)
+        {
+            jQuery(".dropdown-program-content").removeClass("open");
+        });
+
+        // Set language
+        jQuery("#ddLanguage").click(function(e) {
+            var choice = jQuery(e.target);
+            jQuery(this).parent().find("span").text(choice.text());
+            jQuery(this).find("a").removeClass("active-filter");
+            choice.addClass("active-filter");
+            pi_language = choice.attr("value");
+            LoadFormForLanguage(pi_language);
+            LoadLanguageAlerts(pi_language);
+        });
+
+        // Set publication
+        jQuery("#ddPublication").click(function(e) {
+            var choice = jQuery(e.target);
+            jQuery(this).parent().find("span").text(choice.text());
+            jQuery(this).find("a").removeClass("active-filter");
+            choice.addClass("active-filter");
+            pi_publication = choice.text();
+        });
+
+        // Add handler to toggle featured form
+        jQuery("input:radio[name='featured']").on("change", function() {
+            if (jQuery(this).val() == "Featured") {
+                if (pi_formMode == "EDIT") {
+                    LoadFeaturedArticleForm();
+                }
+                jQuery("#featuredArticleForm").show();
+            }
+            else {
+                ClearFeaturedArticleForm();
+            }
+        });
+
+        // Handler to upload program photo
+        jQuery("#uploadPublicationPhoto").on("click", function() {
+            if (jQuery("#filPublicationPhoto").val() != "") {
+                UploadImage(jQuery("#filPublicationPhoto"), jQuery("#publicationPhotoImage"), "/SiteAssets/Publication_Photos");
+            }
+        });
+
+        // Handler for program photo file input
+        jQuery("#filPublicationPhoto").change(function() {
+            var text = jQuery("#filPublicationPhoto").val();
+            if (text == "") {
+                jQuery("#uploadPublicationPhoto").hide();
+            }
+            else {
+                jQuery("#uploadPublicationPhoto").show();
+            }
+            var filename = text.substr(text.lastIndexOf("\\") + 1);
+            jQuery("#lblPublicationPhoto").text(filename);
+        });
+
+        // Handler to apply existing photo
+        jQuery("#btnApplyPhoto").on("click", function() {
+            jQuery("#publicationPhotoImage").attr("src", jQuery("#photoImageUrl").val());
+        });
+
+        // Set up the cancel button
+        jQuery("#btnCancel").on("click", function() {
+            if (pi_formMode == "NEW") {
+                window.location.href = "/";
+            }
+            else {
+                window.location.href = "/Pages/Publication.aspx?articleid=" + pi_articleId;
+            }
+        });
+
+        // Set up the save button
+        jQuery("#btnSave").on("click", function() {
+            SaveArticle();
+        });
+
+        jQuery("#btnPreview").on("click", function() {
+            jQuery("#pvwPhoto").attr("src", jQuery("#publicationPhotoImage").attr("src"));
+            jQuery("#pvwVolume").text(jQuery("#txtVolume").val());
+            jQuery("#pvwTitle").text(jQuery("#txtTitle").val());
+            jQuery("#pvwTeaser").html(jQuery("#rtbTeaser").html());
+            jQuery("#pvwAddContent").html(jQuery("#rtbAdditionalContent").html());
+        });
+    }
+
+    jQuery(document).ready(function() {
+        // Load sp.runtime.js, sp.js and sp.taxonomy.js for working with term store in jsom
+        var scriptbase = _spPageContextInfo.webServerRelativeUrl + "_layouts/15/";
+        jQuery.getScript(scriptbase + "SP.Runtime.js",
+            function () {
+                jQuery.getScript(scriptbase + "SP.js", function(){
+                    jQuery.getScript(scriptbase + "SP.Taxonomy.js", InitializeForm);
+                });
+            }
+        );
+        LoadImagePicker();
+        AddHandlers();
+    });
+</script>
